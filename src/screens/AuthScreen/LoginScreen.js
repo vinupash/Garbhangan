@@ -89,7 +89,9 @@ const LoginScreen = ({ navigation }) => {
                         onPress={navigation.goBack}
                     />
                 </View>
-                <ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                >
                     <Text style={styles.pageTitle}>Log In</Text>
                     <View style={styles.btnBox}>
                         <Input

@@ -1,0 +1,135 @@
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import LogoIcon from '../../../../../assets/images/LogoIcon';
+import { COLORS, FONT, SHADOWS, SIZES, assets } from '../../../../constants';
+import LanguageTab from '../../../../components/LanguageTab';
+import BackIcon from '../../../../../assets/images/BackIcon';
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+const LanguageScreen = ({ navigation }) => {
+    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां के छाया की...'];
+    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const [index, setIndex] = useState(0);
+    const [indexImage, setIndexImage] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndex((index + 1) % texts.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [index]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndexImage((indexImage + 1) % iamges.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [indexImage]);
+
+    const BackIconSecton = ({ onPress, title }) => {
+        return (
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
+                <TouchableOpacity
+                    style={styles.backIcon}
+                    onPress={onPress}
+                >
+                    <SvgXml xml={BackIcon} height={25} width={25} />
+                </TouchableOpacity>
+                <Text style={styles.titleText}>{title}</Text>
+            </View>
+        )
+    }
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <StatusBar
+                barStyle='light-content'
+                backgroundColor={COLORS.brand.primary}
+            />
+            <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
+                <View style={styles.headerBox}>
+                    <BackIconSecton
+                        onPress={() => navigation.goBack()}
+                        title=''
+                    />
+                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                    <View style={styles.menuBox}>
+                        <Text style={styles.titleText}>Language</Text>
+                    </View>
+                </View>
+
+                <View style={styles.btnBox}>
+                    <LanguageTab
+                        title="English"
+                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'EnglishScreen' })}
+                    />
+
+                    <LanguageTab
+                        title="Marathi"
+                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'MarathiScreen' })}
+                    />
+
+                    <LanguageTab
+                        title="Marathi"
+                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'MarathiScreen' })}
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
+    )
+}
+
+export default LanguageScreen
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.brand.background,
+    },
+    btnBox: {
+        marginBottom: 50,
+        width: windowWidth - 200,
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 30,
+    },
+    subTitle: {
+        fontSize: SIZES.medium,
+        fontFamily: FONT.MartelSansRegular,
+        color: COLORS.brand.black,
+        marginTop: 10
+    },
+    headerBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: windowWidth - 50,
+        alignSelf: 'center',
+        marginTop: 10,
+        height: 75,
+    },
+    backIcon: {
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2,
+        ...SHADOWS.light,
+        backgroundColor: '#FFF7EF',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    titleText: {
+        fontFamily: FONT.Charlatan,
+        fontSize: SIZES.xxl,
+        color: COLORS.brand.black,
+        marginLeft: 20
+    },
+    menuBox: {
+        width: 360,
+        alignItems: 'flex-end',
+    },
+})

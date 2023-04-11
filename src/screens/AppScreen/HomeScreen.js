@@ -56,20 +56,26 @@ const HomeScreen = ({ navigation }) => {
             <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
                 {/* <SvgXml xml={LogoIcon} width={192} height={123} style={{ marginTop: 50 }} /> */}
                 <View style={{ alignItems: 'center', marginTop: 8 }}>
-                    <SvgXml xml={iamges[indexImage]} width={191} height={100} />
+                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
                     <Text style={styles.subTitle}>{texts[index]}</Text>
                 </View>
 
                 <View style={styles.btnBox}>
-                    <View style={{ width: '40%' }}>
+                    <View style={{
+                        width: 220,
+                        height: 350,
+                    }}>
                         <BtnSection
                             title="Women"
                             onPress={() => navigation.navigate('WomenNavigationsStack')}
                         />
                     </View>
-                    <View style={{ width: '40%' }}>
+                    <View style={{
+                        width: 220,
+                        height: 350,
+                    }}>
                         <BtnSection
-                            title="Kids"
+                            title="Kid's"
                             onPress={() => navigation.navigate('KidNavigationsStack')}
                         />
                     </View>
@@ -89,7 +95,7 @@ const styles = StyleSheet.create({
     },
     btnBox: {
         marginBottom: 50,
-        width: windowWidth - 200,
+        width: windowWidth - 450,
         alignSelf: 'center',
         flexDirection: 'row',
         alignItems: 'center',
@@ -97,14 +103,14 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     subTitle: {
-        fontSize: SIZES.large,
+        fontSize: SIZES.medium,
         fontFamily: FONT.MartelSansRegular,
         color: COLORS.brand.black,
         marginTop: 10
     },
     sectionBtn: {
         width: '100%',
-        height: 240,
+        height: 350,
         borderRadius: 16,
         backgroundColor: "#FFFFFF",
         ...SHADOWS.light,
@@ -117,9 +123,9 @@ const styles = StyleSheet.create({
     },
     loginBtnInner: {
         width: '100%',
-        height: 200,
+        height: 300,
         borderRadius: 16,
-        backgroundColor: '#204093',
+        backgroundColor: COLORS.brand.primary,
         justifyContent: 'center',
         alignItems: 'center',
         ...SHADOWS.light

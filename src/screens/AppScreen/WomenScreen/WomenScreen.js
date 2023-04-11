@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT } from '../../../constants';
 import MenuComponents from '../../../components/MenuComponents';
@@ -8,6 +8,7 @@ import BellIcon from '../../../../assets/images/BellIcon';
 import AddIcon from '../../../../assets/images/AddIcon';
 import ChildIcon from '../../../../assets/images/ChildIcon';
 import LogoIcon from '../../../../assets/images/LogoIcon';
+import ScreenTab from '../../../components/ScreenTab';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
@@ -53,7 +54,7 @@ const WomenScreen = ({ navigation }) => {
                 style={styles.registrationBtn}
                 onPress={onPress}
             >
-                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>New Registration</Text>
+                <Text style={{ fontFamily: FONT.Charlatan, fontSize: 22, color: COLORS.brand.black }}>New Registration</Text>
                 <SvgXml xml={AddIcon} height={20} width={20} />
             </TouchableOpacity>
         )
@@ -83,8 +84,8 @@ const WomenScreen = ({ navigation }) => {
                     title='Women'
                 />
                 <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                <View style={styles.menuBox}>
 
+                <View style={styles.menuBox}>
                     <BellSection
                         onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NotificationScreen' })}
                     />
@@ -96,6 +97,34 @@ const WomenScreen = ({ navigation }) => {
                     <StackSection
                         onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
                     />
+                </View>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: 30 }}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+                        <ScreenTab
+                            title="Garbha Sanskar"
+                            onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'LanguageScreen' })}
+                        />
+
+                        <ScreenTab
+                            title="Food & Fitness"
+                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                        />
+
+                        <ScreenTab
+                            title="Growth & Changes"
+                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                        />
+
+                        <ScreenTab
+                            title="List of Women's"
+                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                        />
+
+                    </ScrollView>
                 </View>
             </View>
         </SafeAreaView>
@@ -157,5 +186,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between'
-    }
+    },
+    sectionBox: {
+        width: windowWidth - 100,
+        alignSelf: 'center',
+        marginTop: 10,
+        marginBottom: 20,
+        borderWidth: 1
+    },
+    separator: {
+        width: 10,
+    },
 })

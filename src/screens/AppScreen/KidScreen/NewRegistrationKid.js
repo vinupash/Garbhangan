@@ -1,3 +1,18 @@
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
+
+// const NewRegistrationKid = () => {
+//     return (
+//         <View>
+//             <Text>NewRegistrationKid</Text>
+//         </View>
+//     )
+// }
+
+// export default NewRegistrationKid
+
+// const styles = StyleSheet.create({})
+
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated } from 'react-native';
 import { SvgXml } from 'react-native-svg';
@@ -12,10 +27,11 @@ import ForwardArrow from '../../../../assets/images/ForwardArrow';
 import { Input, InputTextArea } from '../../../components/CustomInput';
 import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import WomenIcon from '../../../../assets/images/WomenIcon';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-const NewRegistrationWomen = ({ navigation }) => {
+const NewRegistrationKid = ({ navigation }) => {
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [isWomenName, setWomenName] = useState('')
     const [isHusbandName, setHusbandName] = useState('')
@@ -124,7 +140,7 @@ const NewRegistrationWomen = ({ navigation }) => {
                 style={styles.backIcon}
                 onPress={onPress}
             >
-                <SvgXml xml={ChildIcon} height={40} width={40} />
+                <SvgXml xml={WomenIcon} height={40} width={40} />
             </TouchableOpacity>
         )
     }
@@ -150,7 +166,7 @@ const NewRegistrationWomen = ({ navigation }) => {
                 <SvgXml xml={iamges[indexImage]} width={132} height={73} />
                 <View style={styles.menuBox}>
                     <StackSection
-                        onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
+                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
                     />
                 </View>
             </View>
@@ -334,7 +350,7 @@ const NewRegistrationWomen = ({ navigation }) => {
     )
 }
 
-export default NewRegistrationWomen
+export default NewRegistrationKid
 
 const styles = StyleSheet.create({
     container: {
