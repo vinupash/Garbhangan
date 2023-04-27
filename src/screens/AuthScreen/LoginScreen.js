@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ImageBackground, StatusBar, SafeAreaView, Animated, ScrollView, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ImageBackground, StatusBar, SafeAreaView, Animated, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
 import { COLORS, FONT, SHADOWS, SIZES, assets } from '../../constants';
 import HeaderContent from '../../components/HeaderContent';
 import { Input } from '../../components/CustomInput';
@@ -10,33 +10,13 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const LoginScreen = ({ navigation }) => {
-    const { userLogin } = useContext(AuthContext);
-    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const [isLoading, setLoading] = useState(false)
+    const { UserLoginFun } = useContext(AuthContext)
     const [isUserId, setUserId] = useState('');
     const [isPassword, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isVisible, setIsVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            () => {
-                setKeyboardVisible(true); // or some other action
-            }
-        );
-        const keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            () => {
-                setKeyboardVisible(false); // or some other action
-            }
-        );
-
-        return () => {
-            keyboardDidHideListener.remove();
-            keyboardDidShowListener.remove();
-        };
-    }, []);
 
     const handleErrorMsg = () => {
         Animated.timing(
@@ -52,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
         }, 3000);
     };
 
-    const submitData = () => {
+    const submitData = async () => {
         if (!isUserId) {
             handleErrorMsg();
             setErrorMessage('Please enter valid user id')
@@ -63,7 +43,16 @@ const LoginScreen = ({ navigation }) => {
             setErrorMessage('Please enter valid password')
             return;
         }
-        userLogin()
+        setLoading(true)
+        const response = await UserLoginFun(isUserId, isPassword);
+        setLoading(false)
+        console.log('response Login--->', response);
+        if (response.isError == true) {
+            handleErrorMsg()
+            setErrorMessage(response.message)
+        } else {
+            console.log(response.isError);
+        }
     }
 
     return (
@@ -112,11 +101,28 @@ const LoginScreen = ({ navigation }) => {
                                 secureTextEntry={true}
                             />
                         </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            marginTop: 10,
+                            marginBottom: 5
+                        }}>
+                            <TouchableOpacity
+                                activeOpacity={0.98}
+                                style={styles.backIcon}
+                                onPress={submitData}
+                            >
+                                {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
                 </ScrollView>
-                {!isKeyboardVisible
+                {/* {!isKeyboardVisible
                     ?
                     <TouchableOpacity
+
                         style={styles.backIcon}
                         onPress={submitData}
                     >
@@ -124,7 +130,7 @@ const LoginScreen = ({ navigation }) => {
                     </TouchableOpacity>
                     :
                     null
-                }
+                } */}
 
             </ImageBackground>
         </SafeAreaView>
@@ -136,8 +142,8 @@ export default LoginScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         backgroundColor: COLORS.brand.background
     },
     pageTitle: {
@@ -159,9 +165,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#24A471',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 20,
-        right: 20
+        // position: 'absolute',
+        // bottom: 20,
+        // right: 20
     },
     snackbar: {
         backgroundColor: '#B71C1C',

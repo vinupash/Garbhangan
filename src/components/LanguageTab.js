@@ -6,6 +6,7 @@ const LanguageTab = ({ onPress, title }) => {
     return (
         <View style={styles.boxContent}>
             <TouchableOpacity
+                activeOpacity={0.98}
                 style={styles.sectionBtn}
                 onPress={onPress}
             >

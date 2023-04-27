@@ -5,6 +5,7 @@ import LanguageScreen from '../screens/AppScreen/WomenScreen/GarbhaSanskar/Langu
 import HindiScreen from '../screens/AppScreen/WomenScreen/GarbhaSanskar/Hindi/HindiScreen';
 import MarathiScreen from '../screens/AppScreen/WomenScreen/GarbhaSanskar/Marathi/MarathiScreen';
 import EnglishScreen from '../screens/AppScreen/WomenScreen/GarbhaSanskar/English/EnglishScreen';
+import VideoScreen from '../screens/AppScreen/VideoScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,14 @@ const GarbhaSanskarStack = () => {
             <Stack.Screen
                 name="EnglishScreen"
                 component={EnglishScreen}
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_right'
+                }}
+            />
+            <Stack.Screen
+                name="VideoScreen"
+                component={VideoScreen}
                 options={{
                     headerShown: false,
                     animation: 'slide_from_right'

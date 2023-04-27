@@ -19,9 +19,9 @@ import CameraIcon from '../../../../assets/images/CameraIcon';
 import RadioButtonBoxValue from '../../../components/RadioButtonBoxValue';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { registrationWomenApi } from '../../../constants/AllApiCall';
+import { registrationWomenApi, updateWomenProfileApi } from '../../../constants/AllApiCall';
 
-const NewRegistrationWomen = ({ navigation }) => {
+const WomenUpdateProfile = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [isFirstName, setFirstName] = useState('')
@@ -29,31 +29,33 @@ const NewRegistrationWomen = ({ navigation }) => {
     const [isLastdName, setLastdName] = useState('')
     const [isHeight, setHeight] = useState('')
     const [isWeight, setWeight] = useState('')
-    const [isPregnancySymptoms, setPregnancySymptoms] = useState('')
-    const [isMedicalHistory, setMedicalHistory] = useState('')
-    const [isPregnancyNote, setPregnancyNote] = useState('')
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedDate, setSelectedDate] = useState();
     const [userBirth, setUserBirth] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedPregnancyDate, setSelectedPregnancyDate] = useState();
-    // const [selectedCheckupDate, setSelectedCheckupDate] = useState();
-    const [userCheckupDate, setUserCheckupDate] = useState(false);
-    const [womanPregnancyDate, setWomanPregnancyDate] = useState(false);
-    const [womanCheckupDate, setWomanCheckupDate] = useState(false);
-    const [selectedCheckupDate, setSelectedCheckupDate] = useState();
-    // const [selectedCheckupDate, setSelectedCheckupDate] = useState();
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [image, setImage] = useState('');
     const [option, setOption] = useState(null);
     const isFocused = useIsFocused()
     const [isAccessToken, setAccessToken] = useState('')
     const [isAnganwadiId, setAnganwadiId] = useState('')
+    const [isWomenId, setWomenId] = useState('')
     const [isSuccessMessage, setSuccessMessage] = useState('');
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const [isActive, setActive] = useState(null)
+    const [shouldNavigate, setShouldNavigate] = useState(false);
+    // console.log(route.params.personDetails, isAnganwadiId);
 
     useEffect(() => {
         fetchDataAsync()
+        setFirstName(route.params.personDetails.firstName)
+        setMiddleName(route.params.personDetails.middleName)
+        setLastdName(route.params.personDetails.lastName)
+        setWeight(route.params.personDetails.weight)
+        setHeight(route.params.personDetails.height)
+        setSelectedDate(route.params.personDetails.userBirth)
+        setActive(route.params.personDetails.isActive)
+        setWomenId(route.params.personDetails.womenId)
     }, [isFocused])
 
     const fetchDataAsync = async () => {
@@ -72,16 +74,11 @@ const NewRegistrationWomen = ({ navigation }) => {
         // console.log('transformedAccessToken ListofWomens--->', transformedAccessToken.accessToken);
         // console.log('transformedRefreshToken ListofWomens--->', transformedRefreshToken.refreshToken);
         // console.log('transformedUserData ListofWomens--->', transformedUserData.anganwadiId);
+        setAccessToken("Bearer " + transformedAccessToken.accessToken)
         setAnganwadiId(transformedUserData.anganwadiId)
-        const accessToken = "Bearer " + transformedAccessToken.accessToken
-        setAccessToken(accessToken)
-        // // const refreshToken = "refreshToken= " + transformedRefreshToken.refreshToken
-        // setLoading(false)
-        // const responseWomenList = await womenListApi(accessToken)
-        // console.log('responseWomenList--->', responseWomenList.data);
-        // setWomenList(responseWomenList.data)
+        // const responseWomenUpdate = await updateWomenProfileApi(accessToken, womenId, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, image, isAnganwadiId, isActive)
+        // console.log('responseWomenUpdate--->', responseWomenUpdate);
     };
-
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
@@ -102,7 +99,9 @@ const NewRegistrationWomen = ({ navigation }) => {
         };
     }, []);
 
-    console.log('isKeyboardVisible', isKeyboardVisible);
+    // console.log('isKeyboardVisible', isKeyboardVisible);
+
+    // console.log(isAccessToken);
 
     const submitData = async () => {
         if (!isFirstName) {
@@ -135,56 +134,28 @@ const NewRegistrationWomen = ({ navigation }) => {
             setErrorMessage('Please enter weight')
             return
         }
-        if (selectedPregnancyDate == null) {
-            handleErrorMsg()
-            setErrorMessage('Please select pregnancy date')
-            return
-        }
         if (option == null) {
             handleErrorMsg()
             setErrorMessage('Please select specially abled')
             return
         }
-        if (selectedCheckupDate == null) {
-            handleErrorMsg()
-            setErrorMessage('Please select checkup date')
-            return
-        }
-        if (!isPregnancySymptoms) {
-            handleErrorMsg()
-            setErrorMessage('Please enter pregnancy symptoms')
-            return
-        }
-        if (!isMedicalHistory) {
-            handleErrorMsg()
-            setErrorMessage('Please enter medical history')
-            return
-        }
-        if (!isPregnancyNote) {
-            handleErrorMsg()
-            setErrorMessage('Please enter pregnancy note')
-            return
-        }
         setLoading(true)
-        const responseRegistrationWomen = await registrationWomenApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, selectedCheckupDate, selectedPregnancyDate, isAnganwadiId, isPregnancySymptoms, isMedicalHistory, isPregnancyNote, option)
+        const responseUpdateWomenProfil = await updateWomenProfileApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, isAnganwadiId, option, isWomenId, isActive)
         setLoading(false)
-        console.log('responseRegistrationWomen--->', responseRegistrationWomen);
-        if (responseRegistrationWomen.isError == false) {
+        console.log('responseUpdateWomenProfil--->', responseUpdateWomenProfil);
+        if (responseUpdateWomenProfil.isError == false) {
             handleSuccessMsg()
-            setSuccessMessage(responseRegistrationWomen.message);
-            setSelectedDate(responseRegistrationWomen.data.dateOfBirth)
-            setFirstName(responseRegistrationWomen.data.firstName)
-            setMiddleName(responseRegistrationWomen.data.middleName)
-            setLastdName(responseRegistrationWomen.data.lastName)
-            setHeight(responseRegistrationWomen.data.height)
-            setWeight(responseRegistrationWomen.data.weight)
+            setSuccessMessage(responseUpdateWomenProfil.message)
+            // setShouldNavigate(responseUpdateWomenProfil.isError)
         } else {
-            handleErrorMsg();
-            setErrorMessage(responseRegistrationWomen.data.message);
+            handleErrorMsg()
+            setErrorMessage(responseUpdateWomenProfil.message)
         }
+
+        // responseUpdateWomenProfil---> {"data": null, "error": null, "isError": false, "message": "Woman data updated successfully."}
     }
 
-    console.log('userBirth--->', selectedDate, selectedCheckupDate, selectedPregnancyDate, typeof image, option);
+    // console.log('userBirth--->', selectedDate, selectedCheckupDate, selectedPregnancyDate, typeof image, option);
 
     const [indexImage, setIndexImage] = useState(0);
     useEffect(() => {
@@ -227,12 +198,8 @@ const NewRegistrationWomen = ({ navigation }) => {
             setHeight('')
             setWeight('')
             setOption('')
-            setSelectedCheckupDate()
-            setSelectedPregnancyDate()
-            setPregnancySymptoms('')
-            setMedicalHistory('')
-            setPregnancyNote('')
-        }, 5000);
+            navigation.goBack()
+        }, 3000);
     };
 
     const showDatePicker = () => {
@@ -246,32 +213,6 @@ const NewRegistrationWomen = ({ navigation }) => {
     const handleConfirm = (date) => {
         setSelectedDate(date);
         hideDatePicker();
-    };
-
-    const showDatePickerPregnancy = () => {
-        setWomanPregnancyDate(true);
-    };
-
-    const hideDatePickerPregnancy = () => {
-        setWomanPregnancyDate(false);
-    };
-
-    const handleConfirmPregnancy = (date) => {
-        setSelectedPregnancyDate(date);
-        hideDatePickerPregnancy();
-    };
-
-    const showDatePickerCheckup = () => {
-        setUserCheckupDate(true);
-    };
-
-    const hideDatePickerCheckupDate = () => {
-        setUserCheckupDate(false);
-    };
-
-    const handleConfirmCheckup = (date) => {
-        setSelectedCheckupDate(date);
-        hideDatePickerCheckupDate();
     };
 
     const BackIconSecton = ({ onPress, title }) => {
@@ -399,11 +340,13 @@ const NewRegistrationWomen = ({ navigation }) => {
         { id: false, value: 'No' },
     ];
 
-    if (isLoading) {
-        return (
-            <ActivityIndicator size="large" color={COLORS.brand.primary} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
-        )
-    }
+    // console.log(op);
+
+    // if (isLoading) {
+    //     return (
+    //         <ActivityIndicator size="large" color={COLORS.brand.primary} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+    //     )
+    // }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -425,35 +368,10 @@ const NewRegistrationWomen = ({ navigation }) => {
             )}
 
             {isSuccessMessage !== '' && (
-                <Animated.View style={[styles.snackbarRegistar, { opacity: fadeAnim }]}>
-                    <View style={{ width: 80, height: 90, borderRadius: 5, backgroundColor: COLORS.brand.primary, marginRight: 10 }}></View>
-                    <View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={{ marginRight: 20 }}>
-                                <Text style={styles.label}>Name:</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isFirstName} {isLastdName}</Text>
-
-                                <Text style={styles.label}>Husband name:</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isMiddleName} {isLastdName}</Text>
-                            </View>
-
-                            <View style={{ marginRight: 20 }}>
-                                <Text style={styles.label}>Height(CM):</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isHeight} Centimeter</Text>
-
-                                <Text style={styles.label}>Weight(Kg):</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isWeight} Kilogram</Text>
-                            </View>
-
-                            <View >
-                                <Text style={styles.label}>D.O.B:</Text>
-                                <Text style={styles.snackbarTextRegistar}>{moment(selectedDate).format("DD-MM-YYYY")}</Text>
-
-                                <Text style={styles.label}></Text>
-                                <Text style={styles.snackbarTextRegistar}></Text>
-                            </View>
-                        </View>
-                    </View>
+                <Animated.View style={[styles.snackbar, {
+                    opacity: fadeAnim, backgroundColor: '#28a745'
+                }]}>
+                    <Text style={[styles.snackbarText, { color: '#FFFFFF' }]}>{isSuccessMessage}</Text>
                 </Animated.View>
             )}
 
@@ -461,7 +379,7 @@ const NewRegistrationWomen = ({ navigation }) => {
             <View style={styles.headerBox}>
                 <BackIconSecton
                     onPress={() => navigation.goBack()}
-                    title='Registration'
+                    title='Profile update'
                 />
                 <SvgXml xml={iamges[indexImage]} width={132} height={73} />
                 <View style={styles.menuBox}>
@@ -570,40 +488,6 @@ const NewRegistrationWomen = ({ navigation }) => {
 
                     <View style={{ marginTop: 10 }}>
                         <View style={{ paddingHorizontal: 5 }}>
-                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Date of pregnancy:</Text>
-
-                            <TouchableOpacity
-                                style={{
-                                    width: '100%',
-                                    height: 50,
-                                    backgroundColor: '#FFFFFF',
-                                    borderRadius: 10,
-                                    paddingHorizontal: 20,
-                                    ...SHADOWS.light,
-                                    marginRight: 5,
-                                    justifyContent: 'center'
-                                }}
-                                onPress={showDatePickerPregnancy}>
-                                <Text
-                                    style={[styles.inputStyleLeft, styles.borderPink, { color: selectedPregnancyDate ? '#000000' : '#727c95' }]} name="womanPregnancyDate" value={womanPregnancyDate}
-                                    placeholder="Date of Pregnancy"
-                                    placeholderTextColor={selectedPregnancyDate ? '#727c95' : "#000000"}
-                                    onChangeText={actualData => setWomanPregnancyDate(actualData)}
-                                >{`${selectedPregnancyDate ? moment(selectedPregnancyDate).format("DD-MM-YYYY") : "Date of Pregnancy"}`}</Text>
-
-                            </TouchableOpacity>
-
-                            <DateTimePickerModal
-                                isVisible={womanPregnancyDate}
-                                mode="date"
-                                onConfirm={handleConfirmPregnancy}
-                                onCancel={hideDatePickerPregnancy}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <View style={{ paddingHorizontal: 5 }}>
                             <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Specially abled:</Text>
 
                             <View
@@ -628,79 +512,6 @@ const NewRegistrationWomen = ({ navigation }) => {
                         </View>
                     </View>
 
-                    <View style={{ marginTop: 10 }}>
-                        <View style={{ paddingHorizontal: 5 }}>
-                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Checkup Date:</Text>
-
-                            <TouchableOpacity
-                                style={{
-                                    width: '100%',
-                                    height: 50,
-                                    backgroundColor: '#FFFFFF',
-                                    borderRadius: 10,
-                                    paddingHorizontal: 20,
-                                    ...SHADOWS.light,
-                                    marginRight: 5,
-                                    justifyContent: 'center'
-                                }}
-                                onPress={showDatePickerCheckup}>
-                                <Text
-                                    style={[styles.inputStyleLeft, styles.borderPink, { color: selectedCheckupDate ? '#000000' : '#727c95' }]} name="womanCheckupDate" value={womanCheckupDate}
-                                    placeholder="Checkup Date"
-                                    placeholderTextColor={selectedCheckupDate ? '#727c95' : "#000000"}
-                                    onChangeText={actualData => setWomanCheckupDate(actualData)}
-                                >{`${selectedCheckupDate ? moment(selectedCheckupDate).format("DD-MM-YYYY") : "Checkup Date"}`}</Text>
-
-                            </TouchableOpacity>
-
-                            <DateTimePickerModal
-                                isVisible={userCheckupDate}
-                                mode="date"
-                                onConfirm={handleConfirmCheckup}
-                                onCancel={hideDatePickerCheckupDate}
-
-                            />
-                        </View>
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <InputTextAreaBox
-                            label='Pregnancy symptoms'
-                            placeholder='Before period any pregnancy symptoms'
-                            value={isPregnancySymptoms}
-                            setValue={setPregnancySymptoms}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <InputTextAreaBox
-                            label='Medical history'
-                            placeholder='Enter medical history'
-                            value={isMedicalHistory}
-                            setValue={setMedicalHistory}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-                    <View style={{ marginTop: 10, }}>
-                        <InputTextAreaBox
-                            label='Pregnancy note'
-                            placeholder='Enter pregnancy note'
-                            value={isPregnancyNote}
-                            setValue={setPregnancyNote}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'flex-end',
@@ -720,7 +531,7 @@ const NewRegistrationWomen = ({ navigation }) => {
     )
 }
 
-export default NewRegistrationWomen
+export default WomenUpdateProfile
 
 const styles = StyleSheet.create({
     container: {

@@ -11,6 +11,7 @@ const HeaderContent = ({ onPress }) => {
     return (
         <View style={styles.headerBox}>
             <TouchableOpacity
+                activeOpacity={0.98}
                 style={styles.backIcon}
                 onPress={onPress}
             >
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 60 / 2,
         ...SHADOWS.light,
-        backgroundColor: '#FFF7EF',
+        backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center'
     }

@@ -1,15 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import { SHADOWS, FONT, SIZES, COLORS } from '../constants';
 
-const ScreenTab = ({ onPress, title }) => {
+const ScreenTab = ({ onPress, title, source }) => {
     return (
         <TouchableOpacity
+            activeOpacity={0.98}
             onPress={onPress}
             style={styles.cardBox}
         >
             <View style={styles.innerCardBox}>
-
+                <Image source={source}
+                    style={{
+                        width: '100%',
+                        height: 310,
+                        borderRadius: 16,
+                    }}
+                />
             </View>
             <View style={{
                 height: 30,

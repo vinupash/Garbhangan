@@ -5,6 +5,7 @@ import LogoIcon from '../../../../../assets/images/LogoIcon';
 import { COLORS, FONT, SHADOWS, SIZES, assets } from '../../../../constants';
 import LanguageTab from '../../../../components/LanguageTab';
 import BackIcon from '../../../../../assets/images/BackIcon';
+import { BackIconSecton } from '../../../../components/CustomButtons';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 const LanguageScreen = ({ navigation }) => {
@@ -29,20 +30,6 @@ const LanguageScreen = ({ navigation }) => {
         return () => clearInterval(interval);
     }, [indexImage]);
 
-    const BackIconSecton = ({ onPress, title }) => {
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
-                <TouchableOpacity
-                    style={styles.backIcon}
-                    onPress={onPress}
-                >
-                    <SvgXml xml={BackIcon} height={25} width={25} />
-                </TouchableOpacity>
-                <Text style={styles.titleText}>{title}</Text>
-            </View>
-        )
-    }
-
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar
@@ -53,11 +40,11 @@ const LanguageScreen = ({ navigation }) => {
                 <View style={styles.headerBox}>
                     <BackIconSecton
                         onPress={() => navigation.goBack()}
-                        title=''
+                        title='Language'
                     />
                     <SvgXml xml={iamges[indexImage]} width={132} height={73} />
                     <View style={styles.menuBox}>
-                        <Text style={styles.titleText}>Language</Text>
+                        {/* <Text style={styles.titleText}>Language</Text> */}
                     </View>
                 </View>
 
@@ -112,21 +99,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 10,
         height: 75,
-    },
-    backIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
-        ...SHADOWS.light,
-        backgroundColor: '#FFF7EF',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    titleText: {
-        fontFamily: FONT.Charlatan,
-        fontSize: SIZES.xxl,
-        color: COLORS.brand.black,
-        marginLeft: 20
     },
     menuBox: {
         width: 360,

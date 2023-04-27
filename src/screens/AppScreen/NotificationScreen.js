@@ -7,6 +7,7 @@ import ChildIcon from '../../../assets/images/ChildIcon';
 import { COLORS, SIZES, FONT, SHADOWS } from '../../constants';
 import WomenIcon from '../../../assets/images/WomenIcon';
 import Pointer from '../../../assets/images/Pointer';
+import { BackIconSecton, KidStackSection, WomenStackSection } from '../../components/CustomButtons';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
@@ -21,82 +22,47 @@ const NotificationScreen = ({ navigation }) => {
     return () => clearInterval(interval);
   }, [indexImage]);
 
-  const BackIconSecton = ({ onPress, title }) => {
-    return (
-      <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
-        <TouchableOpacity
-          style={styles.backIcon}
-          onPress={onPress}
-        >
-          <SvgXml xml={BackIcon} height={25} width={25} />
-        </TouchableOpacity>
-        <Text style={styles.titleText}>{title}</Text>
-      </View>
-    )
-  }
-
-  // const BellSection = ({ onPress }) => {
-  //     return (
-  //         <TouchableOpacity
-  //             style={styles.bellIcon}
-  //             onPress={onPress}
-  //         >
-  //             <SvgXml xml={BellIcon} height={25} width={25} />
-  //         </TouchableOpacity>
-  //     )
+  // const WomenStackSection = ({ onPress }) => {
+  //   return (
+  //     <TouchableOpacity
+  //       activeOpacity={0.98}
+  //       style={{
+  //         width: 50,
+  //         height: 50,
+  //         borderTopLeftRadius: 50 / 2,
+  //         borderBottomLeftRadius: 50 / 2,
+  //         ...SHADOWS.light,
+  //         backgroundColor: '#FFF7EF',
+  //         justifyContent: 'center',
+  //         alignItems: 'center'
+  //       }}
+  //       onPress={onPress}
+  //     >
+  //       <SvgXml xml={WomenIcon} height={40} width={40} />
+  //     </TouchableOpacity>
+  //   )
   // }
 
-  // const RegistrationSection = ({ onPress }) => {
-  //     return (
-  //         <TouchableOpacity
-  //             style={styles.registrationBtn}
-  //             onPress={onPress}
-  //         >
-  //             <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>New Registration</Text>
-  //             <SvgXml xml={AddIcon} height={20} width={20} />
-  //         </TouchableOpacity>
-  //     )
+  // const KidStackSection = ({ onPress }) => {
+  //   return (
+  //     <TouchableOpacity
+  //       activeOpacity={0.98}
+  //       style={{
+  //         width: 50,
+  //         height: 50,
+  //         borderTopRightRadius: 50 / 2,
+  //         borderBottomRightRadius: 50 / 2,
+  //         ...SHADOWS.light,
+  //         backgroundColor: '#FFF7EF',
+  //         justifyContent: 'center',
+  //         alignItems: 'center'
+  //       }}
+  //       onPress={onPress}
+  //     >
+  //       <SvgXml xml={ChildIcon} height={40} width={40} />
+  //     </TouchableOpacity>
+  //   )
   // }
-
-  const WomenStackSection = ({ onPress }) => {
-    return (
-      <TouchableOpacity
-        style={{
-          width: 50,
-          height: 50,
-          borderTopLeftRadius: 50 / 2,
-          borderBottomLeftRadius: 50 / 2,
-          ...SHADOWS.light,
-          backgroundColor: '#FFF7EF',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={onPress}
-      >
-        <SvgXml xml={WomenIcon} height={40} width={40} />
-      </TouchableOpacity>
-    )
-  }
-
-  const KidStackSection = ({ onPress }) => {
-    return (
-      <TouchableOpacity
-        style={{
-          width: 50,
-          height: 50,
-          borderTopRightRadius: 50 / 2,
-          borderBottomRightRadius: 50 / 2,
-          ...SHADOWS.light,
-          backgroundColor: '#FFF7EF',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={onPress}
-      >
-        <SvgXml xml={ChildIcon} height={40} width={40} />
-      </TouchableOpacity>
-    )
-  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -109,6 +75,7 @@ const NotificationScreen = ({ navigation }) => {
           onPress={() => navigation.goBack()}
           title='Notifications'
         />
+
         <SvgXml xml={iamges[indexImage]} width={132} height={73} />
         <View style={styles.menuBox}>
           <View style={{
@@ -195,21 +162,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
     height: 75,
-  },
-  backIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    ...SHADOWS.light,
-    backgroundColor: '#FFF7EF',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  titleText: {
-    fontFamily: FONT.Charlatan,
-    fontSize: SIZES.xxl,
-    color: COLORS.brand.black,
-    marginLeft: 20
   },
   menuBox: {
     width: 360,
