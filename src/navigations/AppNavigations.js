@@ -14,7 +14,7 @@ const AppNavigations = () => {
                 component={HomeScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -22,7 +22,7 @@ const AppNavigations = () => {
                 component={WomenNavigationsStack}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -30,7 +30,7 @@ const AppNavigations = () => {
                 component={KidNavigationsStack}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
         </Stack.Navigator>

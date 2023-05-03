@@ -201,61 +201,26 @@ export const InputTextAreaBox = ({
 }
 
 export const InputBoxSearch = ({
-    props,
-    name,
-    maxLength,
-    placeholder,
     value,
-    setValue,
-    keyboardType,
-    secureTextEntry = false,
-    placeholderTextColor,
-    autoCapitalize,
-    label,
-    onPress
+    onChangeText,
+    placeholder
 }) => {
     return (
-        <View
-            style={{
-                flexDirection: 'row'
-            }}>
-            <View style={{
-                flex: 1,
-                height: 50,
-                backgroundColor: '#FFFFFF',
-                borderRadius: 50 / 2,
-                paddingHorizontal: 20,
-                ...SHADOWS.light,
-                marginRight: 5,
-            }}>
-                <TextInput
-                    style={styles.inputStyle}
-                    placeholder={placeholder}
-                    placeholderTextColor='#727c95'
-                    onChangeText={(text) => setValue(text)}
-                    value={value}
-                    secureTextEntry={secureTextEntry}
-                    keyboardType={keyboardType}
-                    maxLength={maxLength}
-                    autoCapitalize={autoCapitalize}
-                />
-            </View>
-
-            <TouchableOpacity
-                style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 50 / 2,
-                    ...SHADOWS.light,
-                    backgroundColor: '#FFFFFF',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-                onPress={onPress}
-            >
-                <SvgXml xml={SearchIcon} height={25} width={25} />
-            </TouchableOpacity>
-
+        <View style={{
+            height: 50,
+            backgroundColor: '#FFFFFF',
+            borderRadius: 50 / 2,
+            paddingHorizontal: 20,
+            ...SHADOWS.light,
+            width: 300,
+        }}>
+            <TextInput
+                value={value}
+                onChangeText={onChangeText}
+                style={styles.inputStyle}
+                placeholder={placeholder}
+                placeholderTextColor='#727c95'
+            />
         </View>
     )
 }

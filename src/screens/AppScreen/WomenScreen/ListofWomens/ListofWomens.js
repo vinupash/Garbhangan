@@ -71,11 +71,11 @@ const ListofWomens = ({ navigation }) => {
 
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState([]);
-
+    // console.log('query', query);
     const handleSearch = (text) => {
         // const newData = isWomenList.filter(item => item.firstName.toLowerCase().includes(text.toLowerCase()));
         const newData = isWomenList.filter((item) => {
-            if (item.firstName.toLowerCase().includes(text.toLowerCase()) || item.middleName.toLowerCase().includes(text.toLowerCase())) {
+            if (item.firstName.toLowerCase().includes(text.toLowerCase()) || item.middleName.toLowerCase().includes(text.toLowerCase()) || item.lastName.toLowerCase().includes(text.toLowerCase()) || item.id.toString().startsWith(text.toLowerCase())) {
                 return item;
             }
         });
@@ -83,7 +83,7 @@ const ListofWomens = ({ navigation }) => {
         setFilteredData(newData);
     }
 
-    console.log(filteredData);
+    // console.log(filteredData);
 
     const AdmitCard = () => {
         return filteredData.map((AdmitCardData, i) => {
@@ -166,10 +166,10 @@ const ListofWomens = ({ navigation }) => {
                     />
                     <SvgXml xml={iamges[indexImage]} width={132} height={73} />
                     <View style={styles.menuBox}>
-                        <TextInput
+                        <InputBoxSearch
                             value={query}
                             onChangeText={handleSearch}
-                            placeholder="Search..."
+                            placeholder="Search by name or ID"
                         />
                     </View>
                 </View>

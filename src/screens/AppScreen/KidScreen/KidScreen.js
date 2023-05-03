@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { COLORS, SHADOWS, SIZES, FONT } from '../../../constants';
-import MenuComponents from '../../../components/MenuComponents';
-import BackIcon from '../../../../assets/images/BackIcon';
-import BellIcon from '../../../../assets/images/BellIcon';
-import AddIcon from '../../../../assets/images/AddIcon';
-import ChildIcon from '../../../../assets/images/ChildIcon';
+import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
 import LogoIcon from '../../../../assets/images/LogoIcon';
 import WomenIcon from '../../../../assets/images/WomenIcon';
+import ScreenTab from '../../../components/ScreenTab';
+import { BackIconSecton, BellSection, LogoutSection, RegistrationSection } from '../../../components/CustomButtons';
+import { AuthContext } from '../../../context/AuthContext';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
+import FastImage from 'react-native-fast-image';
+import welcomImage from './../../../../assets/images/welcome_img.gif'
 
 const KidScreen = ({ navigation }) => {
+    const { userLogout } = useContext(AuthContext)
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [indexImage, setIndexImage] = useState(0);
+    const [isPromoVideo, setPromoVideo] = React.useState(true);
+
+    useEffect(() => {
+        handlePopupVideo()
+    }, [])
+
+    const handlePopupVideo = () => {
+        setTimeout(() => {
+            setPromoVideo(false);
+        }, 7000);
+    };
     useEffect(() => {
         const interval = setInterval(() => {
             setIndexImage((indexImage + 1) % iamges.length);
@@ -22,43 +34,6 @@ const KidScreen = ({ navigation }) => {
 
         return () => clearInterval(interval);
     }, [indexImage]);
-
-    const BackIconSecton = ({ onPress, title }) => {
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
-                <TouchableOpacity
-                    style={styles.backIcon}
-                    onPress={onPress}
-                >
-                    <SvgXml xml={BackIcon} height={25} width={25} />
-                </TouchableOpacity>
-                <Text style={styles.titleText}>{title}</Text>
-            </View>
-        )
-    }
-
-    const BellSection = ({ onPress }) => {
-        return (
-            <TouchableOpacity
-                style={styles.bellIcon}
-                onPress={onPress}
-            >
-                <SvgXml xml={BellIcon} height={25} width={25} />
-            </TouchableOpacity>
-        )
-    }
-
-    const RegistrationSection = ({ onPress }) => {
-        return (
-            <TouchableOpacity
-                style={styles.registrationBtn}
-                onPress={onPress}
-            >
-                <Text style={{ fontFamily: FONT.Charlatan, fontSize: 22, color: COLORS.brand.black }}>New Registration</Text>
-                <SvgXml xml={AddIcon} height={20} width={20} />
-            </TouchableOpacity>
-        )
-    }
 
     const StackSection = ({ onPress }) => {
         return (
@@ -71,6 +46,7 @@ const KidScreen = ({ navigation }) => {
         )
     }
 
+
     const data = [
         { key: '1', value: 'Garbha Sanskar' },
         { key: '2', value: 'Food & Fitness' },
@@ -80,35 +56,65 @@ const KidScreen = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar
-                barStyle='light-content'
-                backgroundColor={COLORS.brand.primary}
-            />
-
-            <View style={styles.headerBox}>
-                <BackIconSecton
-                    onPress={() => navigation.goBack()}
-                    title="Kid's"
-                />
-                <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                <View style={styles.menuBox}>
-
-                    <BellSection
-                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NotificationScreen' })}
+        <>
+            {isPromoVideo ?
+                <View style={{ flex: 1 }}>
+                    <StatusBar
+                        barStyle='light-content'
+                        backgroundColor={COLORS.brand.primary}
                     />
-
-                    <RegistrationSection
-                        onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'NewRegistrationKid' })}
-                    />
-
-                    <StackSection
-                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
+                    <FastImage
+                        style={{ width: '100%', height: '100%' }}
+                        source={welcomImage}
+                        resizeMode={FastImage.resizeMode.cover}
                     />
                 </View>
-            </View>
+                :
+                <SafeAreaView style={styles.container}>
+                    <StatusBar
+                        barStyle='light-content'
+                        backgroundColor={COLORS.brand.primary}
+                    />
 
-            <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <View style={styles.headerBox}>
+                        <BackIconSecton
+                            onPress={() => navigation.goBack()}
+                            title="Kid's"
+                        />
+                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        <View style={styles.menuBox}>
+
+                            <BellSection
+                                onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NotificationScreen' })}
+                            />
+
+                            <RegistrationSection
+                                onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'NewRegistrationKid' })}
+                            />
+
+                            <StackSection
+                                onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
+                            />
+
+                            <LogoutSection
+                                onPress={userLogout}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                        <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: 30 }}>
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <ScreenTab
+                                    title="List of Kid's"
+                                    onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'ListofKids' })}
+                                    source={assets.child_img}
+                                />
+                            </ScrollView>
+                        </View>
+                    </View>
+
+                    {/* <View style={{ flex: 1, justifyContent: 'center' }}>
                 <View style={styles.sectionBox}>
                     <FlatList
                         data={data}
@@ -136,8 +142,12 @@ const KidScreen = ({ navigation }) => {
                         showsHorizontalScrollIndicator={false}
                     />
                 </View>
-            </View>
-        </SafeAreaView>
+            </View> */}
+                </SafeAreaView>
+
+            }
+        </>
+
     )
 }
 
@@ -161,7 +171,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50 / 2,
         ...SHADOWS.light,
-        backgroundColor: '#FFF7EF',
+        backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -170,7 +180,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50 / 2,
         ...SHADOWS.light,
-        backgroundColor: '#FFF7EF',
+        backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center'
     },

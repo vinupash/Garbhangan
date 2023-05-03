@@ -20,7 +20,7 @@ const WomenNavigations = () => {
                 component={WomenScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -28,7 +28,7 @@ const WomenNavigations = () => {
                 component={NotificationScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -36,7 +36,7 @@ const WomenNavigations = () => {
                 component={NewRegistrationWomen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -44,7 +44,7 @@ const WomenNavigations = () => {
                 component={GarbhaSanskarStack}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -52,7 +52,7 @@ const WomenNavigations = () => {
                 component={ListofWomens}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -60,7 +60,7 @@ const WomenNavigations = () => {
                 component={DetailsView}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -68,7 +68,7 @@ const WomenNavigations = () => {
                 component={WomenUpdateProfile}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -76,7 +76,7 @@ const WomenNavigations = () => {
                 component={WomenDoctorCheckup}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
         </Stack.Navigator>

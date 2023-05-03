@@ -16,16 +16,15 @@ const RadioButtonBoxValue = ({
     return (
         <View style={styles.selectSection}>
             {data.map((item, i) => {
-                console.log('userOption--->', userOption);
                 return (
                     <TouchableOpacity
                         key={i}
-                        onPress={() => selectHandler(item.value)}
+                        onPress={() => selectHandler(item.id)}
                         style={
-                            item.value === userOption ? styles.selected : styles.unselected
+                            item.id === userOption ? styles.selected : styles.unselected
                         }
                     >
-                        <Text style={item.value === userOption ? styles.selectValueTitle : styles.unselectValueTitle}>{item.value}</Text>
+                        <Text style={item.id === userOption ? styles.selectValueTitle : styles.unselectValueTitle}>{item.value}</Text>
                     </TouchableOpacity>
                 );
             })}

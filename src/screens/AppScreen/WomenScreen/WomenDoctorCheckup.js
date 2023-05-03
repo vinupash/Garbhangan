@@ -40,7 +40,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
     console.log(route.params.personDetails.womenId);
 
     var date = moment().format("YYYY-MM-DD")
-    console.log(date);
+    // console.log(date);
 
     useEffect(() => {
         fetchDataAsync()

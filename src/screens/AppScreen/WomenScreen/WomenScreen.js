@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, ImageBackground } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
 import MenuComponents from '../../../components/MenuComponents';
@@ -14,11 +14,29 @@ import { BackIconSecton, BellSection, LogoutSection, RegistrationSection, StackS
 import { AuthContext } from '../../../context/AuthContext';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
+import FastImage from 'react-native-fast-image';
+import welcomImage from './../../../../assets/images/welcome_img.gif'
+import PromoVideo from './../../../../assets/images/welcome_video.mp4'
+import Video from 'react-native-video';
 
 const WomenScreen = ({ navigation }) => {
     const { userLogout } = useContext(AuthContext)
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [indexImage, setIndexImage] = useState(0);
+    const [isPromoVideo, setPromoVideo] = React.useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        handlePopupVideo()
+    }, [])
+
+    const handlePopupVideo = () => {
+        setTimeout(() => {
+            setPromoVideo(false);
+            setIsPlaying(true);
+        }, 7000);
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {
             setIndexImage((indexImage + 1) % iamges.length);
@@ -28,71 +46,107 @@ const WomenScreen = ({ navigation }) => {
     }, [indexImage]);
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar
-                barStyle='light-content'
-                backgroundColor={COLORS.brand.primary}
-            />
-
-            <View style={styles.headerBox}>
-                <BackIconSecton
-                    onPress={() => navigation.goBack()}
-                    title='Women'
-                />
-
-                <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-
-                <View style={styles.menuBox}>
-                    <BellSection
-                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NotificationScreen' })}
+        <>
+            {isPromoVideo ?
+                <View style={{ flex: 1 }}>
+                    <StatusBar
+                        barStyle='light-content'
+                        backgroundColor={COLORS.brand.primary}
                     />
-
-                    <RegistrationSection
-                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NewRegistrationWomen' })}
-                    />
-
-                    <StackSection
-                        onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
-                    />
-
-                    <LogoutSection
-                        onPress={userLogout}
+                    {/* <FastImage
+                        style={{ width: '100%', height: '100%' }}
+                        source={welcomImage}
+                        resizeMode={FastImage.resizeMode.cover}
+                    /> */}
+                    <Video
+                        source={PromoVideo}
+                        resizeMode="cover"
+                        style={{ width: '100%', height: '100%' }}
+                        play={isPlaying}
+                        muted={true}
+                        paused={false}
+                        repeat={false}
+                        playInBackground={false}
+                        playWhenInactive={false}
                     />
                 </View>
-            </View>
 
-            <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
-                <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: 30 }}>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                :
+                <SafeAreaView style={styles.container}>
+                    <StatusBar
+                        barStyle='light-content'
+                        backgroundColor={COLORS.brand.primary}
+                    />
 
-                        <ScreenTab
-                            title="Garbha Sanskar"
-                            onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'LanguageScreen' })}
-                            source={assets.women_img}
-                        />
+                    <ImageBackground
+                        source={assets.ParkElement}
+                        style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+                    >
 
-                        <ScreenTab
-                            title="Food & Fitness"
-                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
-                            source={assets.women_img}
-                        />
+                        <View style={styles.headerBox}>
+                            <BackIconSecton
+                                onPress={() => navigation.goBack()}
+                                title='Women'
+                            />
 
-                        <ScreenTab
-                            title="Growth & Changes"
-                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
-                            source={assets.women_img}
-                        />
+                            <SvgXml xml={iamges[indexImage]} width={132} height={73} />
 
-                        <ScreenTab
-                            title="List of Women's"
-                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'ListofWomens' })}
-                            source={assets.women_img}
-                        />
+                            <View style={styles.menuBox}>
+                                <BellSection
+                                    onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NotificationScreen' })}
+                                />
 
-                    </ScrollView>
-                </View>
-            </View>
-        </SafeAreaView>
+                                <RegistrationSection
+                                    onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NewRegistrationWomen' })}
+                                />
+
+                                <StackSection
+                                    onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
+                                />
+
+                                <LogoutSection
+                                    onPress={userLogout}
+                                />
+                            </View>
+                        </View>
+
+                        <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                            <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: 30 }}>
+                                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+                                    <ScreenTab
+                                        title="Garbha Sanskar"
+                                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'LanguageScreen' })}
+                                        source={assets.women_img}
+                                    />
+
+                                    <ScreenTab
+                                        title="Food & Fitness"
+                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                                        source={assets.women_img}
+                                    />
+
+                                    <ScreenTab
+                                        title="Growth & Changes"
+                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                                        source={assets.women_img}
+                                    />
+
+                                    <ScreenTab
+                                        title="List of Women's"
+                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'ListofWomens' })}
+                                        source={assets.women_img}
+                                    />
+
+                                </ScrollView>
+                            </View>
+                        </View>
+
+                    </ImageBackground>
+                </SafeAreaView>
+            }
+        </>
+
     )
 }
 

@@ -4,7 +4,7 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 import Video from 'react-native-video';
 const VideoPlayer = () => {
-    console.log(windowHeight - 180);
+    // console.log(windowHeight - 180);
     return (
         <View>
             <Video

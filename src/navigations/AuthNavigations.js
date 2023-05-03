@@ -12,7 +12,7 @@ const AuthNavigations = () => {
     React.useEffect(() => {
         setInterval(() => {
             setSplashScreen(false)
-        }, 4000);
+        }, 7000);
     }, [])
 
     return (
@@ -32,7 +32,7 @@ const AuthNavigations = () => {
                 component={WelcomeScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -40,7 +40,7 @@ const AuthNavigations = () => {
                 component={LanguageScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -48,7 +48,7 @@ const AuthNavigations = () => {
                 component={LoginScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
         </Stack.Navigator>
