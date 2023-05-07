@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, TouchableOpacity } from 'react-native';
-import { COLORS, FONT, SHADOWS, SIZES } from '../../constants';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { COLORS, FONT, SHADOWS, SIZES, assets } from '../../constants';
 import { SvgXml } from 'react-native-svg';
 import Logo from '../../../assets/images/Logo';
 import LogoIcon from '../../../assets/images/LogoIcon';
@@ -9,10 +9,13 @@ import FastImage from 'react-native-fast-image';
 import LogoGif from '../../../assets/images/Logo.gif'
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
+import BoardEng from '../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../assets/images/Board-Mar.png'
 
 const WelcomeScreen = ({ navigation }) => {
-    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां के छाया की...'];
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [index, setIndex] = useState(0);
     const [indexImage, setIndexImage] = useState(0);
 
@@ -38,19 +41,18 @@ const WelcomeScreen = ({ navigation }) => {
                 barStyle='light-content'
                 backgroundColor={COLORS.brand.primary}
             />
-            <View style={styles.loginBox}>
-                <View style={{ width: '45%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <SvgXml xml={Logo} width={268} height={418} />
-                    {/* <FastImage
-                        source={{ uri: 'https://media.giphy.com/media/l3vR9aA1jbkAp7i8E/giphy.gif' }}
-                        style={{ width: 200, height: 200 }}
-                    /> */}
-                </View>
-                <View style={{ width: '55%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    {/* <SvgXml xml={LogoIcon} width={202} height={111} /> */}
-                    <SvgXml xml={iamges[indexImage]} width={202} height={111} />
-                    <Text style={styles.subTitle}>{texts[index]}</Text>
 
+            <ImageBackground
+                source={assets.BackgroundLanguage}
+                style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+            >
+                <View style={{ position: 'absolute', left: 50, top: 20 }}>
+                    <SvgXml xml={Logo} width={68} height={100} />
+                </View>
+
+                <Image source={iamges[indexImage]} style={{ width: 260, height: 120, alignSelf: 'center' }} />
+
+                <View style={{ width: 300, justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 20, right: 50 }}>
                     <TouchableOpacity
                         activeOpacity={0.98}
                         style={styles.loginBtn}
@@ -61,13 +63,40 @@ const WelcomeScreen = ({ navigation }) => {
                             <Text style={styles.btnText}>Log In</Text>
                         </View>
                     </TouchableOpacity>
+
                     <View style={styles.textBox}>
                         <Text style={[styles.boxTitle, { marginRight: 8 }]}>MADE WITH</Text>
                         <SvgXml xml={HartIcon} width={30} height={20} />
                         <Text style={[styles.boxTitle, { marginLeft: 8 }]}>BY REVOLT CREATIONS</Text>
                     </View>
                 </View>
-            </View>
+                {/* <Image source={BoardEng} style={{ width: 250, height: 150, alignSelf: 'center' }} /> */}
+                {/* <SvgXml xml={iamges[indexImage]} width={202} height={111} /> */}
+                {/* <Text style={styles.subTitle}>{texts[index]}</Text> */}
+                {/* <View style={styles.loginBox}>
+
+                    <View style={{ width: '55%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <SvgXml xml={iamges[indexImage]} width={202} height={111} />
+                        <Text style={styles.subTitle}>{texts[index]}</Text>
+
+                        <TouchableOpacity
+                            activeOpacity={0.98}
+                            style={styles.loginBtn}
+                            onPress={() => navigation.navigate('LoginScreen')}
+                        >
+                            <View style={styles.loginBtnInner}>
+
+                                <Text style={styles.btnText}>Log In</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.textBox}>
+                            <Text style={[styles.boxTitle, { marginRight: 8 }]}>MADE WITH</Text>
+                            <SvgXml xml={HartIcon} width={30} height={20} />
+                            <Text style={[styles.boxTitle, { marginLeft: 8 }]}>BY REVOLT CREATIONS</Text>
+                        </View>
+                    </View>
+                </View> */}
+            </ImageBackground>
         </SafeAreaView>
     )
 }
@@ -86,23 +115,23 @@ const styles = StyleSheet.create({
         height: windowHeight
     },
     loginBtn: {
-        width: 297,
-        height: 106,
-        borderRadius: 22,
+        width: 150,
+        height: 50,
+        borderRadius: 18,
         backgroundColor: '#102251',
         marginTop: 120,
-        marginBottom: 20,
+        marginBottom: 10,
         ...SHADOWS.light,
     },
     btnText: {
         fontFamily: FONT.MartelSansBold,
-        fontSize: 32,
+        fontSize: 14,
         color: '#FFFFFF'
     },
     loginBtnInner: {
-        width: 297,
-        height: 95,
-        borderRadius: 22,
+        width: 150,
+        height: 45,
+        borderRadius: 18,
         backgroundColor: '#204093',
         justifyContent: 'center',
         alignItems: 'center'

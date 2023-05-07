@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, ActivityIndicator, Image, TextInput } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, ActivityIndicator, Image, TextInput, ImageBackground, Animated } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, FONT, SIZES, assets } from '../../../../constants';
 import { BackIconSecton } from '../../../../components/CustomButtons';
@@ -15,14 +15,14 @@ import { InputBoxSearch } from '../../../../components/CustomInput';
 
 const ListofWomens = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
-    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां के छाया की...'];
+    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [index, setIndex] = useState(0);
     const [indexImage, setIndexImage] = useState(0);
     const [isWomenList, setWomenList] = useState([])
-    const isFocused = useIsFocused()
-    const [isSearchName, setSearchName] = useState('')
-    const BASE_URL = 'http://51.77.105.23:81/';
+    const isFocused = useIsFocused();
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -44,6 +44,20 @@ const ListofWomens = ({ navigation }) => {
         fetchDataAsync()
     }, [isFocused])
 
+    const handleErrorMsg = () => {
+        Animated.timing(
+            fadeAnim,
+            {
+                toValue: isVisible ? 0 : 1,
+                duration: 500,
+                useNativeDriver: true
+            }
+        ).start();
+        setTimeout(() => {
+            setErrorMessage('');
+        }, 3000);
+    };
+
     const fetchDataAsync = async () => {
         setLoading(true)
         const userData = await AsyncStorage.getItem('userData');
@@ -62,9 +76,15 @@ const ListofWomens = ({ navigation }) => {
         const anganwadiId = transformedUserData.anganwadiId
         const accessToken = "Bearer " + transformedAccessToken.accessToken
         // const refreshToken = "refreshToken= " + transformedRefreshToken.refreshToken
-        setLoading(false)
         const responseWomenList = await womenListApi(accessToken, anganwadiId)
+        setLoading(false)
         // console.log('responseWomenList--->', responseWomenList);
+        if (responseWomenList.IsError == true) {
+            handleErrorMsg()
+            setErrorMessage(responseWomenList.Message);
+            return
+        }
+        responseWomenList.data.sort((a, b) => b.id - a.id);
         setWomenList(responseWomenList.data)
         setFilteredData(responseWomenList.data)
     };
@@ -73,14 +93,21 @@ const ListofWomens = ({ navigation }) => {
     const [filteredData, setFilteredData] = useState([]);
     // console.log('query', query);
     const handleSearch = (text) => {
-        // const newData = isWomenList.filter(item => item.firstName.toLowerCase().includes(text.toLowerCase()));
+        // const newData = isWomenList.filter(item => item.firstName.toLowerCase().includes(text.toLowerCase()) || item.firstName.split(' ').reverse().join(', ').includes(text.toLowerCase()));
+        // const newData = isWomenList.filter((item) => {
+        //     if (item.firstName.toLowerCase().includes(text.toLowerCase()) || item.middleName.toLowerCase().includes(text.toLowerCase()) || item.lastName.toLowerCase().includes(text.toLowerCase()) || item.id.toString().startsWith(text.toLowerCase())) {
+        //         return item;
+        //     }
+        // });
         const newData = isWomenList.filter((item) => {
-            if (item.firstName.toLowerCase().includes(text.toLowerCase()) || item.middleName.toLowerCase().includes(text.toLowerCase()) || item.lastName.toLowerCase().includes(text.toLowerCase()) || item.id.toString().startsWith(text.toLowerCase())) {
+            if (item.firstName.toLowerCase().includes(text.toLowerCase()) || item.lastName.toLowerCase().includes(text.toLowerCase()) || item.id.toString().startsWith(text.toLowerCase())) {
                 return item;
             }
         });
+        // console.log('newData', newData);
         setQuery(text);
         setFilteredData(newData);
+        // user.name.split(' ').reverse().join(', ').includes(searchTerm);
     }
 
     // console.log(filteredData);
@@ -99,19 +126,43 @@ const ListofWomens = ({ navigation }) => {
                                     womenId: AdmitCardData.id,
                                     firstName: AdmitCardData.firstName,
                                     lastName: AdmitCardData.lastName,
+                                    isProfileImage: AdmitCardData.profilePicture,
                                 },
                             }
                         )}
                     >
                         <View style={[styles.profileSection]}>
-                            <Image
+                            {
+                                AdmitCardData.profilePicture == null ?
+                                    <Image
+                                        source={assets.women_img}
+                                        style={{
+                                            width: 80,
+                                            height: 100,
+                                            borderRadius: 5,
+                                        }}
+                                    />
+                                    :
+                                    <Image
+                                        // source={{
+                                        //     uri: AdmitCardData.profilePicture,
+                                        // }}
+                                        source={{ uri: `data:image/png;base64,${AdmitCardData.profilePicture}` }}
+                                        style={{
+                                            width: 80,
+                                            height: 100,
+                                            borderRadius: 5,
+                                        }}
+                                    />
+                            }
+                            {/* <Image
                                 source={assets.women_img}
                                 style={{
                                     width: 80,
                                     height: 100,
                                     borderRadius: 5,
                                 }}
-                            />
+                            /> */}
                         </View>
                         <View style={{ flex: 1, marginLeft: 5, height: '100%' }}>
                             <Text style={[styles.labelText]}>Name:</Text>
@@ -153,37 +204,49 @@ const ListofWomens = ({ navigation }) => {
                 barStyle='light-content'
                 backgroundColor={COLORS.brand.primary}
             />
+            {errorMessage !== '' && (
+                <Animated.View style={[styles.snackbar, {
+                    opacity: fadeAnim
+                }]}>
+                    <Text style={styles.snackbarText}>{errorMessage}</Text>
+                </Animated.View>
+            )}
             {isLoading ?
                 <View style={styles.loading}>
                     <ActivityIndicator size='large' color={COLORS.brand.primary} />
                 </View>
                 : null}
-            <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
-                <View style={styles.headerBox}>
-                    <BackIconSecton
-                        onPress={() => navigation.goBack()}
-                        title="List of Women's"
-                    />
-                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                    <View style={styles.menuBox}>
-                        <InputBoxSearch
-                            value={query}
-                            onChangeText={handleSearch}
-                            placeholder="Search by name or ID"
+            <ImageBackground
+                source={assets.ParkElement}
+                style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+            >
+                <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
+                    <View style={styles.headerBox}>
+                        <BackIconSecton
+                            onPress={() => navigation.goBack()}
+                            title="List of Women's"
                         />
+                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        <View style={styles.menuBox}>
+                            <InputBoxSearch
+                                value={query}
+                                onChangeText={handleSearch}
+                                placeholder="Search by name or ID"
+                            />
+                        </View>
                     </View>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{ width: '100%', height: '100%' }}
+                    >
+                        <View style={styles.cardSection}>
+                            {/* {!isWomenList ? <Text style={{ fontFamily: FONT.Charlatan, fontSize: SIZES.extraLarge, textAlign: 'center', width: '100%', marginTop: 50, color: '#B71C1C' }}>No record found</Text> : <>{AdmitCard()}</>} */}
+                            {filteredData.length === 0 ? <Text style={{ fontFamily: FONT.Charlatan, fontSize: SIZES.extraLarge, textAlign: 'center', width: '100%', marginTop: 50, color: '#B71C1C' }}>No record found</Text> : <>{AdmitCard()}</>}
+                        </View>
+                        {/* {filteredData.length === 0 ? <Text>Cool</Text> : <Text>Not cool</Text>} */}
+                    </ScrollView>
                 </View>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    style={{ width: '100%', height: '100%' }}
-                >
-                    <View style={styles.cardSection}>
-                        {/* {!isWomenList ? <Text style={{ fontFamily: FONT.Charlatan, fontSize: SIZES.extraLarge, textAlign: 'center', width: '100%', marginTop: 50, color: '#B71C1C' }}>No record found</Text> : <>{AdmitCard()}</>} */}
-                        {filteredData.length === 0 ? <Text style={{ fontFamily: FONT.Charlatan, fontSize: SIZES.extraLarge, textAlign: 'center', width: '100%', marginTop: 50, color: '#B71C1C' }}>No record found</Text> : <>{AdmitCard()}</>}
-                    </View>
-                    {/* {filteredData.length === 0 ? <Text>Cool</Text> : <Text>Not cool</Text>} */}
-                </ScrollView>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
@@ -249,7 +312,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: FONT.MartelSansRegular,
         fontSize: SIZES.small,
-        lineHeight: 16,
+        lineHeight: 18,
         color: COLORS.brand.black
     },
     loading: {
@@ -262,5 +325,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 1,
         backgroundColor: 'rgba(52, 52, 52, 0.8)',
-    }
+    },
+    snackbar: {
+        backgroundColor: '#B71C1C',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1,
+        paddingVertical: 10,
+        justifyContent: 'center'
+    },
+    snackbarText: {
+        color: '#FFFFFF',
+        fontSize: SIZES.medium,
+        fontFamily: FONT.MartelSansRegular,
+        textAlign: 'center'
+    },
 })

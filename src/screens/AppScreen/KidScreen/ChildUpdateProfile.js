@@ -1,18 +1,3 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-
-// const ChildUpdateProfile = () => {
-//     return (
-//         <View>
-//             <Text>ChildUpdateProfile</Text>
-//         </View>
-//     )
-// }
-
-// export default ChildUpdateProfile
-
-// const styles = StyleSheet.create({})
-
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard } from 'react-native';
 import { SvgXml } from 'react-native-svg';
@@ -51,6 +36,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
     const [isVisible, setIsVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [image, setImage] = useState('');
+    const [isFileData, setFileData] = useState(null);
     const [option, setOption] = useState(null);
     const isFocused = useIsFocused()
     const [isAccessToken, setAccessToken] = useState('')
@@ -60,7 +46,9 @@ const ChildUpdateProfile = ({ navigation, route }) => {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const [isActive, setActive] = useState(null)
     const [optionGender, setOptionGender] = useState(null);
-    console.log(route.params.personDetails);
+    const [isProfileImage, setProfileImage] = useState('')
+    const [editProfileImage, setEditProfileImage] = useState(false)
+    // console.log(route.params.personDetails);
 
     useEffect(() => {
         fetchDataAsync()
@@ -72,6 +60,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
         setSelectedDate(route.params.personDetails.userBirth)
         setActive(route.params.personDetails.isActive)
         setChildId(route.params.personDetails.childId)
+        setProfileImage(route.params.personDetails.isProfileImage)
     }, [isFocused])
 
     const fetchDataAsync = async () => {
@@ -150,24 +139,20 @@ const ChildUpdateProfile = ({ navigation, route }) => {
             setErrorMessage('Please select specially abled')
             return
         }
-
+        const selectUserBirthDate = moment(selectedDate).format("YYYY-MM-DD HH:mm:ss.SSS");
         setLoading(true)
-        const responseUpdateChildProfile = await updateChildProfileApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, isAnganwadiId, option, optionGender, isChildId, isActive)
+        const responseUpdateChildProfile = await updateChildProfileApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectUserBirthDate, isFileData, image, option, isAnganwadiId, optionGender, isChildId)
         setLoading(false)
-        console.log('responseUpdateChildProfile--->', responseUpdateChildProfile);
+        console.log('responseUpdateChildProfile--->', responseUpdateChildProfile.message);
         if (responseUpdateChildProfile.isError == false) {
             handleSuccessMsg()
             setSuccessMessage(responseUpdateChildProfile.message)
-            // setShouldNavigate(responseUpdateChildProfile.isError)
+            // setShouldNavigate(json.isError)
         } else {
             handleErrorMsg()
             setErrorMessage(responseUpdateChildProfile.message)
         }
-
-        // responseUpdateWomenProfil---> {"data": null, "error": null, "isError": false, "message": "Woman data updated successfully."}
     }
-
-    // console.log('userBirth--->', selectedDate, selectedCheckupDate, selectedPregnancyDate, typeof image, option);
 
     const [indexImage, setIndexImage] = useState(0);
     useEffect(() => {
@@ -234,6 +219,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
                 <TouchableOpacity
                     style={styles.backIcon}
                     onPress={onPress}
+                    activeOpacity={0.98}
                 >
                     <SvgXml xml={BackIcon} height={25} width={25} />
                 </TouchableOpacity>
@@ -270,6 +256,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
             <TouchableOpacity
                 style={styles.backIcon}
                 onPress={onPress}
+                activeOpacity={0.98}
             >
                 <SvgXml xml={WomenIcon} height={40} width={40} />
             </TouchableOpacity>
@@ -277,6 +264,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
     }
 
     const captureImage = async (type) => {
+        setEditProfileImage(!editProfileImage)
         ImagePicker.openCamera({
             mediaType: type,
             width: 250,
@@ -284,20 +272,22 @@ const ChildUpdateProfile = ({ navigation, route }) => {
             cropping: true,
             quality: 0.5,
         }).then(image => {
-            console.log('selected media ==', image);
-            console.log('Image type:', image.mime);
-            console.log('Image path:', image.path);
+            // setEditProfileImage(!editProfileImage)
+            // console.log('selected media ==', image);
+            // console.log('Image type:', image.mime);
+            // console.log('Image path:', image.path);
             // const fileName = image.path.split('/').pop() || `image.${image.mime.split('/')[1]}`;
             const fileName = image.path.split('/').pop();
-            console.log('Image name:', fileName);
+            // console.log('Image name:', fileName);
 
             const img = {
                 uri: image.path,
                 name: fileName,
                 type: image.mime
             }
-            console.log('img:', img);
+            // console.log('img:', img);
             // const fileName = image.path.split('/').p
+            setFileData(img)
             setImage(image.path)
             // ImageUploadTableApi(isWaiter_id, isStore_id, img, image.path)
         })
@@ -306,6 +296,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
                 alert(er);
                 if (er.code === 'E_PICKER_CANCELLED') {
                     // here the solution
+                    setEditProfileImage(editProfileImage)
                     return false;
                 }
             });
@@ -331,8 +322,21 @@ const ChildUpdateProfile = ({ navigation, route }) => {
                     borderRadius: 5,
                     ...SHADOWS.light
                 }}>
-                    {
-                        image && (<Image source={{ uri: image }} style={{ width: 250, height: 350, borderRadius: 5, }} />)
+                    {editProfileImage ?
+                        <>
+                            {
+                                image && (<Image source={{ uri: image }} style={{ width: 250, height: 350, borderRadius: 5, }} />)
+                            }
+                        </>
+                        :
+                        <Image
+                            source={{ uri: `data:image/png;base64,${isProfileImage}` }}
+                            style={{
+                                width: 250,
+                                height: 350,
+                                borderRadius: 5
+                            }}
+                        />
                     }
                 </View>
 
@@ -341,6 +345,7 @@ const ChildUpdateProfile = ({ navigation, route }) => {
                         alignSelf: "center",
                     }]}
                     onPress={() => { captureImage('photo') }}
+                    activeOpacity={0.98}
                 >
                     <SvgXml xml={CameraIcon} height={30} width={30} />
                 </TouchableOpacity>

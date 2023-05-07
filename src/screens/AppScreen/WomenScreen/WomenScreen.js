@@ -17,7 +17,12 @@ const windowWidth = Dimensions.get('window').width;
 import FastImage from 'react-native-fast-image';
 import welcomImage from './../../../../assets/images/welcome_img.gif'
 import PromoVideo from './../../../../assets/images/welcome_video.mp4'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Video from 'react-native-video';
+import '../../../Language/i18n';
+import { useTranslation } from 'react-i18next';
+import CloseIcon from '../../../../assets/images/CloseIcon';
+import PlusIcon from '../../../../assets/images/PlusIcon';
 
 const WomenScreen = ({ navigation }) => {
     const { userLogout } = useContext(AuthContext)
@@ -25,6 +30,47 @@ const WomenScreen = ({ navigation }) => {
     const [indexImage, setIndexImage] = useState(0);
     const [isPromoVideo, setPromoVideo] = React.useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
+    const { t, i18n } = useTranslation();
+    const [currentLanguage, setLanguage] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const fetchDataAsync = async () => {
+            // setLoading(true)
+            const currentLanguage = await AsyncStorage.getItem('currentLanguage');
+            if (!currentLanguage) {
+                // Alert.alert("Unable to fetch mobile number, Login again");
+                return;
+            }
+            // setLoading(false)
+            const transformedLanguage = JSON.parse(currentLanguage);
+            // console.log('transformedLanguage--->', transformedLanguage.currentLanguage);
+            setLanguage(transformedLanguage.currentLanguage)
+        };
+        fetchDataAsync()
+    }, [])
+
+
+    const changeLanguage = value => {
+        i18n
+            .changeLanguage(value)
+            .then(() => {
+                setLanguage(value);
+                AsyncStorage.setItem(
+                    "currentLanguage",
+                    JSON.stringify({
+                        currentLanguageStatusUser: 1,
+                        currentLanguage: value,
+                        // refreshToken: json.data.refreshToken,
+                    })
+                );
+            })
+            .catch(err => console.log(err));
+    };
+
+    const handlePress = () => {
+        setIsVisible(!isVisible);
+    };
 
     useEffect(() => {
         handlePopupVideo()
@@ -44,6 +90,16 @@ const WomenScreen = ({ navigation }) => {
 
         return () => clearInterval(interval);
     }, [indexImage]);
+
+    const FBA = ({
+        title,
+        onPress,
+    }) => {
+        return (
+            <TouchableOpacity activeOpacity={0.98}
+                style={styles.FBA} onPress={onPress}><Text style={styles.FBA_text}>{title}</Text></TouchableOpacity>
+        )
+    }
 
     return (
         <>
@@ -78,6 +134,18 @@ const WomenScreen = ({ navigation }) => {
                         backgroundColor={COLORS.brand.primary}
                     />
 
+                    {isVisible && <View style={{ width: 50, position: 'absolute', bottom: 80, right: 25, zIndex: 100, alignItems: 'center', flexDirection: 'column' }}>
+
+                        <FBA onPress={() => changeLanguage('ma')} title='मराठी' />
+                        <FBA onPress={() => changeLanguage('hi')} title='हिंदी' />
+                        <FBA onPress={() => changeLanguage('en')} title='ENG' />
+
+                    </View>}
+
+                    <TouchableOpacity activeOpacity={0.98} style={styles.FAB_button} onPress={handlePress}>
+                        {isVisible ? <SvgXml xml={CloseIcon} height={25} width={25} /> : <SvgXml xml={PlusIcon} height={20} width={20} />}
+                    </TouchableOpacity>
+
                     <ImageBackground
                         source={assets.ParkElement}
                         style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
@@ -86,7 +154,7 @@ const WomenScreen = ({ navigation }) => {
                         <View style={styles.headerBox}>
                             <BackIconSecton
                                 onPress={() => navigation.goBack()}
-                                title='Women'
+                                title={t('Women')}
                             />
 
                             <SvgXml xml={iamges[indexImage]} width={132} height={73} />
@@ -97,6 +165,7 @@ const WomenScreen = ({ navigation }) => {
                                 />
 
                                 <RegistrationSection
+                                    title={t("New Registration")}
                                     onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'NewRegistrationWomen' })}
                                 />
 
@@ -115,25 +184,25 @@ const WomenScreen = ({ navigation }) => {
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
                                     <ScreenTab
-                                        title="Garbha Sanskar"
-                                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'LanguageScreen' })}
-                                        source={assets.women_img}
+                                        title={t('Garbha Sanskar')}
+                                        onPress={() => navigation.navigate('GarbhaSanskarStack')}
+                                        source={assets.GarbhSanskar}
                                     />
 
                                     <ScreenTab
-                                        title="Food & Fitness"
+                                        title={t("Food & Fitness")}
                                         onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
-                                        source={assets.women_img}
+                                        source={assets.FitnessImg}
                                     />
 
                                     <ScreenTab
-                                        title="Growth & Changes"
+                                        title={t("Growth & Changes")}
                                         onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
-                                        source={assets.women_img}
+                                        source={assets.GrowthImg}
                                     />
 
                                     <ScreenTab
-                                        title="List of Women's"
+                                        title={t("List of Women's")}
                                         onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'ListofWomens' })}
                                         source={assets.women_img}
                                     />
@@ -187,4 +256,32 @@ const styles = StyleSheet.create({
     separator: {
         width: 10,
     },
+    FBA: {
+        width: 40,
+        height: 40,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 40 / 2,
+        marginBottom: 5,
+        ...SHADOWS.light,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    FBA_text: {
+        color: COLORS.brand.primary,
+        fontSize: SIZES.small,
+        fontFamily: FONT.MartelSansRegular
+    },
+    FAB_button: {
+        width: 50,
+        height: 50,
+        position: 'absolute',
+        bottom: 25,
+        right: 25,
+        backgroundColor: COLORS.brand.primary,
+        zIndex: 100,
+        borderRadius: 50 / 2,
+        ...SHADOWS.light,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 })

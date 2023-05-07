@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ImageBackground } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import LogoIcon from '../../../../../assets/images/LogoIcon';
 import { COLORS, FONT, SHADOWS, SIZES, assets } from '../../../../constants';
@@ -9,7 +9,7 @@ import { BackIconSecton } from '../../../../components/CustomButtons';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 const LanguageScreen = ({ navigation }) => {
-    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां के छाया की...'];
+    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [index, setIndex] = useState(0);
     const [indexImage, setIndexImage] = useState(0);
@@ -36,35 +36,40 @@ const LanguageScreen = ({ navigation }) => {
                 barStyle='light-content'
                 backgroundColor={COLORS.brand.primary}
             />
-            <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
-                <View style={styles.headerBox}>
-                    <BackIconSecton
-                        onPress={() => navigation.goBack()}
-                        title='Language'
-                    />
-                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                    <View style={styles.menuBox}>
-                        {/* <Text style={styles.titleText}>Language</Text> */}
+            <ImageBackground
+                source={assets.ParkElement}
+                style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+            >
+                <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
+                    <View style={styles.headerBox}>
+                        <BackIconSecton
+                            onPress={() => navigation.goBack()}
+                            title='Language'
+                        />
+                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        <View style={styles.menuBox}>
+                            {/* <Text style={styles.titleText}>Language</Text> */}
+                        </View>
+                    </View>
+
+                    <View style={styles.btnBox}>
+                        <LanguageTab
+                            title="English"
+                            onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'EnglishScreen' })}
+                        />
+
+                        <LanguageTab
+                            title="मराठी"
+                            onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'MarathiScreen' })}
+                        />
+
+                        <LanguageTab
+                            title="हिंदी"
+                            onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'HindiScreen' })}
+                        />
                     </View>
                 </View>
-
-                <View style={styles.btnBox}>
-                    <LanguageTab
-                        title="English"
-                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'EnglishScreen' })}
-                    />
-
-                    <LanguageTab
-                        title="Marathi"
-                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'MarathiScreen' })}
-                    />
-
-                    <LanguageTab
-                        title="Marathi"
-                        onPress={() => navigation.navigate('GarbhaSanskarStack', { screen: 'MarathiScreen' })}
-                    />
-                </View>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }

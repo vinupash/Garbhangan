@@ -104,14 +104,14 @@ export const LogoutSection = ({ onPress }) => {
     )
 }
 
-export const RegistrationSection = ({ onPress }) => {
+export const RegistrationSection = ({ onPress, title }) => {
     return (
         <TouchableOpacity
             activeOpacity={0.98}
             style={styles.registrationBtn}
             onPress={onPress}
         >
-            <Text style={{ fontFamily: FONT.Charlatan, fontSize: 16, color: COLORS.brand.black }}>New Registration</Text>
+            <Text style={{ fontFamily: FONT.Charlatan, fontSize: 16, color: COLORS.brand.black }}>{title}</Text>
             <SvgXml xml={AddIcon} height={16} width={16} />
         </TouchableOpacity>
     )
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: FONT.Charlatan,
         fontSize: SIZES.xxl,
-        color: COLORS.brand.black,
+        color: "#FFFFFF",
         marginLeft: 20
     },
     bellIcon: {

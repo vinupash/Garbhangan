@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import LogoIcon from '../../../assets/images/LogoIcon';
 import BackIcon from '../../../assets/images/BackIcon';
 import ChildIcon from '../../../assets/images/ChildIcon';
-import { COLORS, SIZES, FONT, SHADOWS } from '../../constants';
+import { COLORS, SIZES, FONT, SHADOWS, assets } from '../../constants';
 import WomenIcon from '../../../assets/images/WomenIcon';
 import Pointer from '../../../assets/images/Pointer';
 import { BackIconSecton, KidStackSection, WomenStackSection } from '../../components/CustomButtons';
+import CustomSwitch from '../../components/CustomSwitch';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const NotificationScreen = ({ navigation }) => {
   const iamges = [LogoIcon, LogoIcon, LogoIcon];
   const [indexImage, setIndexImage] = useState(0);
+  const [isNotificationTab, setNotificationTab] = useState(1);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndexImage((indexImage + 1) % iamges.length);
@@ -21,6 +24,10 @@ const NotificationScreen = ({ navigation }) => {
 
     return () => clearInterval(interval);
   }, [indexImage]);
+
+  const onSelectSwitch = value => {
+    setNotificationTab(value);
+  };
 
   // const WomenStackSection = ({ onPress }) => {
   //   return (
@@ -63,6 +70,76 @@ const NotificationScreen = ({ navigation }) => {
   //     </TouchableOpacity>
   //   )
   // }
+
+  const WomenNotifications = () => {
+    return (
+      <View style={{ paddingVertical: 10 }}>
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  const KidNotifications = () => {
+    return (
+      <View style={{ paddingVertical: 10 }}>
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -70,79 +147,36 @@ const NotificationScreen = ({ navigation }) => {
         backgroundColor={COLORS.brand.primary}
       />
 
-      <View style={styles.headerBox}>
-        <BackIconSecton
-          onPress={() => navigation.goBack()}
-          title='Notifications'
-        />
-
-        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-        <View style={styles.menuBox}>
-          <View style={{
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-            <WomenStackSection
-              onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
-            />
-            <KidStackSection
-              onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
-            />
-          </View>
-        </View>
-      </View>
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.notificationBox}
+      <ImageBackground
+        source={assets.ParkElement}
+        style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
       >
 
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
+        <View style={styles.headerBox}>
+          <BackIconSecton
+            onPress={() => navigation.goBack()}
+            title='Notifications'
+          />
+
+          <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+          <View style={styles.menuBox}>
+            <CustomSwitch
+              selectionMode={1}
+              onSelectSwitch={onSelectSwitch}
+            />
           </View>
         </View>
 
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
-          </View>
-        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.notificationBox}
+        >
 
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
-          </View>
-        </View>
+          {isNotificationTab == 1 && <WomenNotifications />}
+          {isNotificationTab == 2 && <KidNotifications />}
 
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-          <SvgXml xml={Pointer} width={32} height={26} style={{ marginRight: 20 }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again Couldn't complete the ‘Learn’ section backup. Try again</Text>
-          </View>
-        </View>
-        {/* <View style={styles.notificationBox}>
-
-          
-        </View> */}
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   )
 }

@@ -21,42 +21,36 @@ export const womenListApi = async (accessToken, anganwadiId) => {
     }
 }
 
-export const registrationWomenApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, selectedCheckupDate, selectedPregnancyDate, isAnganwadiId, isPregnancySymptoms, isMedicalHistory, isPregnancyNote, option) => {
+export const registrationWomenApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectUserBirthDate, selectUserCheckupDate, selectUserPregnancyDate, isAnganwadiId, isPregnancyNote, option, isFileData, image) => {
     try {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", isAccessToken);
-        myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({
-            "firstName": isFirstName,
-            "middleName": isMiddleName,
-            "lastName": isLastdName,
-            "weight": isWeight,
-            "height": isHeight,
-            "dateOfBirth": selectedDate,
-            "imageUrl": 'image',
-            "isSpeciallyAbled": option,
-            "anganwadiId": isAnganwadiId,
-            "womanCheckUpDetails": {
-                "doctorId": 1,
-                "weight": isWeight,
-                "pregnancyDate": selectedPregnancyDate,
-                "pregnancyNotes": isPregnancySymptoms,
-                "medicalHistory": isMedicalHistory,
-                "prePregnancyNotes": isPregnancySymptoms,
-                "checkUpDate": selectedCheckupDate,
-                "prescription": isPregnancyNote
-            }
-        });
+        var formdata = new FormData();
+        formdata.append("FirstName", isFirstName);
+        formdata.append("MiddleName", isMiddleName);
+        formdata.append("LastName", isLastdName);
+        formdata.append("Weight", isWeight);
+        formdata.append("Height", isHeight);
+        formdata.append("DateOfBirth", selectUserBirthDate);
+        formdata.append("Image", isFileData, image);
+        formdata.append("IsSpeciallyAbled", option);
+        formdata.append("WomanCheckUpDetails.WomanId", "0");
+        formdata.append("AnganwadiId", isAnganwadiId);
+        formdata.append("WomanCheckUpDetails.DoctorId", "1");
+        formdata.append("WomanCheckUpDetails.Weight", isWeight);
+        formdata.append("WomanCheckUpDetails.PregnancyDate", selectUserPregnancyDate);
+        formdata.append("WomanCheckUpDetails.PregnancyNotes", isPregnancyNote);
+        formdata.append("WomanCheckUpDetails.CheckUpDate", selectUserCheckupDate);
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: raw,
+            body: formdata,
             redirect: 'follow'
         };
 
-        const response = await fetch(BASE_URL + "api/woman/register", requestOptions);
+        const response = await fetch(BASE_URL + "api/Woman/register", requestOptions);
         const json = await response.json();
         return json;
     } catch (error) {
@@ -84,30 +78,53 @@ export const getWomenDetailsApi = async (accessToken, womenId) => {
     }
 }
 
-export const updateWomenProfileApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, isAnganwadiId, option, isWomenId, isActive) => {
+export const updateWomenProfileApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, isAnganwadiId, option, isWomenId, isActive, selectUserBirthDate, isFileData, image) => {
     try {
+        // var myHeaders = new Headers();
+        // myHeaders.append("Authorization", isAccessToken);
+        // myHeaders.append("Content-Type", "application/json");
+
+        // var raw = JSON.stringify({
+        //     "WomanId": isWomenId,
+        //     "firstName": isFirstName,
+        //     "middleName": isMiddleName,
+        //     "lastName": isLastdName,
+        //     "weight": isWeight,
+        //     "height": isHeight,
+        //     "dateOfBirth": selectedDate,
+        //     "imageUrl": "string",
+        //     "isSpeciallyAbled": option,
+        //     "anganwadiId": isAnganwadiId,
+        //     "isActive": isActive
+        // });
+
+        // var requestOptions = {
+        //     method: 'POST',
+        //     headers: myHeaders,
+        //     body: raw,
+        //     redirect: 'follow'
+        // };
+
         var myHeaders = new Headers();
         myHeaders.append("Authorization", isAccessToken);
-        myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({
-            "WomanId": isWomenId,
-            "firstName": isFirstName,
-            "middleName": isMiddleName,
-            "lastName": isLastdName,
-            "weight": isWeight,
-            "height": isHeight,
-            "dateOfBirth": selectedDate,
-            "imageUrl": "string",
-            "isSpeciallyAbled": option,
-            "anganwadiId": isAnganwadiId,
-            "isActive": isActive
-        });
+        var formdata = new FormData();
+        formdata.append("FirstName", isFirstName);
+        formdata.append("MiddleName", isMiddleName);
+        formdata.append("LastName", isLastdName);
+        formdata.append("Weight", isWeight);
+        formdata.append("Height", isHeight);
+        formdata.append("DateOfBirth", selectUserBirthDate);
+        formdata.append("Image", isFileData, image);
+        formdata.append("IsSpeciallyAbled", option);
+        formdata.append("AnganwadiId", isAnganwadiId);
+        formdata.append("WomanId", isWomenId);
+        formdata.append("IsActive", isActive);
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: raw,
+            body: formdata,
             redirect: 'follow'
         };
 
@@ -172,35 +189,34 @@ export const addWomenCheckupApi = async (isAccessToken, isWomenId, isValueDocter
     }
 }
 
-export const registrationChildApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender) => {
+export const registrationChildApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData) => {
     try {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", isAccessToken);
-        myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({
-            "firstName": isFirstName,
-            "middleName": isMiddleName,
-            "lastName": isLastdName,
-            "gender": optionGender,
-            "dateOfBirth": selectedDate,
-            "imageUrl": "image",
-            "isSpeciallyAbled": option,
-            "anganwadiId": isAnganwadiId,
-            "childCheckUpDetails": {
-                "doctorId": 1,
-                "weight": isWeight,
-                "height": isHeight,
-                "checkUpNotes": isCheckupNote,
-                "checkUpDate": date,
-                "prescription": isPrescription
-            }
-        });
+        var formdata = new FormData();
+        formdata.append("FirstName", isFirstName);
+        formdata.append("MiddleName", isMiddleName);
+        formdata.append("LastName", isLastdName);
+        formdata.append("Weight", isWeight);
+        formdata.append("Height", isHeight);
+        formdata.append("DateOfBirth", selectUserBirthDate);
+        formdata.append("Image", isFileData, image);
+        formdata.append("IsSpeciallyAbled", option);
+        formdata.append("ChildCheckUpDetails.ChildId", "0");
+        formdata.append("AnganwadiId", isAnganwadiId);
+        formdata.append("ChildCheckUpDetails.DoctorId", "1");
+        formdata.append("ChildCheckUpDetails.Weight", isWeight);
+        formdata.append("ChildCheckUpDetails.Height", isHeight);
+        formdata.append("ChildCheckUpDetails.CheckUpNotes", isCheckupNote);
+        formdata.append("ChildCheckUpDetails.CheckUpDate", date);
+        formdata.append("Gender", optionGender);
+        formdata.append("ChildCheckUpDetails.Prescription", isPrescription);
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: raw,
+            body: formdata,
             redirect: 'follow'
         };
 
@@ -217,7 +233,6 @@ export const childListApi = async (accessToken, anganwadiId) => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", accessToken);
         myHeaders.append("Content-Type", "application/json");
-        // myHeaders.append("Cookie", refreshToken);
 
         var requestOptions = {
             method: 'GET',
@@ -253,33 +268,32 @@ export const getChildDetailsApi = async (accessToken, childId) => {
     }
 }
 
-export const updateChildProfileApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectedDate, isAnganwadiId, option, optionGender, isChildId, isActive) => {
+export const updateChildProfileApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectUserBirthDate, isFileData, image, option, isAnganwadiId, optionGender, isChildId) => {
     try {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", isAccessToken);
-        myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({
-            "ChildId": isChildId,
-            "firstName": isFirstName,
-            "middleName": isMiddleName,
-            "lastName": isLastdName,
-            "gender": optionGender,
-            "dateOfBirth": selectedDate,
-            "imageUrl": "image",
-            "isSpeciallyAbled": option,
-            "anganwadiId": isAnganwadiId,
-            "isActive": isActive
-        });
+        var formdata = new FormData();
+        formdata.append("FirstName", isFirstName);
+        formdata.append("MiddleName", isMiddleName);
+        formdata.append("LastName", isLastdName);
+        formdata.append("Weight", isWeight);
+        formdata.append("Height", isHeight);
+        formdata.append("DateOfBirth", selectUserBirthDate);
+        formdata.append("Image", isFileData, image);
+        formdata.append("IsSpeciallyAbled", option);
+        formdata.append("AnganwadiId", isAnganwadiId);
+        formdata.append("Gender", optionGender);
+        formdata.append("ChildId", isChildId);
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: raw,
+            body: formdata,
             redirect: 'follow'
         };
 
-        const response = await fetch(BASE_URL + "api/woman/update", requestOptions);
+        const response = await fetch(BASE_URL + "api/Child/update", requestOptions);
         const json = await response.json();
         return json;
     } catch (error) {

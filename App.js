@@ -6,7 +6,6 @@ import Navigations from './src/navigations/Navigations'
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from './src/constants';
-// import { useIsFocused } from '@react-navigation/native'
 
 const App = () => {
   const [refreshToken, setRefreshToken] = useState(null);
@@ -55,6 +54,20 @@ const App = () => {
   useEffect(() => {
     checkTokenExpiration();
   }, [])
+
+  useEffect(() => {
+    fetchDataAsync()
+  }, [])
+
+  const fetchDataAsync = async () => {
+    const currentLanguage = await AsyncStorage.getItem('currentLanguage');
+    if (!currentLanguage) {
+      // Alert.alert("Unable to fetch mobile number, Login again");
+      return;
+    }
+    const transformedUserLanguage = JSON.parse(currentLanguage);
+    // console.log('transformedUserLanguage--->', transformedUserLanguage.currentLanguage);
+  };
 
 
   const newTokeGenerate = async () => {

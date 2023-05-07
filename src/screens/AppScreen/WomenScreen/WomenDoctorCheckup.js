@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard, ImageBackground } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
 import BackIcon from '../../../../assets/images/BackIcon';
@@ -36,8 +36,8 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
     const [isDocterList, setDocterList] = useState([]);
     const [isWomenId, setWomenId] = useState('')
     const [isPrescription, setPrescription] = useState('')
-
-    console.log(route.params.personDetails.womenId);
+    const [isProfileImage, setProfileImage] = useState(null)
+    // console.log(route.params.personDetails.womenId);
 
     var date = moment().format("YYYY-MM-DD")
     // console.log(date);
@@ -45,6 +45,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
     useEffect(() => {
         fetchDataAsync()
         setWomenId(route.params.personDetails.womenId)
+        setProfileImage(route.params.personDetails.isProfileImage)
     }, [isFocused])
 
     const fetchDataAsync = async () => {
@@ -206,6 +207,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
                 <TouchableOpacity
                     style={styles.backIcon}
                     onPress={onPress}
+                    activeOpacity={0.98}
                 >
                     <SvgXml xml={BackIcon} height={25} width={25} />
                 </TouchableOpacity>
@@ -219,6 +221,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
             <TouchableOpacity
                 style={styles.backIcon}
                 onPress={onPress}
+                activeOpacity={0.98}
             >
                 <SvgXml xml={ChildIcon} height={40} width={40} />
             </TouchableOpacity>
@@ -254,141 +257,158 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
                 </Animated.View>
             )}
 
-            <View style={styles.headerBox}>
-                <BackIconSecton
-                    onPress={() => navigation.goBack()}
-                    title='Docter checkup'
-                />
-                <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                <View style={styles.menuBox}>
-                    <StackSection
-                        onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
+            <ImageBackground
+                source={assets.ParkElement}
+                style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+            >
+                <View style={styles.headerBox}>
+                    <BackIconSecton
+                        onPress={() => navigation.goBack()}
+                        title='Docter checkup'
                     />
+                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                    <View style={styles.menuBox}>
+                        <StackSection
+                            onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
+                        />
+                    </View>
                 </View>
-            </View>
 
-            <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50, flex: 1, alignSelf: 'center' }}>
-                <View style={[styles.profilePicture, { marginTop: 20 }]}>
-                    <Image
-                        source={assets.women_img}
+                <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50, flex: 1, alignSelf: 'center' }}>
+                    <View style={[styles.profilePicture, { marginTop: 20 }]}>
+                        {isProfileImage == null ?
+                            <Image
+                                source={assets.women_img}
+                                style={{
+                                    width: 250,
+                                    height: 350,
+                                    borderRadius: 10
+                                }}
+                            />
+                            :
+                            <Image
+                                source={{ uri: `data:image/png;base64,${isProfileImage}` }}
+                                style={{
+                                    width: 250,
+                                    height: 350,
+                                    borderRadius: 10
+                                }}
+                            />
+                        }
+
+                    </View>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
                         style={{
-                            width: 250,
-                            height: 350,
-                            borderRadius: 10
+                            width: '100%',
+                            alignSelf: 'center',
+                            flex: 1
                         }}
-                    />
+                    >
+
+                        <View style={{ marginTop: 0, paddingHorizontal: 5 }}>
+                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Select docter:</Text>
+                            <Dropdown
+                                style={[styles.dropdown]}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                data={isDocterList}
+                                search
+                                maxHeight={300}
+                                labelField="label"
+                                valueField="value"
+                                placeholder={!isFocus ? 'Select docter name' : '...'}
+                                searchPlaceholder="Search..."
+                                value={isDocterList}
+                                onFocus={() => setIsFocus(true)}
+                                onBlur={() => setIsFocus(false)}
+                                onChange={item => {
+                                    setValueDocterName(item.value);
+                                    setIsFocus(false);
+                                }}
+                            />
+                        </View>
+
+                        <View style={{ marginTop: 10 }}>
+                            <InputBox
+                                label='Weight (KG)'
+                                placeholder='Enter weight (KG)'
+                                value={isWeight.toString()}
+                                setValue={setWeight}
+                                // autoCapitalize='none'
+                                keyboardType='number-pad'
+                            />
+                        </View>
+
+                        <View style={{ marginTop: 10 }}>
+                            <InputTextAreaBox
+                                label='Pregnancy symptoms'
+                                placeholder='Before period any pregnancy symptoms'
+                                value={isPregnancySymptoms}
+                                setValue={setPregnancySymptoms}
+                                // autoCapitalize='none'
+                                multiline={true}
+                                numberOfLines={5}
+                                placeholderTextColor='#727c95'
+                            />
+                        </View>
+
+                        <View style={{ marginTop: 10 }}>
+                            <InputTextAreaBox
+                                label='Medical history'
+                                placeholder='Enter medical history'
+                                value={isMedicalHistory}
+                                setValue={setMedicalHistory}
+                                // autoCapitalize='none'
+                                multiline={true}
+                                numberOfLines={5}
+                                placeholderTextColor='#727c95'
+                            />
+                        </View>
+                        <View style={{ marginTop: 10, }}>
+                            <InputTextAreaBox
+                                label='Pregnancy note'
+                                placeholder='Enter pregnancy note'
+                                value={isPregnancyNote}
+                                setValue={setPregnancyNote}
+                                // autoCapitalize='none'
+                                multiline={true}
+                                numberOfLines={5}
+                                placeholderTextColor='#727c95'
+                            />
+                        </View>
+
+                        <View style={{ marginTop: 10, }}>
+                            <InputTextAreaBox
+                                label='Prescription'
+                                placeholder='Enter prescription'
+                                value={isPrescription}
+                                setValue={setPrescription}
+                                // autoCapitalize='none'
+                                multiline={true}
+                                numberOfLines={5}
+                                placeholderTextColor='#727c95'
+                            />
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            marginTop: 20,
+                            marginRight: 5
+                        }}>
+                            <TouchableOpacity
+                                style={styles.forwardIcon}
+                                onPress={submitData}
+                            >
+                                {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </View>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    style={{
-                        width: '100%',
-                        alignSelf: 'center',
-                        flex: 1
-                    }}
-                >
-
-                    <View style={{ marginTop: 0, paddingHorizontal: 5 }}>
-                        <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Select docter:</Text>
-                        <Dropdown
-                            style={[styles.dropdown]}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={isDocterList}
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder={!isFocus ? 'Select docter name' : '...'}
-                            searchPlaceholder="Search..."
-                            value={isDocterList}
-                            onFocus={() => setIsFocus(true)}
-                            onBlur={() => setIsFocus(false)}
-                            onChange={item => {
-                                setValueDocterName(item.value);
-                                setIsFocus(false);
-                            }}
-                        />
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <InputBox
-                            label='Weight (KG)'
-                            placeholder='Enter weight (KG)'
-                            value={isWeight.toString()}
-                            setValue={setWeight}
-                            // autoCapitalize='none'
-                            keyboardType='number-pad'
-                        />
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <InputTextAreaBox
-                            label='Pregnancy symptoms'
-                            placeholder='Before period any pregnancy symptoms'
-                            value={isPregnancySymptoms}
-                            setValue={setPregnancySymptoms}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <InputTextAreaBox
-                            label='Medical history'
-                            placeholder='Enter medical history'
-                            value={isMedicalHistory}
-                            setValue={setMedicalHistory}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-                    <View style={{ marginTop: 10, }}>
-                        <InputTextAreaBox
-                            label='Pregnancy note'
-                            placeholder='Enter pregnancy note'
-                            value={isPregnancyNote}
-                            setValue={setPregnancyNote}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-
-                    <View style={{ marginTop: 10, }}>
-                        <InputTextAreaBox
-                            label='Prescription'
-                            placeholder='Enter prescription'
-                            value={isPrescription}
-                            setValue={setPrescription}
-                            // autoCapitalize='none'
-                            multiline={true}
-                            numberOfLines={5}
-                            placeholderTextColor='#727c95'
-                        />
-                    </View>
-
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        marginTop: 20,
-                        marginRight: 5
-                    }}>
-                        <TouchableOpacity
-                            style={styles.forwardIcon}
-                            onPress={submitData}
-                        >
-                            {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
@@ -430,7 +450,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: FONT.Charlatan,
         fontSize: SIZES.xxl,
-        color: COLORS.brand.black,
+        color: "#FFFFFF",
         marginLeft: 20
     },
     registrationBtn: {

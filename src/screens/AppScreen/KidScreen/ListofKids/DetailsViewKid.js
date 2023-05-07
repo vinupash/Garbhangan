@@ -1,20 +1,5 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-
-// const DetailsViewKid = () => {
-//     return (
-//         <View>
-//             <Text>DetailsViewKid</Text>
-//         </View>
-//     )
-// }
-
-// export default DetailsViewKid
-
-// const styles = StyleSheet.create({})
-
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, Image, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, Image, ActivityIndicator, ImageBackground, Animated } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../../constants';
 import { BackIconSecton, DoctorCheckup, LogoutSection, RegistrationSection, UpdateProfile } from '../../../../components/CustomButtons';
@@ -28,7 +13,7 @@ import moment from 'moment';
 
 const DetailsViewKid = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
-    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां के छाया की...'];
+    const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
     const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [index, setIndex] = useState(0);
     const [indexImage, setIndexImage] = useState(0);
@@ -44,12 +29,28 @@ const DetailsViewKid = ({ navigation, route }) => {
     const [isSpeciallyAbled, setSpeciallyAbled] = useState(false)
     const [isChildCheckUpDetails, setChildCheckUpDetails] = useState([])
     const [isActive, setActive] = useState(null)
-
-    console.log(route.params.personDetails);
+    const [isProfileImage, setProfileImage] = useState(null)
+    const [errorMessage, setErrorMessage] = useState('');
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    // console.log(route.params.personDetails);
     useEffect(() => {
         fetchDataAsync()
         setChildID(route.params.personDetails.childId)
     }, [isFocused])
+
+    const handleErrorMsg = () => {
+        Animated.timing(
+            fadeAnim,
+            {
+                toValue: isVisible ? 0 : 1,
+                duration: 500,
+                useNativeDriver: true
+            }
+        ).start();
+        setTimeout(() => {
+            setErrorMessage('');
+        }, 3000);
+    };
 
     const fetchDataAsync = async () => {
         setLoading(true)
@@ -72,7 +73,12 @@ const DetailsViewKid = ({ navigation, route }) => {
         const childId = route.params.personDetails.childId;
         const responseChildDetails = await getChildDetailsApi(accessToken, childId)
         setLoading(false)
-        console.log('responseChildDetails--->', responseChildDetails.data);
+        // console.log('responseChildDetails--->', responseChildDetails.data);
+        if (responseChildDetails.IsError == true) {
+            handleErrorMsg();
+            setErrorMessage(responseChildDetails.Message)
+            return;
+        }
         setFirstName(responseChildDetails.data.firstName)
         setMiddleName(responseChildDetails.data.middleName)
         setLastName(responseChildDetails.data.lastName)
@@ -80,14 +86,15 @@ const DetailsViewKid = ({ navigation, route }) => {
         setUserBirth(responseChildDetails.data.dateOfBirth)
         setActive(responseChildDetails.data.isActive)
         setGender(responseChildDetails.data.gender)
+        setProfileImage(responseChildDetails.data.profilePicture)
         // setWomanCheckUpDetails(responseChildDetails.data.childCheckUpDetails)
         responseChildDetails.data.childCheckUpDetails.sort((a, b) => b.id - a.id);
         setChildCheckUpDetails(responseChildDetails.data.childCheckUpDetails)
-        console.log(responseChildDetails.data.childCheckUpDetails);
+        // console.log(responseChildDetails.data.childCheckUpDetails);
         const highestId = responseChildDetails.data.childCheckUpDetails.reduce((prev, current) => {
             return (prev.id > current.id) ? prev : current;
         });
-        console.log('highestId--->', highestId.height, highestId.weight);
+        // console.log('highestId--->', highestId.height, highestId.weight);
         setHeight(highestId.height)
         setWeight(highestId.weight)
     };
@@ -157,100 +164,126 @@ const DetailsViewKid = ({ navigation, route }) => {
                     <ActivityIndicator size='large' color={COLORS.brand.primary} />
                 </View>
                 : null}
-            <View style={{ flexDirection: 'column', height: '100%', alignItems: 'center' }}>
-                <View style={styles.headerBox}>
-                    <BackIconSecton
-                        onPress={() => navigation.goBack()}
-                        title="Detail's"
-                    />
-                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                    <View style={styles.menuBox}>
-                        {/* <Text style={styles.titleText}></Text> */}
-                        <UpdateProfile
-                            onPress={() => navigation.navigate('ChildUpdateProfile', {
-                                personDetails: {
-                                    childId: isChildID,
-                                    firstName: isFirstName,
-                                    lastName: isLastName,
-                                    middleName: isMiddleName,
-                                    speciallyAbled: isSpeciallyAbled,
-                                    userBirth: userBirth,
-                                    weight: isWeight,
-                                    height: isHeight,
-                                    isActive: isActive,
-                                    gander: isGender
-                                },
-                            })}
+
+            {errorMessage !== '' && (
+                <Animated.View style={[styles.snackbar, {
+                    opacity: fadeAnim
+                }]}>
+                    <Text style={styles.snackbarText}>{errorMessage}</Text>
+                </Animated.View>
+            )}
+            <ImageBackground
+                source={assets.ParkElement}
+                style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+            >
+                <View style={{ flexDirection: 'column', height: '100%', alignItems: 'center' }}>
+                    <View style={styles.headerBox}>
+                        <BackIconSecton
+                            onPress={() => navigation.goBack()}
+                            title="Detail's"
                         />
-                        <DoctorCheckup
-                            onPress={() => navigation.navigate('ChildDoctorCheckup', {
-                                personDetails: {
-                                    childId: isChildID,
-                                },
-                            })}
-                        />
+                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        <View style={styles.menuBox}>
+                            {/* <Text style={styles.titleText}></Text> */}
+                            <UpdateProfile
+                                onPress={() => navigation.navigate('ChildUpdateProfile', {
+                                    personDetails: {
+                                        childId: isChildID,
+                                        firstName: isFirstName,
+                                        lastName: isLastName,
+                                        middleName: isMiddleName,
+                                        speciallyAbled: isSpeciallyAbled,
+                                        userBirth: userBirth,
+                                        weight: isWeight,
+                                        height: isHeight,
+                                        isActive: isActive,
+                                        gander: isGender,
+                                        isProfileImage: isProfileImage
+                                    },
+                                })}
+                            />
+                            <DoctorCheckup
+                                onPress={() => navigation.navigate('ChildDoctorCheckup', {
+                                    personDetails: {
+                                        childId: isChildID,
+                                        isProfileImage: isProfileImage
+                                    },
+                                })}
+                            />
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50 }}>
+                        <View style={styles.profilePicture}>
+                            {isProfileImage == null ?
+                                <Image
+                                    source={assets.child_img}
+                                    style={{
+                                        width: 250,
+                                        height: 350,
+                                        borderRadius: 10
+                                    }}
+                                />
+                                :
+                                <Image
+                                    source={{ uri: `data:image/png;base64,${isProfileImage}` }}
+                                    style={{
+                                        width: 250,
+                                        height: 350,
+                                        borderRadius: 10
+                                    }}
+                                />
+                            }
+                        </View>
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            style={{ height: '100%', width: '100%' }}
+                        >
+                            <View style={styles.rowBox}>
+                                <UserDetailsViewBox
+                                    label='Name'
+                                    labelText={isFirstName + ' ' + isLastName}
+                                />
+                                <UserDetailsViewBox
+                                    label='Father name'
+                                    labelText={isMiddleName + ' ' + isLastName}
+                                />
+                            </View>
+
+                            <View style={[styles.rowBox, { marginTop: 10 }]}>
+                                <UserDetailsViewBox
+                                    label='Date of birth'
+                                    labelText={moment(userBirth).format("DD-MM-YYYY")}
+                                />
+                                <UserDetailsViewBox
+                                    label='Specially abled'
+                                    labelText={isSpeciallyAbled == true ? 'Yes' : 'No'}
+                                />
+                            </View>
+
+                            <View style={[styles.rowBox, { marginTop: 10 }]}>
+                                <UserDetailsViewBox
+                                    label='Weight (Kg)'
+                                    labelText={isWeight}
+                                />
+                                <UserDetailsViewBox
+                                    label='Height (CM)'
+                                    labelText={isHeight}
+                                />
+                            </View>
+
+                            <View style={[styles.rowBox, { marginTop: 10 }]}>
+                                <UserDetailsViewBox
+                                    label='Gander'
+                                    labelText={isGender === 'M' ? 'Male' : 'Female'}
+                                />
+                            </View>
+
+                            <Text style={[styles.label, { fontSize: SIZES.mediumLarge, textAlign: 'center', width: '100%', marginVertical: 20, textTransform: 'uppercase', fontFamily: FONT.MartelSansExtraBold, color: '#FFFFFF' }]}>Checkup detail's</Text>
+                            {CheckUpDetails()}
+                        </ScrollView>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50 }}>
-                    <View style={styles.profilePicture}>
-                        <Image
-                            source={assets.child_img}
-                            style={{
-                                width: 250,
-                                height: 350,
-                                borderRadius: 10
-                            }}
-                        />
-                    </View>
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={{ height: '100%', width: '100%' }}
-                    >
-                        <View style={styles.rowBox}>
-                            <UserDetailsViewBox
-                                label='Name'
-                                labelText={isFirstName + ' ' + isLastName}
-                            />
-                            <UserDetailsViewBox
-                                label='Father name'
-                                labelText={isMiddleName + ' ' + isLastName}
-                            />
-                        </View>
-
-                        <View style={[styles.rowBox, { marginTop: 10 }]}>
-                            <UserDetailsViewBox
-                                label='Date of birth'
-                                labelText={moment(userBirth).format("DD-MM-YYYY")}
-                            />
-                            <UserDetailsViewBox
-                                label='Specially abled'
-                                labelText={isSpeciallyAbled == true ? 'Yes' : 'No'}
-                            />
-                        </View>
-
-                        <View style={[styles.rowBox, { marginTop: 10 }]}>
-                            <UserDetailsViewBox
-                                label='Weight (Kg)'
-                                labelText={isWeight}
-                            />
-                            <UserDetailsViewBox
-                                label='Height (CM)'
-                                labelText={isHeight}
-                            />
-                        </View>
-
-                        <View style={[styles.rowBox, { marginTop: 10 }]}>
-                            <UserDetailsViewBox
-                                label='Gander'
-                                labelText={isGender === 'M' ? 'Male' : 'Female'}
-                            />
-                        </View>
-
-                        <Text style={[styles.label, { fontSize: SIZES.mediumLarge, textAlign: 'center', width: '100%', marginVertical: 20 }]}>Checkup detail's</Text>
-                        {CheckUpDetails()}
-                    </ScrollView>
-                </View>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
@@ -320,6 +353,22 @@ const styles = StyleSheet.create({
     rowBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-    }
+    },
+    snackbar: {
+        backgroundColor: '#B71C1C',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1,
+        paddingVertical: 10,
+        justifyContent: 'center'
+    },
+    snackbarText: {
+        color: '#FFFFFF',
+        fontSize: SIZES.medium,
+        fontFamily: FONT.MartelSansRegular,
+        textAlign: 'center'
+    },
 })
 

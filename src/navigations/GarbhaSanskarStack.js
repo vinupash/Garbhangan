@@ -17,7 +17,7 @@ const GarbhaSanskarStack = () => {
                 component={GarbhaSanskarScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -25,7 +25,7 @@ const GarbhaSanskarStack = () => {
                 component={LanguageScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -33,7 +33,7 @@ const GarbhaSanskarStack = () => {
                 component={MarathiScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -41,7 +41,7 @@ const GarbhaSanskarStack = () => {
                 component={HindiScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -49,7 +49,7 @@ const GarbhaSanskarStack = () => {
                 component={EnglishScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -57,7 +57,7 @@ const GarbhaSanskarStack = () => {
                 component={VideoScreen}
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_right'
+                    // animation: 'slide_from_right'
                 }}
             />
         </Stack.Navigator>
