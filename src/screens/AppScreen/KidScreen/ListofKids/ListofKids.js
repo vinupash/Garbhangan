@@ -22,6 +22,7 @@ const ListofKids = ({ navigation }) => {
     const isFocused = useIsFocused()
     const [errorMessage, setErrorMessage] = useState('');
     const fadeAnim = useRef(new Animated.Value(0)).current;
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {

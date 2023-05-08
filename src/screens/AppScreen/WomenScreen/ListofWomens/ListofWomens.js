@@ -23,6 +23,7 @@ const ListofWomens = ({ navigation }) => {
     const isFocused = useIsFocused();
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [errorMessage, setErrorMessage] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
