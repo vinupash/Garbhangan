@@ -17,6 +17,7 @@ import RadioButtonBoxValue from '../../../components/RadioButtonBoxValue';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateWomenProfileApi } from '../../../constants/AllApiCall';
+import { validateLetters, validateNumbers } from '../../../constants/methods';
 
 const WomenUpdateProfile = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
@@ -100,36 +101,80 @@ const WomenUpdateProfile = ({ navigation, route }) => {
     const submitData = async () => {
         const selectUserBirthDate = moment(selectedDate).format("YYYY-MM-DD HH:mm:ss.SSS");
 
+        if (image === '') {
+            handleErrorMsg()
+            setErrorMessage('Image is required');
+            return;
+        }
+
         if (!isFirstName) {
             handleErrorMsg()
             setErrorMessage('Please entrer first name')
             return
+        } else if (!validateLetters(isFirstName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isFirstName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isMiddleName) {
             handleErrorMsg()
             setErrorMessage('Please entrer middle name')
             return
+        } else if (!validateLetters(isMiddleName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isMiddleName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isLastdName) {
             handleErrorMsg()
             setErrorMessage('Please entrer last name')
             return
+        } else if (!validateLetters(isLastdName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isLastdName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (selectedDate == null) {
             handleErrorMsg()
             setErrorMessage('Please select D.O.B')
             return
         }
+
         if (!isHeight) {
             handleErrorMsg()
             setErrorMessage('Please enter height')
             return
+        } else if (!validateNumbers(isHeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
         }
+
         if (!isWeight) {
             handleErrorMsg()
             setErrorMessage('Please enter weight')
             return
+        } else if (!validateNumbers(isWeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
         }
+
         if (option == null) {
             handleErrorMsg()
             setErrorMessage('Please select specially abled')

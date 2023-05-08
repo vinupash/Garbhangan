@@ -20,6 +20,7 @@ import RadioButtonBoxValue from '../../../components/RadioButtonBoxValue';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { registrationWomenApi } from '../../../constants/AllApiCall';
+import { validateLetters, validateNumbers } from '../../../constants/methods';
 
 const NewRegistrationWomen = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
@@ -112,36 +113,75 @@ const NewRegistrationWomen = ({ navigation }) => {
             setErrorMessage('Image is required');
             return;
         }
+
         if (!isFirstName) {
             handleErrorMsg()
             setErrorMessage('Please entrer first name')
             return
+        } else if (!validateLetters(isFirstName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isFirstName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isMiddleName) {
             handleErrorMsg()
             setErrorMessage('Please entrer middle name')
             return
+        } else if (!validateLetters(isMiddleName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isMiddleName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isLastdName) {
             handleErrorMsg()
             setErrorMessage('Please entrer last name')
             return
+        } else if (!validateLetters(isLastdName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isLastdName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (selectedDate == null) {
             handleErrorMsg()
             setErrorMessage('Please select D.O.B')
             return
         }
+
         if (!isHeight) {
             handleErrorMsg()
             setErrorMessage('Please enter height')
             return
+        } else if (!validateNumbers(isHeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
         }
+
         if (!isWeight) {
             handleErrorMsg()
             setErrorMessage('Please enter weight')
             return
+        } else if (!validateNumbers(isWeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
         }
+
         if (selectedPregnancyDate == null) {
             handleErrorMsg()
             setErrorMessage('Please select pregnancy date')
@@ -167,37 +207,6 @@ const NewRegistrationWomen = ({ navigation }) => {
         const selectUserCheckupDate = moment(selectedCheckupDate).format("YYYY-MM-DD HH:mm:ss.SSS");
         const selectUserPregnancyDate = moment(selectedPregnancyDate).format("YYYY-MM-DD HH:mm:ss.SSS");
 
-        // var myHeaders = new Headers();
-        // myHeaders.append("Authorization", isAccessToken);
-
-        // var formdata = new FormData();
-        // formdata.append("FirstName", isFirstName);
-        // formdata.append("MiddleName", isMiddleName);
-        // formdata.append("LastName", isLastdName);
-        // formdata.append("Weight", isWeight);
-        // formdata.append("Height", isHeight);
-        // formdata.append("DateOfBirth", selectUserBirthDate);
-        // formdata.append("Image", isFileData, image);
-        // formdata.append("IsSpeciallyAbled", option);
-        // formdata.append("WomanCheckUpDetails.WomanId", "0");
-        // formdata.append("AnganwadiId", isAnganwadiId);
-        // formdata.append("WomanCheckUpDetails.DoctorId", "1");
-        // formdata.append("WomanCheckUpDetails.Weight", isWeight);
-        // formdata.append("WomanCheckUpDetails.PregnancyDate", selectUserPregnancyDate);
-        // formdata.append("WomanCheckUpDetails.PregnancyNotes", isPregnancyNote);
-        // formdata.append("WomanCheckUpDetails.CheckUpDate", selectUserCheckupDate);
-
-        // var requestOptions = {
-        //     method: 'POST',
-        //     headers: myHeaders,
-        //     body: formdata,
-        //     redirect: 'follow'
-        // };
-
-        // const response = await fetch("http://51.77.105.23:81/api/Woman/register", requestOptions);
-        // const json = await response.json();
-        // setLoading(false)
-        // console.log(json);
         setLoading(true)
         const responseRegistrationWomen = await registrationWomenApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, selectUserBirthDate, selectUserCheckupDate, selectUserPregnancyDate, isAnganwadiId, isPregnancyNote, option, isFileData, image)
         setLoading(false)
@@ -313,6 +322,7 @@ const NewRegistrationWomen = ({ navigation }) => {
                 <TouchableOpacity
                     style={styles.backIcon}
                     onPress={onPress}
+                    activeOpacity={0.98}
                 >
                     <SvgXml xml={BackIcon} height={25} width={25} />
                 </TouchableOpacity>
@@ -349,6 +359,7 @@ const NewRegistrationWomen = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.backIcon}
                 onPress={onPress}
+                activeOpacity={0.98}
             >
                 <SvgXml xml={ChildIcon} height={40} width={40} />
             </TouchableOpacity>
@@ -412,6 +423,7 @@ const NewRegistrationWomen = ({ navigation }) => {
                     style={[styles.forwardIcon, {
                         alignSelf: "center",
                     }]}
+                    activeOpacity={0.98}
                     onPress={() => { captureImage('photo') }}
                 >
                     <SvgXml xml={CameraIcon} height={30} width={30} />
@@ -744,6 +756,7 @@ const NewRegistrationWomen = ({ navigation }) => {
                             <TouchableOpacity
                                 style={styles.forwardIcon}
                                 onPress={submitData}
+                                activeOpacity={0.98}
                             >
                                 {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
                             </TouchableOpacity>

@@ -57,4 +57,22 @@ export const validateIFSCNum = (inputtxt) => {
     }
 };
 
+export const validateLetters = (inputtxt) => {
+    var letters = /^[A-Za-z]+$/;
+    if (inputtxt.match(letters)) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+export const validateNumbers = (inputtxt) => {
+    var numbers = /^[0-9]+$/;
+    if (inputtxt.match(numbers)) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 

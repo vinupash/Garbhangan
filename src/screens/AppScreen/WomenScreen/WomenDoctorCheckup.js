@@ -14,6 +14,7 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addWomenCheckupApi, getDoctorListApi, getWomenDetailsApi, registrationWomenApi } from '../../../constants/AllApiCall';
 import { Dropdown } from 'react-native-element-dropdown';
+import { validateNumbers } from '../../../constants/methods';
 
 const WomenDoctorCheckup = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
@@ -118,9 +119,14 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
             setErrorMessage('Please select docter')
             return
         }
+
         if (!isWeight) {
             handleErrorMsg()
             setErrorMessage('Please enter weight')
+            return
+        } else if (!validateNumbers(isWeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
             return
         }
 
@@ -147,7 +153,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
         setLoading(true)
         const responseAddWomenCheckup = await addWomenCheckupApi(isAccessToken, isWomenId, isValueDocterName, isPregnancyDate, isWeight, isPregnancyNote, isPregnancySymptoms, isMedicalHistory, date, isPrescription)
         setLoading(false)
-        console.log('responseAddWomenCheckup--->', responseAddWomenCheckup);
+        // console.log('responseAddWomenCheckup--->', responseAddWomenCheckup);
         if (responseAddWomenCheckup.isError == false) {
             handleSuccessMsg()
             setSuccessMessage(responseAddWomenCheckup.message);

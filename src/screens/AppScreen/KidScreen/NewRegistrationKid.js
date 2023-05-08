@@ -21,6 +21,7 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { registrationChildApi, registrationWomenApi } from '../../../constants/AllApiCall';
 import WomenIcon from '../../../../assets/images/WomenIcon';
+import { validateLetters, validateNumbers } from '../../../constants/methods';
 
 const NewRegistrationKid = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
@@ -112,51 +113,98 @@ const NewRegistrationKid = ({ navigation }) => {
     // console.log('isKeyboardVisible', optionGender);
 
     const submitData = async () => {
+        if (image === '') {
+            handleErrorMsg()
+            setErrorMessage('Image is required');
+            return;
+        }
+
         if (!isFirstName) {
             handleErrorMsg()
             setErrorMessage('Please entrer first name')
             return
+        } else if (!validateLetters(isFirstName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isFirstName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isMiddleName) {
             handleErrorMsg()
             setErrorMessage('Please entrer middle name')
             return
+        } else if (!validateLetters(isMiddleName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isMiddleName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isLastdName) {
             handleErrorMsg()
             setErrorMessage('Please entrer last name')
             return
+        } else if (!validateLetters(isLastdName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isLastdName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (selectedDate == null) {
             handleErrorMsg()
             setErrorMessage('Please select D.O.B')
             return
         }
+
         if (!isHeight) {
             handleErrorMsg()
             setErrorMessage('Please enter height')
             return
+        } else if (!validateNumbers(isHeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
         }
+
         if (!isWeight) {
             handleErrorMsg()
             setErrorMessage('Please enter weight')
             return
+        } else if (!validateNumbers(isWeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
         }
+
         if (optionGender == null) {
             handleErrorMsg()
             setErrorMessage('Please select gender')
             return
         }
+
         if (option == null) {
             handleErrorMsg()
             setErrorMessage('Please select specially abled')
             return
         }
+
         if (!isCheckupNote) {
             handleErrorMsg()
             setErrorMessage('Please enter medical history')
             return
         }
+
         if (!isPrescription) {
             handleErrorMsg()
             setErrorMessage('Please enter prescription')
@@ -168,7 +216,7 @@ const NewRegistrationKid = ({ navigation }) => {
         setLoading(true)
         const responseRegistrationChild = await registrationChildApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData)
         setLoading(false)
-        console.log('responseRegistrationChild--->', responseRegistrationChild);
+        // console.log('responseRegistrationChild--->', responseRegistrationChild);
         if (responseRegistrationChild.isError == false) {
             handleSuccessMsg()
             setSuccessMessage(responseRegistrationChild.message);
@@ -176,16 +224,12 @@ const NewRegistrationKid = ({ navigation }) => {
             setFirstName(responseRegistrationChild.data.firstName)
             setMiddleName(responseRegistrationChild.data.middleName)
             setLastdName(responseRegistrationChild.data.lastName)
-            // setHeight(responseRegistrationChild.data.height)
-            // setWeight(responseRegistrationChild.data.weight)
             setProfileImage(responseRegistrationChild.data.profilePicture)
         } else {
             handleErrorMsg();
             setErrorMessage(responseRegistrationChild.data.message);
         }
     }
-
-    // console.log('userBirth--->', selectedDate, selectedCheckupDate, selectedPregnancyDate, typeof image, option);
 
     const [indexImage, setIndexImage] = useState(0);
     useEffect(() => {
@@ -346,19 +390,19 @@ const NewRegistrationKid = ({ navigation }) => {
             cropping: true,
             quality: 0.5,
         }).then(image => {
-            console.log('selected media ==', image);
-            console.log('Image type:', image.mime);
-            console.log('Image path:', image.path);
+            // console.log('selected media ==', image);
+            // console.log('Image type:', image.mime);
+            // console.log('Image path:', image.path);
             // const fileName = image.path.split('/').pop() || `image.${image.mime.split('/')[1]}`;
             const fileName = image.path.split('/').pop();
-            console.log('Image name:', fileName);
+            // console.log('Image name:', fileName);
 
             const img = {
                 uri: image.path,
                 name: fileName,
                 type: image.mime
             }
-            console.log('img:', img);
+            // console.log('img:', img);
             // const fileName = image.path.split('/').p
             setFileData(img)
             setImage(image.path)
@@ -689,6 +733,7 @@ const NewRegistrationKid = ({ navigation }) => {
                             <TouchableOpacity
                                 style={styles.forwardIcon}
                                 onPress={submitData}
+                                activeOpacity={0.98}
                             >
                                 {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
                             </TouchableOpacity>

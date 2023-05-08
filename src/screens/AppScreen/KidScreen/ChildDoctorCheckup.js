@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addChildCheckupApi, addWomenCheckupApi, getChildDetailsApi, getDoctorListApi, getWomenDetailsApi, registrationWomenApi } from '../../../constants/AllApiCall';
 import { Dropdown } from 'react-native-element-dropdown';
 import WomenIcon from '../../../../assets/images/WomenIcon';
+import { validateNumbers } from '../../../constants/methods';
 
 const ChildDoctorCheckup = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
@@ -122,12 +123,21 @@ const ChildDoctorCheckup = ({ navigation, route }) => {
         }
         if (!isHeight) {
             handleErrorMsg()
-            setErrorMessage('Please enter weight')
+            setErrorMessage('Please enter height')
+            return
+        } else if (!validateNumbers(isHeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
             return
         }
+
         if (!isWeight) {
             handleErrorMsg()
             setErrorMessage('Please enter weight')
+            return
+        } else if (!validateNumbers(isWeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
             return
         }
         if (!isCheckUpNotes) {

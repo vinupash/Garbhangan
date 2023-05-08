@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard, ImageBackground } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { COLORS, SHADOWS, SIZES, FONT } from '../../../constants';
-import MenuComponents from '../../../components/MenuComponents';
+import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
 import BackIcon from '../../../../assets/images/BackIcon';
-import BellIcon from '../../../../assets/images/BellIcon';
-import AddIcon from '../../../../assets/images/AddIcon';
-import ChildIcon from '../../../../assets/images/ChildIcon';
 import LogoIcon from '../../../../assets/images/LogoIcon';
 import ForwardArrow from '../../../../assets/images/ForwardArrow';
-import { Input, InputBox, InputTextArea, InputTextAreaBox } from '../../../components/CustomInput';
+import { InputBox } from '../../../components/CustomInput';
 import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 const windowHeight = Dimensions.get('window').height;
@@ -19,8 +15,9 @@ import CameraIcon from '../../../../assets/images/CameraIcon';
 import RadioButtonBoxValue from '../../../components/RadioButtonBoxValue';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { registrationWomenApi, updateChildProfileApi, updateWomenProfileApi } from '../../../constants/AllApiCall';
+import { updateChildProfileApi } from '../../../constants/AllApiCall';
 import WomenIcon from '../../../../assets/images/WomenIcon';
+import { validateLetters, validateNumbers } from '../../../constants/methods';
 
 const ChildUpdateProfile = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
@@ -113,22 +110,70 @@ const ChildUpdateProfile = ({ navigation, route }) => {
             handleErrorMsg()
             setErrorMessage('Please entrer first name')
             return
+        } else if (!validateLetters(isFirstName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isFirstName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isMiddleName) {
             handleErrorMsg()
             setErrorMessage('Please entrer middle name')
             return
+        } else if (!validateLetters(isMiddleName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isMiddleName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (!isLastdName) {
             handleErrorMsg()
             setErrorMessage('Please entrer last name')
             return
+        } else if (!validateLetters(isLastdName)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and numbers are not allowed')
+            return
+        } else if (isLastdName.length < 2) {
+            handleErrorMsg()
+            setErrorMessage('Name should greater than tow digit')
+            return
         }
+
         if (selectedDate == null) {
             handleErrorMsg()
             setErrorMessage('Please select D.O.B')
             return
         }
+
+        if (!isHeight) {
+            handleErrorMsg()
+            setErrorMessage('Please enter height')
+            return
+        } else if (!validateNumbers(isHeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
+        }
+
+        if (!isWeight) {
+            handleErrorMsg()
+            setErrorMessage('Please enter weight')
+            return
+        } else if (!validateNumbers(isWeight)) {
+            handleErrorMsg()
+            setErrorMessage('Special characters and text are not allowed')
+            return
+        }
+
         if (optionGender == null) {
             handleErrorMsg()
             setErrorMessage('Please select gender')
@@ -398,184 +443,188 @@ const ChildUpdateProfile = ({ navigation, route }) => {
                 </Animated.View>
             )}
 
-
-            <View style={styles.headerBox}>
-                <BackIconSecton
-                    onPress={() => navigation.goBack()}
-                    title='Profile update'
-                />
-                <SvgXml xml={iamges[indexImage]} width={132} height={73} />
-                <View style={styles.menuBox}>
-                    <StackSection
-                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
+            <ImageBackground
+                source={assets.ParkElement}
+                style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
+            >
+                <View style={styles.headerBox}>
+                    <BackIconSecton
+                        onPress={() => navigation.goBack()}
+                        title='Profile update'
                     />
-                </View>
-            </View>
-
-            <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50, flex: 1, alignSelf: 'center' }}>
-                <View style={[styles.profilePicture, { marginTop: isKeyboardVisible === true ? 100 : 0 }]}>
-                    <UploadImage />
-                </View>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    style={{
-                        width: '100%',
-                        alignSelf: 'center',
-                        flex: 1
-                    }}
-                >
-
-                    <InputBox
-                        label='First name'
-                        placeholder='Enter first name'
-                        value={isFirstName}
-                        setValue={setFirstName}
-                    // autoCapitalize='none'
-                    />
-
-                    <View style={{ marginTop: 10 }}>
-                        <InputBox
-                            label='Middle name'
-                            placeholder='Enter middle name'
-                            value={isMiddleName}
-                            setValue={setMiddleName}
-                        // autoCapitalize='none'
+                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                    <View style={styles.menuBox}>
+                        <StackSection
+                            onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
                         />
                     </View>
+                </View>
 
-                    <View style={{ marginTop: 10 }}>
+                <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50, flex: 1, alignSelf: 'center' }}>
+                    <View style={[styles.profilePicture, { marginTop: isKeyboardVisible === true ? 100 : 0 }]}>
+                        <UploadImage />
+                    </View>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{
+                            width: '100%',
+                            alignSelf: 'center',
+                            flex: 1
+                        }}
+                    >
+
                         <InputBox
-                            label='Last name'
-                            placeholder='Enter last name'
-                            value={isLastdName}
-                            setValue={setLastdName}
+                            label='First name'
+                            placeholder='Enter first name'
+                            value={isFirstName}
+                            setValue={setFirstName}
                         // autoCapitalize='none'
                         />
-                    </View>
 
-                    <View style={{ marginTop: 10 }}>
-                        <View style={{ paddingHorizontal: 5 }}>
-
-                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Date of birth:</Text>
-                            <TouchableOpacity
-                                style={{
-                                    width: '100%',
-                                    height: 50,
-                                    backgroundColor: '#FFFFFF',
-                                    borderRadius: 10,
-                                    paddingHorizontal: 20,
-                                    ...SHADOWS.light,
-                                    marginRight: 5,
-                                    justifyContent: 'center'
-                                }}
-                                onPress={showDatePicker}>
-                                <Text
-                                    style={[styles.inputStyleLeft, { color: selectedDate ? '#000000' : '#727c95' }]} name="userbirth" value={userBirth}
-                                    placeholder="Date of Birth"
-                                    placeholderTextColor={selectedDate ? '#727c95' : "#000000"}
-                                    onChangeText={actualData => setUserBirth(actualData)}
-                                >{`${selectedDate ? moment(selectedDate).format("DD-MM-YYYY") : "Date of Birth"}`}</Text>
-
-                            </TouchableOpacity>
-
-                            <DateTimePickerModal
-                                isVisible={userBirth}
-                                mode="date"
-                                onConfirm={handleConfirm}
-                                onCancel={hideDatePicker}
+                        <View style={{ marginTop: 10 }}>
+                            <InputBox
+                                label='Middle name'
+                                placeholder='Enter middle name'
+                                value={isMiddleName}
+                                setValue={setMiddleName}
+                            // autoCapitalize='none'
                             />
                         </View>
-                    </View>
 
-                    <View style={{ marginTop: 10 }}>
-                        <InputBox
-                            label='Height (CM)'
-                            placeholder='Enter height (CM)'
-                            value={isHeight.toString()}
-                            setValue={setHeight}
+                        <View style={{ marginTop: 10 }}>
+                            <InputBox
+                                label='Last name'
+                                placeholder='Enter last name'
+                                value={isLastdName}
+                                setValue={setLastdName}
                             // autoCapitalize='none'
-                            keyboardType='number-pad'
-                        />
-                    </View>
+                            />
+                        </View>
 
-                    <View style={{ marginTop: 10 }}>
-                        <InputBox
-                            label='Weight (KG)'
-                            placeholder='Enter weight (KG)'
-                            value={isWeight.toString()}
-                            setValue={setWeight}
-                            // autoCapitalize='none'
-                            keyboardType='number-pad'
-                        />
-                    </View>
+                        <View style={{ marginTop: 10 }}>
+                            <View style={{ paddingHorizontal: 5 }}>
 
-                    <View style={{ marginTop: 10 }}>
-                        <View style={{ paddingHorizontal: 5 }}>
-                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Gender:</Text>
+                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Date of birth:</Text>
+                                <TouchableOpacity
+                                    style={{
+                                        width: '100%',
+                                        height: 50,
+                                        backgroundColor: '#FFFFFF',
+                                        borderRadius: 10,
+                                        paddingHorizontal: 20,
+                                        ...SHADOWS.light,
+                                        marginRight: 5,
+                                        justifyContent: 'center'
+                                    }}
+                                    onPress={showDatePicker}>
+                                    <Text
+                                        style={[styles.inputStyleLeft, { color: selectedDate ? '#000000' : '#727c95' }]} name="userbirth" value={userBirth}
+                                        placeholder="Date of Birth"
+                                        placeholderTextColor={selectedDate ? '#727c95' : "#000000"}
+                                        onChangeText={actualData => setUserBirth(actualData)}
+                                    >{`${selectedDate ? moment(selectedDate).format("DD-MM-YYYY") : "Date of Birth"}`}</Text>
 
-                            <View
-                                style={{
-                                    width: '100%',
-                                    height: 50,
-                                    // backgroundColor: '#FFFFFF',
-                                    // borderRadius: 10,
-                                    // paddingHorizontal: 20,
-                                    // ...SHADOWS.light,
-                                    marginRight: 5,
-                                    // justifyContent: 'center'
-                                }}
-                            >
+                                </TouchableOpacity>
 
-                                <RadioButtonBoxValue
-                                    data={genderData}
-                                    onSelect={(value) => setOptionGender(value)}
+                                <DateTimePickerModal
+                                    isVisible={userBirth}
+                                    mode="date"
+                                    onConfirm={handleConfirm}
+                                    onCancel={hideDatePicker}
                                 />
-
                             </View>
                         </View>
-                    </View>
 
-                    <View style={{ marginTop: 10 }}>
-                        <View style={{ paddingHorizontal: 5 }}>
-                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Specially abled:</Text>
+                        <View style={{ marginTop: 10 }}>
+                            <InputBox
+                                label='Height (CM)'
+                                placeholder='Enter height (CM)'
+                                value={isHeight.toString()}
+                                setValue={setHeight}
+                                // autoCapitalize='none'
+                                keyboardType='number-pad'
+                            />
+                        </View>
 
-                            <View
-                                style={{
-                                    width: '100%',
-                                    height: 50,
-                                    // backgroundColor: '#FFFFFF',
-                                    // borderRadius: 10,
-                                    // paddingHorizontal: 20,
-                                    // ...SHADOWS.light,
-                                    marginRight: 5,
-                                    // justifyContent: 'center'
-                                }}
-                            >
+                        <View style={{ marginTop: 10 }}>
+                            <InputBox
+                                label='Weight (KG)'
+                                placeholder='Enter weight (KG)'
+                                value={isWeight.toString()}
+                                setValue={setWeight}
+                                // autoCapitalize='none'
+                                keyboardType='number-pad'
+                            />
+                        </View>
 
-                                <RadioButtonBoxValue
-                                    data={speciallyAbledData}
-                                    onSelect={(value) => setOption(value)}
-                                />
+                        <View style={{ marginTop: 10 }}>
+                            <View style={{ paddingHorizontal: 5 }}>
+                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Gender:</Text>
 
+                                <View
+                                    style={{
+                                        width: '100%',
+                                        height: 50,
+                                        // backgroundColor: '#FFFFFF',
+                                        // borderRadius: 10,
+                                        // paddingHorizontal: 20,
+                                        // ...SHADOWS.light,
+                                        marginRight: 5,
+                                        // justifyContent: 'center'
+                                    }}
+                                >
+
+                                    <RadioButtonBoxValue
+                                        data={genderData}
+                                        onSelect={(value) => setOptionGender(value)}
+                                    />
+
+                                </View>
                             </View>
                         </View>
-                    </View>
 
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        marginTop: 20,
-                        marginRight: 5
-                    }}>
-                        <TouchableOpacity
-                            style={styles.forwardIcon}
-                            onPress={submitData}
-                        >
-                            {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </View>
+                        <View style={{ marginTop: 10 }}>
+                            <View style={{ paddingHorizontal: 5 }}>
+                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Specially abled:</Text>
+
+                                <View
+                                    style={{
+                                        width: '100%',
+                                        height: 50,
+                                        // backgroundColor: '#FFFFFF',
+                                        // borderRadius: 10,
+                                        // paddingHorizontal: 20,
+                                        // ...SHADOWS.light,
+                                        marginRight: 5,
+                                        // justifyContent: 'center'
+                                    }}
+                                >
+
+                                    <RadioButtonBoxValue
+                                        data={speciallyAbledData}
+                                        onSelect={(value) => setOption(value)}
+                                    />
+
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            marginTop: 20,
+                            marginRight: 5
+                        }}>
+                            <TouchableOpacity
+                                style={styles.forwardIcon}
+                                onPress={submitData}
+                            >
+                                {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
+                </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
@@ -617,7 +666,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: FONT.Charlatan,
         fontSize: SIZES.xxl,
-        color: COLORS.brand.black,
+        color: "#FFFFFF",
         marginLeft: 20
     },
     registrationBtn: {

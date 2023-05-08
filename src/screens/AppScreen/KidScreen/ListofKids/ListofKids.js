@@ -159,7 +159,7 @@ const ListofKids = ({ navigation }) => {
                         <View style={{ flex: 1, marginLeft: 5, height: '100%' }}>
                             <Text style={[styles.labelText]}>Name:</Text>
                             <Text style={[styles.titleText]}>{AdmitCardData.firstName} {AdmitCardData.lastName}</Text>
-                            <Text style={[styles.labelText]}>Husband name:</Text>
+                            <Text style={[styles.labelText]}>Father name:</Text>
                             <Text style={[styles.titleText]}>{AdmitCardData.middleName} {AdmitCardData.lastName}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <View style={{ width: '49%' }}>
