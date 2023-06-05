@@ -1,32 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, ImageBackground, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
-import MenuComponents from '../../../components/MenuComponents';
-import BackIcon from '../../../../assets/images/BackIcon';
-import BellIcon from '../../../../assets/images/BellIcon';
-import AddIcon from '../../../../assets/images/AddIcon';
-import ChildIcon from '../../../../assets/images/ChildIcon';
-import LogoIcon from '../../../../assets/images/LogoIcon';
 import ScreenTab from '../../../components/ScreenTab';
-import LogoutIcon from '../../../../assets/images/LogoutIcon';
 import { BackIconSecton, BellSection, LogoutSection, RegistrationSection, StackSection } from '../../../components/CustomButtons';
 import { AuthContext } from '../../../context/AuthContext';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
-import FastImage from 'react-native-fast-image';
-import welcomImage from './../../../../assets/images/welcome_img.gif'
-import PromoVideo from './../../../../assets/images/welcome_video.mp4'
+import PromoVideo from './../../../../assets/images/women.mp4'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Video from 'react-native-video';
 import '../../../Language/i18n';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../../../../assets/images/CloseIcon';
 import PlusIcon from '../../../../assets/images/PlusIcon';
+import BoardEng from '../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../assets/images/Board-Mar.png'
 
 const WomenScreen = ({ navigation }) => {
     const { userLogout } = useContext(AuthContext)
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [indexImage, setIndexImage] = useState(0);
     const [isPromoVideo, setPromoVideo] = React.useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -109,17 +103,12 @@ const WomenScreen = ({ navigation }) => {
                         barStyle='light-content'
                         backgroundColor={COLORS.brand.primary}
                     />
-                    {/* <FastImage
-                        style={{ width: '100%', height: '100%' }}
-                        source={welcomImage}
-                        resizeMode={FastImage.resizeMode.cover}
-                    /> */}
                     <Video
                         source={PromoVideo}
                         resizeMode="cover"
                         style={{ width: '100%', height: '100%' }}
                         play={isPlaying}
-                        muted={true}
+                        muted={false}
                         paused={false}
                         repeat={false}
                         playInBackground={false}
@@ -157,7 +146,7 @@ const WomenScreen = ({ navigation }) => {
                                 title={t('Women')}
                             />
 
-                            <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                            <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
 
                             <View style={styles.menuBox}>
                                 <BellSection
@@ -180,7 +169,7 @@ const WomenScreen = ({ navigation }) => {
                         </View>
 
                         <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
-                            <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: 30 }}>
+                            <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: windowWidth >= 1280 ? 30 : 20 }}>
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
                                     <ScreenTab
@@ -191,13 +180,13 @@ const WomenScreen = ({ navigation }) => {
 
                                     <ScreenTab
                                         title={t("Food & Fitness")}
-                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'FoodFitnessStack' })}
                                         source={assets.FitnessImg}
                                     />
 
                                     <ScreenTab
                                         title={t("Growth & Changes")}
-                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GarbhaSanskarStack' })}
+                                        onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'GrowthChangesStack' })}
                                         source={assets.GrowthImg}
                                     />
 
@@ -230,9 +219,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginTop: 10
     },
     titleText: {
         fontFamily: FONT.Charlatan,
@@ -241,10 +229,10 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 1280 ? 400 : 300,
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     sectionBox: {
         width: windowWidth - 100,

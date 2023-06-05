@@ -29,6 +29,9 @@ export const FONT = {
     MartelSansLight: 'MartelSans-Light',
     MartelSansRegular: 'MartelSans-Regular',
     MartelSansSemiBold: 'MartelSans-SemiBold',
+    FourCAbhishek: 'Four-C-Abhishek',
+    FourCAbhishekBold: 'Four-C-AbhishekBold',
+    FourCAbhishekhead: 'Four-C-Abhishekhead',
 }
 
 export const SHADOWS = {

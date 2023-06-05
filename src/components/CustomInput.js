@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import { COLORS, FONT, SHADOWS, SIZES } from '../constants'
 import SearchIcon from '../../assets/images/SearchIcon'
-import { SvgXml } from 'react-native-svg'
+import { SvgXml } from 'react-native-svg';
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 export const Input = ({
     props,
     name,
@@ -23,15 +25,18 @@ export const Input = ({
             </View>
             <View style={{
                 width: '68%',
-                height: 50,
                 backgroundColor: '#FFFFFF',
                 borderRadius: 10,
-                paddingHorizontal: 20,
                 ...SHADOWS.light,
                 marginRight: 5,
+                paddingHorizontal: 10
             }}>
                 <TextInput
-                    style={styles.inputStyle}
+                    // style={styles.inputStyle}
+                    style={{
+                        color: COLORS.brand.black,
+                        fontFamily: FONT.MartelSansSemiBold,
+                    }}
                     placeholder={placeholder}
                     placeholderTextColor='#727c95'
                     onChangeText={(text) => setValue(text)}
@@ -65,15 +70,18 @@ export const InputBox = ({
             <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>{label}:</Text>
             <View style={{
                 width: '100%',
-                height: 50,
                 backgroundColor: '#FFFFFF',
                 borderRadius: 10,
-                paddingHorizontal: 20,
                 ...SHADOWS.light,
-                marginBottom: 5
+                marginBottom: 5,
+                paddingHorizontal: 10,
             }}>
                 <TextInput
-                    style={styles.inputStyle}
+                    // style={styles.inputStyle}
+                    style={{
+                        color: COLORS.brand.black,
+                        fontFamily: FONT.MartelSansSemiBold,
+                    }}
                     placeholder={placeholder}
                     placeholderTextColor='#727c95'
                     onChangeText={(text) => setValue(text)}
@@ -207,17 +215,22 @@ export const InputBoxSearch = ({
 }) => {
     return (
         <View style={{
-            height: 50,
+            // height: 50,
             backgroundColor: '#FFFFFF',
-            borderRadius: 50 / 2,
-            paddingHorizontal: 20,
+            // borderRadius: 50 / 2,
+            borderRadius: 50,
             ...SHADOWS.light,
-            width: 300,
+            width: windowWidth >= 960 ? 360 : 300,
+            paddingHorizontal: 20,
         }}>
             <TextInput
                 value={value}
                 onChangeText={onChangeText}
-                style={styles.inputStyle}
+                // style={styles.inputStyle}
+                style={{
+                    color: COLORS.brand.black,
+                    fontFamily: FONT.MartelSansSemiBold,
+                }}
                 placeholder={placeholder}
                 placeholderTextColor='#727c95'
             />
@@ -230,6 +243,9 @@ const styles = StyleSheet.create({
         fontFamily: FONT.MartelSansSemiBold,
         fontSize: SIZES.medium,
         color: COLORS.brand.black,
-        flex: 1,
+        textAlignVertical: 'top',
+        paddingHorizontal: 12,
+        paddingVertical: 12
     },
+
 })

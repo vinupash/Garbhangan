@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ActivityIndicator, Image, Alert, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ActivityIndicator, Image, Alert, ImageBackground, ScrollView } from 'react-native';
 import { COLORS, FONT, SIZES, SHADOWS, assets } from '../../constants';
 import { SvgXml } from 'react-native-svg';
 import LogoIcon from '../../../assets/images/LogoIcon';
@@ -18,11 +18,14 @@ import BoardHin from '../../../assets/images/Board-Hin.png'
 import BoardMar from '../../../assets/images/Board-Mar.png'
 import { LogoutSection } from '../../components/CustomButtons';
 import { AuthContext } from '../../context/AuthContext';
+import ScreenTab from '../../components/ScreenTab';
 
 const HomeScreen = ({ navigation }) => {
     const { userLogout } = useContext(AuthContext)
     const [isLoading, setLoading] = useState(false)
-    // const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
+    const texts = ['Shikshan, Aaichya Savalitla', 'शिक्षण, आईच्या सावलीतल', 'सिख, मां की छाँव में'];
+    const logotext = ['garbh', 'गर्भ', 'गर्भ'];
+    const logotexts = ['angan', 'आंगण', 'आंगण'];
     // const iamges = [LogoIcon, LogoIcon, LogoIcon];
     const [index, setIndex] = useState(0);
     // const [indexImage, setIndexImage] = useState(0);
@@ -91,13 +94,29 @@ const HomeScreen = ({ navigation }) => {
         }, 7000);
     };
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setIndex((index + 1) % texts.length);
-    //     }, 5000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndex((index + 1) % texts.length);
+        }, 5000);
 
-    //     return () => clearInterval(interval);
-    // }, [index]);
+        return () => clearInterval(interval);
+    }, [index]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndex((index + 1) % logotext.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [index]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndex((index + 1) % logotexts.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [index]);
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -122,12 +141,12 @@ const HomeScreen = ({ navigation }) => {
                     <Image source={source}
                         style={{
                             width: '100%',
-                            height: 310,
+                            height: windowWidth >= 1280 ? 400 : 210,
                             borderRadius: 16,
                         }}
                     />
                 </View>
-                <View style={{ height: 30, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={[styles.btnText]}>{title}</Text>
                 </View>
             </TouchableOpacity>
@@ -153,12 +172,6 @@ const HomeScreen = ({ navigation }) => {
                         barStyle='light-content'
                         backgroundColor={COLORS.brand.primary}
                     />
-                    {/* <FastImage
-                        style={{ width: '100%', height: '100%' }}
-                        source={welcomImage}
-                        resizeMode={FastImage.resizeMode.cover}
-                    /> */}
-
                     <Video
                         source={PromoVideo}
                         resizeMode="cover"
@@ -199,24 +212,43 @@ const HomeScreen = ({ navigation }) => {
                         source={assets.ParkElement}
                         style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
                     >
-                        <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                        <View style={{ flexDirection: 'column', height: '100%' }}>
 
                             <View style={styles.headerBox}>
                                 <View style={{ width: 50, height: 50 }}></View>
-                                <Image source={iamges[indexImage]} style={{ width: 280, height: 120 }} />
+                                <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 360 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                                 <LogoutSection onPress={userLogout} />
                             </View>
-                            {/* <ImageBackground
-                                source={assets.Bamboojungle}
-                                style={{ width: 280, height: 160, resizeMode: 'cover', position: 'relative', justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <SvgXml xml={iamges[indexImage]} width={128} height={69} style={{ marginTop: 40 }} />
-                                <Text style={styles.subTitle}>{texts[index]}</Text>
-                            </ImageBackground> */}
-                            <View style={styles.btnBox}>
+
+                            <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                                <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: windowWidth >= 1280 ? 30 : 10 }}>
+                                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                        <ScreenTab
+                                            title={t('Women')}
+                                            onPress={() => navigation.navigate('WomenNavigationsStack')}
+                                            source={assets.women_img}
+                                        />
+
+                                        <ScreenTab
+                                            title={t("Kid's")}
+                                            onPress={() => navigation.navigate('KidNavigationsStack')}
+                                            source={assets.child_img}
+                                        />
+
+                                        <ScreenTab
+                                            title={t("Docter")}
+                                            onPress={() => navigation.navigate('DocterNavigationsStack')}
+                                            source={assets.DocterImg}
+                                        />
+
+                                    </ScrollView>
+                                </View>
+                            </View>
+
+                            {/* <View style={styles.btnBox}>
                                 <View style={{
-                                    width: 220,
-                                    height: 350,
+                                    width: windowWidth >= 1280 ? 300 : 180,
+                                    height: windowWidth >= 1280 ? 450 : 240,
                                 }}>
                                     <BtnSection
                                         title={t('Women')}
@@ -225,8 +257,8 @@ const HomeScreen = ({ navigation }) => {
                                     />
                                 </View>
                                 <View style={{
-                                    width: 220,
-                                    height: 350,
+                                    width: windowWidth >= 1280 ? 300 : 180,
+                                    height: windowWidth >= 1280 ? 450 : 240,
                                 }}>
                                     <BtnSection
                                         title={t("Kid's")}
@@ -234,7 +266,18 @@ const HomeScreen = ({ navigation }) => {
                                         source={assets.child_img}
                                     />
                                 </View>
-                            </View>
+
+                                <View style={{
+                                    width: windowWidth >= 1280 ? 300 : 180,
+                                    height: windowWidth >= 1280 ? 450 : 240,
+                                }}>
+                                    <BtnSection
+                                        title={t("Docter")}
+                                        onPress={() => navigation.navigate('DocterNavigationsStack')}
+                                        source={assets.DocterImg}
+                                    />
+                                </View>
+                            </View> */}
                         </View>
                     </ImageBackground>
                 </SafeAreaView>
@@ -253,23 +296,16 @@ const styles = StyleSheet.create({
         height: windowHeight
     },
     btnBox: {
-        marginBottom: 30,
-        width: windowWidth - 450,
+        marginTop: windowWidth >= 1280 ? 30 : 15,
+        width: windowWidth - 200,
         alignSelf: 'center',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        // marginTop: 30,
-    },
-    subTitle: {
-        fontSize: SIZES.small,
-        fontFamily: FONT.MartelSansRegular,
-        color: '#FFFFFF',
-        marginTop: 5
     },
     sectionBtn: {
         width: '100%',
-        height: 350,
+        height: windowWidth >= 1280 ? 450 : 235,
         borderRadius: 16,
         backgroundColor: "#FFFFFF",
         ...SHADOWS.light,
@@ -277,12 +313,12 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontFamily: FONT.Charlatan,
-        fontSize: SIZES.mediumLarge,
-        color: COLORS.brand.black
+        fontSize: windowWidth >= 1280 ? SIZES.large : SIZES.medium,
+        color: COLORS.brand.black,
     },
     loginBtnInner: {
         width: '100%',
-        height: 310,
+        height: windowWidth >= 1280 ? 400 : 200,
         borderRadius: 16,
         backgroundColor: COLORS.brand.primary,
         justifyContent: 'center',

@@ -73,11 +73,9 @@ const LoginScreen = ({ navigation }) => {
                 source={assets.BackgroundLanguage}
                 style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
             >
-                <View style={{ marginTop: 5, marginBottom: 10 }}>
-                    <HeaderContent
-                        onPress={navigation.goBack}
-                    />
-                </View>
+                <HeaderContent
+                    onPress={navigation.goBack}
+                />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                 >
@@ -113,24 +111,12 @@ const LoginScreen = ({ navigation }) => {
                                 style={styles.backIcon}
                                 onPress={submitData}
                             >
-                                {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
+                                {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={windowWidth >= 1280 ? 40 : 30} width={windowWidth >= 1280 ? 40 : 30} />}
                             </TouchableOpacity>
                         </View>
                     </View>
 
                 </ScrollView>
-                {/* {!isKeyboardVisible
-                    ?
-                    <TouchableOpacity
-
-                        style={styles.backIcon}
-                        onPress={submitData}
-                    >
-                        <SvgXml xml={ForwardArrow} height={30} width={30} />
-                    </TouchableOpacity>
-                    :
-                    null
-                } */}
 
             </ImageBackground>
         </SafeAreaView>
@@ -142,15 +128,13 @@ export default LoginScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         backgroundColor: COLORS.brand.background
     },
     pageTitle: {
-        fontSize: SIZES.mediumLarge,
+        fontSize: windowWidth >= 1280 ? SIZES.extraLarge : SIZES.mediumLarge,
         fontFamily: FONT.MartelSansSemiBold,
         color: COLORS.brand.black,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     btnBox: {
         width: '70%',
@@ -158,16 +142,13 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     backIcon: {
-        width: 60,
-        height: 60,
-        borderRadius: 60 / 2,
+        width: windowWidth >= 1280 ? 80 : 40,
+        height: windowWidth >= 1280 ? 80 : 40,
+        borderRadius: windowWidth >= 1280 ? 80 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: COLORS.brand.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        // position: 'absolute',
-        // bottom: 20,
-        // right: 20
     },
     snackbar: {
         backgroundColor: '#B71C1C',

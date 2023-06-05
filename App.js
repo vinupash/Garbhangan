@@ -11,7 +11,8 @@ const App = () => {
   const [refreshToken, setRefreshToken] = useState(null);
   const [isLoading, setLoading] = useState(false)
   // const isFocused = useIsFocused()
-  const BASE_URL = 'http://51.77.105.23:81/';
+  const BASE_URL = 'https://dev-api.garbhangan.in:5000/';
+  // const BASE_URL = 'http://51.77.105.23:81/';
 
   const checkTokenExpiration = async () => {
     try {

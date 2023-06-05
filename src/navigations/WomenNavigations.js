@@ -5,10 +5,12 @@ import NotificationScreen from '../screens/AppScreen/NotificationScreen';
 import NewRegistrationWomen from '../screens/AppScreen/WomenScreen/NewRegistrationWomen';
 // import LanguageScreen from '../screens/AppScreen/WomenScreen/GarbhaSanskar/LanguageScreen';
 import GarbhaSanskarStack from './GarbhaSanskarStack';
+import FoodFitnessStack from './FoodFitnessStack';
 import ListofWomens from '../screens/AppScreen/WomenScreen/ListofWomens/ListofWomens';
 import DetailsView from '../screens/AppScreen/WomenScreen/ListofWomens/DetailsView';
 import WomenUpdateProfile from '../screens/AppScreen/WomenScreen/WomenUpdateProfile';
 import WomenDoctorCheckup from '../screens/AppScreen/WomenScreen/WomenDoctorCheckup';
+import GrowthChangesStack from './GrowthChangesStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +22,6 @@ const WomenNavigations = () => {
                 component={WomenScreen}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -28,7 +29,6 @@ const WomenNavigations = () => {
                 component={NotificationScreen}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -36,7 +36,6 @@ const WomenNavigations = () => {
                 component={NewRegistrationWomen}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -44,7 +43,20 @@ const WomenNavigations = () => {
                 component={GarbhaSanskarStack}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
+                }}
+            />
+            <Stack.Screen
+                name="FoodFitnessStack"
+                component={FoodFitnessStack}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="GrowthChangesStack"
+                component={GrowthChangesStack}
+                options={{
+                    headerShown: false,
                 }}
             />
             <Stack.Screen
@@ -52,7 +64,6 @@ const WomenNavigations = () => {
                 component={ListofWomens}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -60,7 +71,6 @@ const WomenNavigations = () => {
                 component={DetailsView}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -68,7 +78,6 @@ const WomenNavigations = () => {
                 component={WomenUpdateProfile}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -76,7 +85,6 @@ const WomenNavigations = () => {
                 component={WomenDoctorCheckup}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
         </Stack.Navigator>

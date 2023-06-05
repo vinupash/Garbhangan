@@ -10,6 +10,11 @@ import BoardMar from '../../assets/images/Board-Mar.png';
 import GarbhSanskar from '../../assets/images/garbh_sanskar.png';
 import FitnessImg from '../../assets/images/fitness_img.png';
 import GrowthImg from '../../assets/images/growth_img.png';
+import WoodBord from '../../assets/images/wood-bord.png';
+import ChildEdu from '../../assets/images/child_edu.png';
+import DocterImg from '../../assets/images/docter_img.png';
+import DocterCheckup from '../../assets/images/docter_checkup.png';
+import LanguageBackground from '../../assets/images/Language-Background.png';
 
 export default {
     BackgroundLanguage,
@@ -23,5 +28,10 @@ export default {
     BoardMar,
     GarbhSanskar,
     FitnessImg,
-    GrowthImg
+    GrowthImg,
+    WoodBord,
+    ChildEdu,
+    DocterImg,
+    DocterCheckup,
+    LanguageBackground
 };

@@ -6,7 +6,9 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setLoading] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
     const [refreshToken, setRefreshToken] = useState(null);
-    const BASE_URL = 'http://51.77.105.23:81/';
+    const BASE_URL = 'https://dev-api.garbhangan.in:5000/';
+    // const BASE_URL = 'http://51.77.105.23:81/';
+
 
     const UserLoginFun = async (isUserId, isPassword) => {
         try {

@@ -12,11 +12,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { womenListApi } from '../../../../constants/AllApiCall';
 import moment from 'moment';
 import { InputBoxSearch } from '../../../../components/CustomInput';
+import BoardEng from '../../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../../assets/images/Board-Mar.png'
 
 const ListofWomens = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
     const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [index, setIndex] = useState(0);
     const [indexImage, setIndexImage] = useState(0);
     const [isWomenList, setWomenList] = useState([])
@@ -145,9 +148,6 @@ const ListofWomens = ({ navigation }) => {
                                     />
                                     :
                                     <Image
-                                        // source={{
-                                        //     uri: AdmitCardData.profilePicture,
-                                        // }}
                                         source={{ uri: `data:image/png;base64,${AdmitCardData.profilePicture}` }}
                                         style={{
                                             width: 80,
@@ -156,14 +156,6 @@ const ListofWomens = ({ navigation }) => {
                                         }}
                                     />
                             }
-                            {/* <Image
-                                source={assets.women_img}
-                                style={{
-                                    width: 80,
-                                    height: 100,
-                                    borderRadius: 5,
-                                }}
-                            /> */}
                         </View>
                         <View style={{ flex: 1, marginLeft: 5, height: '100%' }}>
                             <Text style={[styles.labelText]}>Name:</Text>
@@ -185,11 +177,6 @@ const ListofWomens = ({ navigation }) => {
                                     <Text style={[styles.labelText]}>D.O.B:</Text>
                                     <Text style={[styles.titleText]}>{moment(AdmitCardData.dateOfBirth).format("DD-MM-YYYY")}</Text>
                                 </View>
-                                {/* {moment(selectedDate).format("DD-MM-YYYY")} */}
-                                {/* <View style={{ width: '49%' }}>
-                                    <Text style={[styles.labelText]}>Pregnancy date:</Text>
-                                    <Text style={[styles.titleText]}>{AdmitCardData.pregnancyDate}</Text>
-                                </View> */}
                             </View>
 
                         </View>
@@ -227,7 +214,7 @@ const ListofWomens = ({ navigation }) => {
                             onPress={() => navigation.goBack()}
                             title="List of Women's"
                         />
-                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                         <View style={styles.menuBox}>
                             <InputBoxSearch
                                 value={query}
@@ -241,10 +228,8 @@ const ListofWomens = ({ navigation }) => {
                         style={{ width: '100%', height: '100%' }}
                     >
                         <View style={styles.cardSection}>
-                            {/* {!isWomenList ? <Text style={{ fontFamily: FONT.Charlatan, fontSize: SIZES.extraLarge, textAlign: 'center', width: '100%', marginTop: 50, color: '#B71C1C' }}>No record found</Text> : <>{AdmitCard()}</>} */}
                             {filteredData.length === 0 ? <Text style={{ fontFamily: FONT.Charlatan, fontSize: SIZES.extraLarge, textAlign: 'center', width: '100%', marginTop: 50, color: '#B71C1C' }}>No record found</Text> : <>{AdmitCard()}</>}
                         </View>
-                        {/* {filteredData.length === 0 ? <Text>Cool</Text> : <Text>Not cool</Text>} */}
                     </ScrollView>
                 </View>
             </ImageBackground>
@@ -263,13 +248,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginVertical: 10,
-        height: 75,
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 1280 ? 400 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end'
@@ -277,14 +260,12 @@ const styles = StyleSheet.create({
     cardSection: {
         flexDirection: 'row',
         flexWrap: "wrap",
-        // justifyContent: 'space-between',
         width: windowWidth - 50,
         alignSelf: 'center'
     },
     boxContent: {
-        width: '31%',
-        marginVertical: 5,
-        marginHorizontal: 10
+        width: windowWidth >= 1280 ? '25%' : '33.33%',
+        padding: 8,
     },
     sectionBtn: {
         width: '100%',
@@ -292,11 +273,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: "#FFFFFF",
         ...SHADOWS.light,
-        marginBottom: 5,
         flexDirection: 'row',
-        // justifyContent: 'space-between',
-        // alignItems: 'center',
-        padding: 5
+        padding: 5,
     },
     profileSection: {
         width: 80,

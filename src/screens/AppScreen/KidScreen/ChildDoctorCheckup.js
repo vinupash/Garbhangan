@@ -16,10 +16,13 @@ import { addChildCheckupApi, addWomenCheckupApi, getChildDetailsApi, getDoctorLi
 import { Dropdown } from 'react-native-element-dropdown';
 import WomenIcon from '../../../../assets/images/WomenIcon';
 import { validateNumbers } from '../../../constants/methods';
+import BoardEng from '../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../assets/images/Board-Mar.png'
 
 const ChildDoctorCheckup = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [isWeight, setWeight] = useState('')
     const [isPregnancySymptoms, setPregnancySymptoms] = useState('')
     const [isMedicalHistory, setMedicalHistory] = useState('')
@@ -210,15 +213,15 @@ const ChildDoctorCheckup = ({ navigation, route }) => {
 
     const BackIconSecton = ({ onPress, title }) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 960 ? 360 : 300 }}>
                 <TouchableOpacity
+                    activeOpacity={0.98}
                     style={styles.backIcon}
                     onPress={onPress}
-                    activeOpacity={0.98}
                 >
-                    <SvgXml xml={BackIcon} height={25} width={25} />
+                    <SvgXml xml={BackIcon} height={windowWidth >= 960 ? 25 : 20} width={25} />
                 </TouchableOpacity>
-                <Text style={styles.titleText}>{title}</Text>
+                <Text style={[styles.titleText, { fontSize: windowWidth >= 960 ? SIZES.xxl : SIZES.extraLarge }]}>{title}</Text>
             </View>
         )
     }
@@ -230,7 +233,7 @@ const ChildDoctorCheckup = ({ navigation, route }) => {
                 onPress={onPress}
                 activeOpacity={0.98}
             >
-                <SvgXml xml={WomenIcon} height={40} width={40} />
+                <SvgXml xml={WomenIcon} height={windowWidth >= 960 ? 40 : 25} width={windowWidth >= 960 ? 40 : 25} />
             </TouchableOpacity>
         )
     }
@@ -272,7 +275,8 @@ const ChildDoctorCheckup = ({ navigation, route }) => {
                         onPress={() => navigation.goBack()}
                         title='Docter checkup'
                     />
-                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                    <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                     <View style={styles.menuBox}>
                         <StackSection
                             onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
@@ -286,8 +290,8 @@ const ChildDoctorCheckup = ({ navigation, route }) => {
                             <Image
                                 source={assets.child_img}
                                 style={{
-                                    width: 250,
-                                    height: 350,
+                                    width: windowWidth >= 960 ? 250 : 160,
+                                    height: windowWidth >= 960 ? 350 : 210,
                                     borderRadius: 10
                                 }}
                             />
@@ -295,8 +299,8 @@ const ChildDoctorCheckup = ({ navigation, route }) => {
                             <Image
                                 source={{ uri: `data:image/png;base64,${isProfileImage}` }}
                                 style={{
-                                    width: 250,
-                                    height: 350,
+                                    width: windowWidth >= 960 ? 250 : 160,
+                                    height: windowWidth >= 960 ? 350 : 210,
                                     borderRadius: 10
                                 }}
                             />
@@ -415,14 +419,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginVertical: 10
+        // marginVertical: 10
+        marginBottom: 10
     },
     backIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 960 ? 50 : 40,
+        height: windowWidth >= 960 ? 50 : 40,
+        borderRadius: windowWidth >= 960 ? 50 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -456,7 +461,7 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 960 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end'
@@ -519,8 +524,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF'
     },
     profilePicture: {
-        width: 250,
-        height: 350,
+        width: windowWidth >= 960 ? 250 : 160,
+        height: windowWidth >= 960 ? 350 : 210,
         backgroundColor: COLORS.brand.primary,
         borderRadius: 10,
         ...SHADOWS.light,

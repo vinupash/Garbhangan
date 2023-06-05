@@ -46,7 +46,7 @@ const LanguageScreen = ({ navigation }) => {
                             onPress={() => navigation.goBack()}
                             title='Language'
                         />
-                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} />
                         <View style={styles.menuBox}>
                             {/* <Text style={styles.titleText}>Language</Text> */}
                         </View>

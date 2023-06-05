@@ -18,10 +18,13 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateWomenProfileApi } from '../../../constants/AllApiCall';
 import { validateLetters, validateNumbers } from '../../../constants/methods';
+import BoardEng from '../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../assets/images/Board-Mar.png'
 
 const WomenUpdateProfile = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [isFirstName, setFirstName] = useState('')
     const [isMiddleName, setMiddleName] = useState('')
     const [isLastdName, setLastdName] = useState('')
@@ -258,14 +261,15 @@ const WomenUpdateProfile = ({ navigation, route }) => {
 
     const BackIconSecton = ({ onPress, title }) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 960 ? 360 : 300 }}>
                 <TouchableOpacity
+                    activeOpacity={0.98}
                     style={styles.backIcon}
                     onPress={onPress}
                 >
-                    <SvgXml xml={BackIcon} height={25} width={25} />
+                    <SvgXml xml={BackIcon} height={windowWidth >= 960 ? 25 : 20} width={25} />
                 </TouchableOpacity>
-                <Text style={styles.titleText}>{title}</Text>
+                <Text style={[styles.titleText, { fontSize: windowWidth >= 960 ? SIZES.xxl : SIZES.extraLarge }]}>{title}</Text>
             </View>
         )
     }
@@ -299,7 +303,7 @@ const WomenUpdateProfile = ({ navigation, route }) => {
                 style={styles.backIcon}
                 onPress={onPress}
             >
-                <SvgXml xml={ChildIcon} height={40} width={40} />
+                <SvgXml xml={ChildIcon} height={windowWidth >= 960 ? 40 : 25} width={windowWidth >= 960 ? 40 : 25} />
             </TouchableOpacity>
         )
     }
@@ -356,8 +360,8 @@ const WomenUpdateProfile = ({ navigation, route }) => {
                 }}
             >
                 <View style={{
-                    width: 250,
-                    height: 350,
+                    width: windowWidth >= 960 ? 250 : 160,
+                    height: windowWidth >= 960 ? 350 : 210,
                     backgroundColor: '#efefef',
                     marginBottom: 10,
                     borderRadius: 5,
@@ -367,15 +371,15 @@ const WomenUpdateProfile = ({ navigation, route }) => {
                     {editProfileImage ?
                         <>
                             {
-                                image && (<Image source={{ uri: image }} style={{ width: 250, height: 350, borderRadius: 5, }} />)
+                                image && (<Image source={{ uri: image }} style={{ width: windowWidth >= 960 ? 250 : 160, height: windowWidth >= 960 ? 350 : 210, borderRadius: 5, }} />)
                             }
                         </>
                         :
                         <Image
                             source={{ uri: `data:image/png;base64,${isProfileImage}` }}
                             style={{
-                                width: 250,
-                                height: 350,
+                                width: windowWidth >= 960 ? 250 : 160,
+                                height: windowWidth >= 960 ? 350 : 210,
                                 borderRadius: 5
                             }}
                         />
@@ -386,10 +390,12 @@ const WomenUpdateProfile = ({ navigation, route }) => {
                 <TouchableOpacity
                     style={[styles.forwardIcon, {
                         alignSelf: "center",
+                        width: windowWidth >= 960 ? 60 : 40,
+                        height: windowWidth >= 960 ? 60 : 40,
                     }]}
                     onPress={() => { captureImage('photo') }}
                 >
-                    <SvgXml xml={CameraIcon} height={30} width={30} />
+                    <SvgXml xml={CameraIcon} height={windowWidth >= 960 ? 30 : 15} width={windowWidth >= 960 ? 30 : 15} />
                 </TouchableOpacity>
             </View>
         )
@@ -444,7 +450,8 @@ const WomenUpdateProfile = ({ navigation, route }) => {
                         onPress={() => navigation.goBack()}
                         title='Profile update'
                     />
-                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                    <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                     <View style={styles.menuBox}>
                         <StackSection
                             onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
@@ -606,14 +613,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginVertical: 10
+        // marginVertical: 10
+        marginBottom: 10
     },
     backIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 960 ? 50 : 40,
+        height: windowWidth >= 960 ? 50 : 40,
+        borderRadius: windowWidth >= 960 ? 50 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -647,7 +655,7 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 960 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end'

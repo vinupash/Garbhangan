@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, ImageBackground, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
 import LogoIcon from '../../../../assets/images/LogoIcon';
@@ -11,16 +11,19 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 import FastImage from 'react-native-fast-image';
 import welcomImage from './../../../../assets/images/welcome_img.gif'
-import PromoVideo from './../../../../assets/images/welcome_video.mp4'
+import PromoVideo from './../../../../assets/images/kid_play.mp4'
 import Video from 'react-native-video';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../../../../assets/images/CloseIcon';
 import PlusIcon from '../../../../assets/images/PlusIcon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BoardEng from '../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../assets/images/Board-Mar.png'
 
 const KidScreen = ({ navigation }) => {
     const { userLogout } = useContext(AuthContext)
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [indexImage, setIndexImage] = useState(0);
     const [isPromoVideo, setPromoVideo] = React.useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -73,7 +76,8 @@ const KidScreen = ({ navigation }) => {
                 style={styles.backIcon}
                 onPress={onPress}
             >
-                <SvgXml xml={WomenIcon} height={40} width={40} />
+                {/* <SvgXml xml={WomenIcon} height={40} width={40} /> */}
+                <SvgXml xml={WomenIcon} height={windowWidth >= 1280 ? 40 : 25} width={windowWidth >= 1280 ? 40 : 25} />
             </TouchableOpacity>
         )
     }
@@ -121,17 +125,12 @@ const KidScreen = ({ navigation }) => {
                         barStyle='light-content'
                         backgroundColor={COLORS.brand.primary}
                     />
-                    {/* <FastImage
-                        style={{ width: '100%', height: '100%' }}
-                        source={welcomImage}
-                        resizeMode={FastImage.resizeMode.cover}
-                    /> */}
                     <Video
                         source={PromoVideo}
                         resizeMode="cover"
                         style={{ width: '100%', height: '100%' }}
                         play={isPlaying}
-                        muted={true}
+                        muted={false}
                         paused={false}
                         repeat={false}
                         playInBackground={false}
@@ -165,9 +164,9 @@ const KidScreen = ({ navigation }) => {
                         <View style={styles.headerBox}>
                             <BackIconSecton
                                 onPress={() => navigation.goBack()}
-                                title="Kid's"
+                                title={t("Kid's")}
                             />
-                            <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                            <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                             <View style={styles.menuBox}>
 
                                 <BellSection
@@ -190,12 +189,12 @@ const KidScreen = ({ navigation }) => {
                         </View>
 
                         <View style={{ justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
-                            <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: 30 }}>
+                            <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: windowWidth >= 1280 ? 30 : 10 }}>
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     <ScreenTab
-                                        title={t("List of Kid's")}
-                                        onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'ListofKids' })}
-                                        source={assets.child_img}
+                                        title={t("Kid's Education")}
+                                        onPress={() => navigation.navigate('LanguageScreen')}
+                                        source={assets.ChildEdu}
                                     />
 
                                     <ScreenTab
@@ -203,41 +202,11 @@ const KidScreen = ({ navigation }) => {
                                         onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'ListofKids' })}
                                         source={assets.child_img}
                                     />
+
                                 </ScrollView>
                             </View>
                         </View>
-
                     </ImageBackground>
-
-                    {/* <View style={{ flex: 1, justifyContent: 'center' }}>
-                <View style={styles.sectionBox}>
-                    <FlatList
-                        data={data}
-                        horizontal={true}
-                        renderItem={({ item }) =>
-                            <TouchableOpacity
-                                // onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
-                                style={styles.cardBox}
-                            >
-                                <View style={styles.innerCardBox}>
-
-                                </View>
-                                <View style={{
-                                    height: 30,
-                                    justifyContent: 'center',
-                                    alignItems: 'center', backgroundColor: '#FFFFFF', borderBottomEndRadius: 20,
-                                    borderBottomLeftRadius: 20,
-                                }}>
-                                    <Text style={styles.cardBoxTitle}>{item.value}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        }
-                        keyExtractor={item => item.key}
-                        ItemSeparatorComponent={() => <View style={styles.separator} />}
-                        showsHorizontalScrollIndicator={false}
-                    />
-                </View>
-            </View> */}
                 </SafeAreaView>
 
             }
@@ -257,23 +226,23 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginTop: 10
+        // marginTop: 10
     },
     backIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 1280 ? 60 : 40,
+        height: windowWidth >= 1280 ? 60 : 40,
+        borderRadius: windowWidth >= 1280 ? 60 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center'
     },
     bellIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 1280 ? 60 : 40,
+        height: windowWidth >= 1280 ? 60 : 40,
+        borderRadius: windowWidth >= 1280 ? 60 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -297,10 +266,10 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 1280 ? 400 : 300,
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     sectionBox: {
         width: windowWidth - 100,

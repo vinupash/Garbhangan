@@ -8,6 +8,8 @@ import DetailsView from '../screens/AppScreen/WomenScreen/ListofWomens/DetailsVi
 import DetailsViewKid from '../screens/AppScreen/KidScreen/ListofKids/DetailsViewKid';
 import ChildUpdateProfile from '../screens/AppScreen/KidScreen/ChildUpdateProfile';
 import ChildDoctorCheckup from '../screens/AppScreen/KidScreen/ChildDoctorCheckup';
+import VideoScreen from '../screens/AppScreen/KidScreen/VideoScreen';
+import KidsEducationStack from './KidsEducationStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +21,6 @@ const KidNavigations = () => {
                 component={KidScreen}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -27,7 +28,6 @@ const KidNavigations = () => {
                 component={NewRegistrationKid}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -35,7 +35,6 @@ const KidNavigations = () => {
                 component={LanguageScreen}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -43,7 +42,6 @@ const KidNavigations = () => {
                 component={ListofKids}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -51,7 +49,6 @@ const KidNavigations = () => {
                 component={DetailsViewKid}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -59,7 +56,6 @@ const KidNavigations = () => {
                 component={ChildUpdateProfile}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -67,7 +63,20 @@ const KidNavigations = () => {
                 component={ChildDoctorCheckup}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
+                }}
+            />
+            <Stack.Screen
+                name="KidsEducationStack"
+                component={KidsEducationStack}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="KidsVideoScreen"
+                component={VideoScreen}
+                options={{
+                    headerShown: false,
                 }}
             />
         </Stack.Navigator>

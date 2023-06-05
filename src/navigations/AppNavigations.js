@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/AppScreen/HomeScreen';
 import WomenNavigationsStack from './WomenNavigations';
 import KidNavigationsStack from './KidNavigations';
+import DocterNavigationsStack from './DocterNavigations';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +15,6 @@ const AppNavigations = () => {
                 component={HomeScreen}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -22,7 +22,6 @@ const AppNavigations = () => {
                 component={WomenNavigationsStack}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
                 }}
             />
             <Stack.Screen
@@ -30,7 +29,13 @@ const AppNavigations = () => {
                 component={KidNavigationsStack}
                 options={{
                     headerShown: false,
-                    // animation: 'slide_from_right'
+                }}
+            />
+            <Stack.Screen
+                name="DocterNavigationsStack"
+                component={DocterNavigationsStack}
+                options={{
+                    headerShown: false,
                 }}
             />
         </Stack.Navigator>

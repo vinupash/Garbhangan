@@ -21,10 +21,13 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { registrationWomenApi } from '../../../constants/AllApiCall';
 import { validateLetters, validateNumbers } from '../../../constants/methods';
+import BoardEng from '../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../assets/images/Board-Mar.png'
 
 const NewRegistrationWomen = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [isFirstName, setFirstName] = useState('')
     const [isMiddleName, setMiddleName] = useState('')
     const [isLastdName, setLastdName] = useState('')
@@ -318,15 +321,15 @@ const NewRegistrationWomen = ({ navigation }) => {
 
     const BackIconSecton = ({ onPress, title }) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 960 ? 360 : 300 }}>
                 <TouchableOpacity
                     style={styles.backIcon}
                     onPress={onPress}
                     activeOpacity={0.98}
                 >
-                    <SvgXml xml={BackIcon} height={25} width={25} />
+                    <SvgXml xml={BackIcon} height={windowWidth >= 960 ? 25 : 20} width={25} />
                 </TouchableOpacity>
-                <Text style={styles.titleText}>{title}</Text>
+                <Text style={[styles.titleText, { fontSize: windowWidth >= 960 ? SIZES.xl : SIZES.extraLarge }]}>{title}</Text>
             </View>
         )
     }
@@ -407,26 +410,28 @@ const NewRegistrationWomen = ({ navigation }) => {
                 }}
             >
                 <View style={{
-                    width: 250,
-                    height: 350,
+                    width: windowWidth >= 960 ? 250 : 160,
+                    height: windowWidth >= 960 ? 350 : 210,
                     backgroundColor: '#efefef',
                     marginBottom: 10,
                     borderRadius: 5,
                     ...SHADOWS.light
                 }}>
                     {
-                        image && (<Image source={{ uri: image }} style={{ width: 250, height: 350, borderRadius: 5, }} />)
+                        image && (<Image source={{ uri: image }} style={{ width: windowWidth >= 960 ? 250 : 160, height: windowWidth >= 960 ? 350 : 210, borderRadius: 5, }} />)
                     }
                 </View>
 
                 <TouchableOpacity
                     style={[styles.forwardIcon, {
                         alignSelf: "center",
+                        width: windowWidth >= 960 ? 60 : 40,
+                        height: windowWidth >= 960 ? 60 : 40,
                     }]}
                     activeOpacity={0.98}
                     onPress={() => { captureImage('photo') }}
                 >
-                    <SvgXml xml={CameraIcon} height={30} width={30} />
+                    <SvgXml xml={CameraIcon} height={windowWidth >= 960 ? 30 : 15} width={windowWidth >= 960 ? 30 : 15} />
                 </TouchableOpacity>
             </View>
         )
@@ -509,7 +514,8 @@ const NewRegistrationWomen = ({ navigation }) => {
                         onPress={() => navigation.goBack()}
                         title='Registration'
                     />
-                    <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                    <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                     <View style={styles.menuBox}>
                         <StackSection
                             onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
@@ -779,14 +785,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginVertical: 10
+        // marginVertical: 10
     },
     backIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 960 ? 50 : 40,
+        height: windowWidth >= 960 ? 50 : 40,
+        borderRadius: windowWidth >= 960 ? 50 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -820,10 +826,10 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 960 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     snackbar: {
         backgroundColor: '#B71C1C',

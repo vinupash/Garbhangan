@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import { COLORS, FONT, SHADOWS, SIZES } from '../constants'
 import BackIcon from '../../assets/images/BackIcon'
@@ -10,18 +10,20 @@ import LogoutIcon from '../../assets/images/LogoutIcon'
 import AddIcon from '../../assets/images/AddIcon'
 import EditIcon from '../../assets/images/EditIcon'
 import StethoscopeIcon from '../../assets/images/StethoscopeIcon'
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 export const BackIconSecton = ({ onPress, title }) => {
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: 360 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 1280 ? 400 : 300 }}>
             <TouchableOpacity
                 activeOpacity={0.98}
                 style={styles.backIcon}
                 onPress={onPress}
             >
-                <SvgXml xml={BackIcon} height={25} width={25} />
+                <SvgXml xml={BackIcon} height={windowWidth >= 1280 ? 30 : 20} width={windowWidth >= 1280 ? 30 : 20} />
             </TouchableOpacity>
-            <Text style={styles.titleText}>{title}</Text>
+            <Text style={[styles.titleText, { fontSize: windowWidth >= 1280 ? SIZES.xxl : SIZES.extraLarge }]}>{title}</Text>
         </View>
     )
 }
@@ -33,7 +35,7 @@ export const StackSection = ({ onPress }) => {
             style={styles.backIcon}
             onPress={onPress}
         >
-            <SvgXml xml={ChildIcon} height={40} width={40} />
+            <SvgXml xml={ChildIcon} height={windowWidth >= 1280 ? 40 : 25} width={windowWidth >= 1280 ? 40 : 25} />
         </TouchableOpacity>
     )
 }
@@ -45,7 +47,7 @@ export const BellSection = ({ onPress }) => {
             style={styles.bellIcon}
             onPress={onPress}
         >
-            <SvgXml xml={BellIcon} height={25} width={25} />
+            <SvgXml xml={BellIcon} height={windowWidth >= 1280 ? 30 : 20} width={windowWidth >= 1280 ? 30 : 20} />
         </TouchableOpacity>
     )
 }
@@ -55,10 +57,10 @@ export const WomenStackSection = ({ onPress }) => {
         <TouchableOpacity
             activeOpacity={0.98}
             style={{
-                width: 50,
-                height: 50,
-                borderTopLeftRadius: 50 / 2,
-                borderBottomLeftRadius: 50 / 2,
+                width: 60,
+                height: 60,
+                borderTopLeftRadius: 60 / 2,
+                borderBottomLeftRadius: 60 / 2,
                 ...SHADOWS.light,
                 backgroundColor: '#FFFFFF',
                 justifyContent: 'center',
@@ -66,7 +68,7 @@ export const WomenStackSection = ({ onPress }) => {
             }}
             onPress={onPress}
         >
-            <SvgXml xml={WomenIcon} height={40} width={40} />
+            <SvgXml xml={WomenIcon} height={windowWidth >= 1280 ? 40 : 20} width={windowWidth >= 1280 ? 40 : 20} />
         </TouchableOpacity>
     )
 }
@@ -76,10 +78,10 @@ export const KidStackSection = ({ onPress }) => {
         <TouchableOpacity
             activeOpacity={0.98}
             style={{
-                width: 50,
-                height: 50,
-                borderTopRightRadius: 50 / 2,
-                borderBottomRightRadius: 50 / 2,
+                width: 60,
+                height: 60,
+                borderTopRightRadius: 60 / 2,
+                borderBottomRightRadius: 60 / 2,
                 ...SHADOWS.light,
                 backgroundColor: '#FFFFFF',
                 justifyContent: 'center',
@@ -87,7 +89,7 @@ export const KidStackSection = ({ onPress }) => {
             }}
             onPress={onPress}
         >
-            <SvgXml xml={ChildIcon} height={40} width={40} />
+            <SvgXml xml={ChildIcon} height={windowWidth >= 1280 ? 40 : 20} width={windowWidth >= 1280 ? 40 : 20} />
         </TouchableOpacity>
     )
 }
@@ -99,7 +101,7 @@ export const LogoutSection = ({ onPress }) => {
             style={styles.backIcon}
             onPress={onPress}
         >
-            <SvgXml xml={LogoutIcon} height={30} width={30} />
+            <SvgXml xml={LogoutIcon} height={windowWidth >= 1280 ? 30 : 20} width={windowWidth >= 1280 ? 30 : 20} />
         </TouchableOpacity>
     )
 }
@@ -111,8 +113,8 @@ export const RegistrationSection = ({ onPress, title }) => {
             style={styles.registrationBtn}
             onPress={onPress}
         >
-            <Text style={{ fontFamily: FONT.Charlatan, fontSize: 16, color: COLORS.brand.black }}>{title}</Text>
-            <SvgXml xml={AddIcon} height={16} width={16} />
+            <Text style={{ fontFamily: FONT.Charlatan, fontSize: windowWidth >= 1280 ? 16 : 12, color: COLORS.brand.black }}>{title}</Text>
+            <SvgXml xml={AddIcon} height={windowWidth >= 1280 ? 16 : 12} width={windowWidth >= 1280 ? 16 : 12} />
         </TouchableOpacity>
     )
 }
@@ -124,8 +126,8 @@ export const UpdateProfile = ({ onPress }) => {
             style={[styles.registrationBtn, { marginRight: 10 }]}
             onPress={onPress}
         >
-            <Text style={{ fontFamily: FONT.Charlatan, fontSize: 16, color: COLORS.brand.black }}>Profile update</Text>
-            <SvgXml xml={EditIcon} height={24} width={24} />
+            <Text style={{ fontFamily: FONT.Charlatan, fontSize: windowWidth >= 1280 ? 16 : 12, color: COLORS.brand.black }}>Profile update</Text>
+            <SvgXml xml={EditIcon} height={windowWidth >= 1280 ? 24 : 18} width={windowWidth >= 1280 ? 24 : 18} />
         </TouchableOpacity>
     )
 }
@@ -137,7 +139,7 @@ export const DoctorCheckup = ({ onPress }) => {
             style={styles.backIcon}
             onPress={onPress}
         >
-            <SvgXml xml={StethoscopeIcon} height={30} width={30} />
+            <SvgXml xml={StethoscopeIcon} height={windowWidth >= 1280 ? 30 : 20} width={windowWidth >= 1280 ? 30 : 20} />
         </TouchableOpacity>
     )
 }
@@ -145,9 +147,9 @@ export const DoctorCheckup = ({ onPress }) => {
 
 const styles = StyleSheet.create({
     backIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 1280 ? 60 : 40,
+        height: windowWidth >= 1280 ? 60 : 40,
+        borderRadius: windowWidth >= 1280 ? 60 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -160,18 +162,18 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     bellIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
+        width: windowWidth >= 1280 ? 60 : 40,
+        height: windowWidth >= 1280 ? 60 : 40,
+        borderRadius: windowWidth >= 1280 ? 60 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center'
     },
     registrationBtn: {
-        width: 180,
-        height: 50,
-        borderRadius: 50,
+        width: windowWidth >= 1280 ? 200 : 160,
+        height: windowWidth >= 1280 ? 60 : 40,
+        borderRadius: windowWidth >= 1280 ? 60 : 40,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

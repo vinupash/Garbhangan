@@ -22,6 +22,9 @@
 		B254D7929E444256B7BB2593 /* MartelSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7599E23DD6E84BA2ACEA42F0 /* MartelSans-Light.ttf */; };
 		BB29FBCE7D254C2B81D5809F /* MartelSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F82BFBE700384B819B6AD2B2 /* MartelSans-Regular.ttf */; };
 		8870DB820C4647709827B524 /* MartelSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 525C23C79A914CE895653A20 /* MartelSans-SemiBold.ttf */; };
+		10F7B6BF3EAB49C19D4046E8 /* Four-C-Abhishek.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8BD4F5B491340A58C3C6A96 /* Four-C-Abhishek.ttf */; };
+		82144C74CD87410EAB70790C /* Four-C-AbhishekBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6621E35465AB4DAF902E75CD /* Four-C-AbhishekBold.ttf */; };
+		519D0E016FC24F20A7F42494 /* Four-C-Abhishekhead.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 863ACAF8BFF74AD9AD200D85 /* Four-C-Abhishekhead.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +63,9 @@
 		7599E23DD6E84BA2ACEA42F0 /* MartelSans-Light.ttf */ = {isa = PBXFileReference; name = "MartelSans-Light.ttf"; path = "../assets/fonts/MartelSans-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		F82BFBE700384B819B6AD2B2 /* MartelSans-Regular.ttf */ = {isa = PBXFileReference; name = "MartelSans-Regular.ttf"; path = "../assets/fonts/MartelSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		525C23C79A914CE895653A20 /* MartelSans-SemiBold.ttf */ = {isa = PBXFileReference; name = "MartelSans-SemiBold.ttf"; path = "../assets/fonts/MartelSans-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D8BD4F5B491340A58C3C6A96 /* Four-C-Abhishek.ttf */ = {isa = PBXFileReference; name = "Four-C-Abhishek.ttf"; path = "../assets/fonts/Four-C-Abhishek.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6621E35465AB4DAF902E75CD /* Four-C-AbhishekBold.ttf */ = {isa = PBXFileReference; name = "Four-C-AbhishekBold.ttf"; path = "../assets/fonts/Four-C-AbhishekBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		863ACAF8BFF74AD9AD200D85 /* Four-C-Abhishekhead.ttf */ = {isa = PBXFileReference; name = "Four-C-Abhishekhead.ttf"; path = "../assets/fonts/Four-C-Abhishekhead.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +182,9 @@
 				7599E23DD6E84BA2ACEA42F0 /* MartelSans-Light.ttf */,
 				F82BFBE700384B819B6AD2B2 /* MartelSans-Regular.ttf */,
 				525C23C79A914CE895653A20 /* MartelSans-SemiBold.ttf */,
+				D8BD4F5B491340A58C3C6A96 /* Four-C-Abhishek.ttf */,
+				6621E35465AB4DAF902E75CD /* Four-C-AbhishekBold.ttf */,
+				863ACAF8BFF74AD9AD200D85 /* Four-C-Abhishekhead.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -285,6 +294,9 @@
 				B254D7929E444256B7BB2593 /* MartelSans-Light.ttf in Resources */,
 				BB29FBCE7D254C2B81D5809F /* MartelSans-Regular.ttf in Resources */,
 				8870DB820C4647709827B524 /* MartelSans-SemiBold.ttf in Resources */,
+				10F7B6BF3EAB49C19D4046E8 /* Four-C-Abhishek.ttf in Resources */,
+				82144C74CD87410EAB70790C /* Four-C-AbhishekBold.ttf in Resources */,
+				519D0E016FC24F20A7F42494 /* Four-C-Abhishekhead.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native'
 import { COLORS, SHADOWS, FONT, SIZES } from '../constants';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const VideoTab = ({
     data,
-    onPress
+    onPress,
+    source
 }) => {
 
     return (
@@ -20,7 +21,13 @@ const VideoTab = ({
                             onPress={onPress}
                         >
                             <View style={[styles.loginBtnInner]}>
-
+                                <Image source={source}
+                                    style={{
+                                        width: '100%',
+                                        height: 250,
+                                        borderRadius: 16,
+                                    }}
+                                />
                             </View>
                             <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={[styles.btnText]}>{item.title}</Text>
@@ -39,13 +46,14 @@ const styles = StyleSheet.create({
     videoSection: {
         flexDirection: 'row',
         flexWrap: "wrap",
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         width: windowWidth - 50,
         alignSelf: 'center'
     },
     boxContent: {
-        width: '32%',
-        marginVertical: 10,
+        width: '33.33%',
+        // marginVertical: 10,
+        padding: 8
     },
     loginBtnInner: {
         width: '100%',
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontFamily: FONT.Charlatan,
-        fontSize: SIZES.mediumLarge,
+        fontSize: SIZES.medium,
         color: COLORS.brand.black
     },
     sectionBtn: {
@@ -67,6 +75,6 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: "#FFFFFF",
         ...SHADOWS.light,
-        marginBottom: 5,
+        // marginBottom: 5,
     },
 })

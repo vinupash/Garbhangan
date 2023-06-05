@@ -29,12 +29,12 @@ const HeaderContent = ({ onPress }) => {
                 style={styles.backIcon}
                 onPress={onPress}
             >
-                <SvgXml xml={BackIcon} height={30} width={30} />
+                <SvgXml xml={BackIcon} height={windowWidth >= 1280 ? 40 : 20} width={windowWidth >= 1280 ? 40 : 25} />
             </TouchableOpacity>
             {/* <SvgXml xml={LogoIcon} width={142} height={83} /> */}
-            <Image source={iamges[indexImage]} style={{ width: 260, height: 120 }} />
+            <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 360 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
             {/* <Image source={iamges[indexImage]} style={{ width: 320, height: 150 }} /> */}
-            <View style={{ width: 60, height: 60 }}></View>
+            <View style={{ width: windowWidth >= 1280 ? 80 : 40, height: windowWidth >= 1280 ? 80 : 40 }}></View>
         </View>
     )
 }
@@ -46,13 +46,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
+        marginBottom: 10
     },
     backIcon: {
-        width: 60,
-        height: 60,
-        borderRadius: 60 / 2,
+        width: windowWidth >= 1280 ? 80 : 40,
+        height: windowWidth >= 1280 ? 80 : 40,
+        borderRadius: windowWidth >= 1280 ? 80 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',

@@ -10,11 +10,14 @@ const windowWidth = Dimensions.get('window').width;
 import { useIsFocused } from '@react-navigation/native';
 import { getWomenDetailsApi } from '../../../../constants/AllApiCall';
 import moment from 'moment';
+import BoardEng from '../../../../../assets/images/Board-Eng.png'
+import BoardHin from '../../../../../assets/images/Board-Hin.png'
+import BoardMar from '../../../../../assets/images/Board-Mar.png'
 
 const DetailsView = ({ navigation, route }) => {
     const [isLoading, setLoading] = useState(false)
     const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
+    const iamges = [BoardEng, BoardHin, BoardMar];
     const [index, setIndex] = useState(0);
     const [indexImage, setIndexImage] = useState(0);
     const isFocused = useIsFocused()
@@ -31,6 +34,7 @@ const DetailsView = ({ navigation, route }) => {
     const [isProfileImage, setProfileImage] = useState(null)
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [errorMessage, setErrorMessage] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
     // console.log(route.params.personDetails);
     useEffect(() => {
         fetchDataAsync()
@@ -208,7 +212,8 @@ const DetailsView = ({ navigation, route }) => {
                             onPress={() => navigation.goBack()}
                             title="Detail's"
                         />
-                        <SvgXml xml={iamges[indexImage]} width={132} height={73} />
+                        {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                        <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                         <View style={styles.menuBox}>
                             {/* <Text style={styles.titleText}></Text> */}
                             <UpdateProfile
@@ -244,8 +249,8 @@ const DetailsView = ({ navigation, route }) => {
                                 <Image
                                     source={assets.women_img}
                                     style={{
-                                        width: 250,
-                                        height: 350,
+                                        width: windowWidth >= 960 ? 250 : 200,
+                                        height: windowWidth >= 960 ? 350 : 250,
                                         borderRadius: 10
                                     }}
                                 />
@@ -253,8 +258,8 @@ const DetailsView = ({ navigation, route }) => {
                                 <Image
                                     source={{ uri: `data:image/png;base64,${isProfileImage}` }}
                                     style={{
-                                        width: 250,
-                                        height: 350,
+                                        width: windowWidth >= 960 ? 250 : 200,
+                                        height: windowWidth >= 960 ? 350 : 250,
                                         borderRadius: 10
                                     }}
                                 />
@@ -318,20 +323,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginVertical: 10,
-        height: 75,
+        // marginVertical: 10,
+        // height: 75,
+        marginBottom: 10,
     },
     menuBox: {
-        width: 360,
+        width: windowWidth >= 960 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end'
     },
     profilePicture: {
-        width: 250,
-        height: 350,
+        width: windowWidth >= 960 ? 250 : 200,
+        height: windowWidth >= 960 ? 350 : 250,
         backgroundColor: COLORS.brand.primary,
         borderRadius: 10,
         ...SHADOWS.light,
