@@ -72,7 +72,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
         // const refreshToken = "refreshToken= " + transformedRefreshToken.refreshToken
         const womenId = route.params.personDetails.womenId;
         const responseWomenDetails = await getWomenDetailsApi(accessToken, womenId)
-        const responseDoctorList = await getDoctorListApi(accessToken, womenId)
+        const responseDoctorList = await getDoctorListApi(accessToken)
         setLoading(false)
         // console.log('responseWomenDetails--->', responseWomenDetails.data.womanCheckUpDetails[0].pregnancyDate);
         // console.log('responseDoctorList--->', responseDoctorList);
@@ -212,15 +212,15 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
 
     const BackIconSecton = ({ onPress, title }) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 960 ? 360 : 300 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 1280 ? 360 : 300 }}>
                 <TouchableOpacity
                     activeOpacity={0.98}
                     style={styles.backIcon}
                     onPress={onPress}
                 >
-                    <SvgXml xml={BackIcon} height={windowWidth >= 960 ? 25 : 20} width={25} />
+                    <SvgXml xml={BackIcon} height={windowWidth >= 1280 ? 25 : 20} width={25} />
                 </TouchableOpacity>
-                <Text style={[styles.titleText, { fontSize: windowWidth >= 960 ? SIZES.xxl : SIZES.extraLarge }]}>{title}</Text>
+                <Text style={[styles.titleText, { fontSize: windowWidth >= 1280 ? SIZES.xxl : SIZES.extraLarge }]}>{title}</Text>
             </View>
         )
     }
@@ -232,7 +232,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
                 onPress={onPress}
                 activeOpacity={0.98}
             >
-                <SvgXml xml={ChildIcon} height={windowWidth >= 960 ? 40 : 25} width={windowWidth >= 960 ? 40 : 25} />
+                <SvgXml xml={ChildIcon} height={windowWidth >= 1280 ? 40 : 25} width={windowWidth >= 1280 ? 40 : 25} />
             </TouchableOpacity>
         )
     }
@@ -275,7 +275,7 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
                         onPress={() => navigation.goBack()}
                         title='Docter checkup'
                     />
-                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 1280 ? 132 : 120} height={windowWidth >= 1280 ? 73 : 63} /> */}
                     <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                     <View style={styles.menuBox}>
                         <StackSection
@@ -290,8 +290,8 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
                             <Image
                                 source={assets.women_img}
                                 style={{
-                                    width: windowWidth >= 960 ? 250 : 160,
-                                    height: windowWidth >= 960 ? 350 : 210,
+                                    width: windowWidth >= 1280 ? 250 : 160,
+                                    height: windowWidth >= 1280 ? 350 : 210,
                                     borderRadius: 10
                                 }}
                             />
@@ -299,8 +299,8 @@ const WomenDoctorCheckup = ({ navigation, route }) => {
                             <Image
                                 source={{ uri: `data:image/png;base64,${isProfileImage}` }}
                                 style={{
-                                    width: windowWidth >= 960 ? 250 : 160,
-                                    height: windowWidth >= 960 ? 350 : 210,
+                                    width: windowWidth >= 1280 ? 250 : 160,
+                                    height: windowWidth >= 1280 ? 350 : 210,
                                     borderRadius: 10
                                 }}
                             />
@@ -440,9 +440,9 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     backIcon: {
-        width: windowWidth >= 960 ? 50 : 40,
-        height: windowWidth >= 960 ? 50 : 40,
-        borderRadius: windowWidth >= 960 ? 50 / 2 : 40 / 2,
+        width: windowWidth >= 1280 ? 50 : 40,
+        height: windowWidth >= 1280 ? 50 : 40,
+        borderRadius: windowWidth >= 1280 ? 50 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: windowWidth >= 960 ? 360 : 300,
+        width: windowWidth >= 1280 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end'
@@ -539,8 +539,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF'
     },
     profilePicture: {
-        width: windowWidth >= 960 ? 250 : 160,
-        height: windowWidth >= 960 ? 350 : 210,
+        width: windowWidth >= 1280 ? 250 : 160,
+        height: windowWidth >= 1280 ? 350 : 210,
         backgroundColor: COLORS.brand.primary,
         borderRadius: 10,
         ...SHADOWS.light,

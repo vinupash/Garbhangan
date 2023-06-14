@@ -1,67 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard, ImageBackground } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
-import MenuComponents from '../../../components/MenuComponents';
 import BackIcon from '../../../../assets/images/BackIcon';
-import BellIcon from '../../../../assets/images/BellIcon';
-import AddIcon from '../../../../assets/images/AddIcon';
-import ChildIcon from '../../../../assets/images/ChildIcon';
-import LogoIcon from '../../../../assets/images/LogoIcon';
 import ForwardArrow from '../../../../assets/images/ForwardArrow';
-import { Input, InputBox, InputTextArea, InputTextAreaBox } from '../../../components/CustomInput';
+import { InputTextAreaBox } from '../../../components/CustomInput';
 import moment from 'moment';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 import * as ImagePicker from 'react-native-image-crop-picker';
 import CameraIcon from '../../../../assets/images/CameraIcon';
-import RadioButtonBoxValue from '../../../components/RadioButtonBoxValue';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { registrationChildApi, registrationWomenApi } from '../../../constants/AllApiCall';
-import WomenIcon from '../../../../assets/images/WomenIcon';
-import { validateLetters, validateNumbers } from '../../../constants/methods';
+import { addDoctorvisit, getDoctorListApi } from '../../../constants/AllApiCall';
 import BoardEng from '../../../../assets/images/Board-Eng.png'
 import BoardHin from '../../../../assets/images/Board-Hin.png'
 import BoardMar from '../../../../assets/images/Board-Mar.png'
+import { Dropdown } from 'react-native-element-dropdown';
 
 const DocterVisit = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
-    const iamges = [LogoIcon, LogoIcon, LogoIcon];
-    const [isFirstName, setFirstName] = useState('')
-    const [isMiddleName, setMiddleName] = useState('')
-    const [isLastdName, setLastdName] = useState('')
-    const [isHeight, setHeight] = useState('')
-    const [isWeight, setWeight] = useState('')
-    const [isPregnancySymptoms, setPregnancySymptoms] = useState('')
-    const [isCheckupNote, setCheckupNote] = useState('')
-    const [isPrescription, setPrescription] = useState('')
+    const [isFocus, setIsFocus] = useState(false);
+    const [isValueDocterName, setValueDocterName] = useState(null);
+    const [isDocterList, setDocterList] = useState([]);
+    const iamges = [BoardEng, BoardHin, BoardMar];
+    const [isDoctorCheckupNote, setDoctorCheckupNote] = useState('')
     const [errorMessage, setErrorMessage] = useState('');
-    const [selectedDate, setSelectedDate] = useState();
-    const [userBirth, setUserBirth] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedPregnancyDate, setSelectedPregnancyDate] = useState();
-    // const [selectedCheckupDate, setSelectedCheckupDate] = useState();
-    const [userCheckupDate, setUserCheckupDate] = useState(false);
-    const [womanPregnancyDate, setWomanPregnancyDate] = useState(false);
-    const [womanCheckupDate, setWomanCheckupDate] = useState(false);
-    const [selectedCheckupDate, setSelectedCheckupDate] = useState();
-    // const [selectedCheckupDate, setSelectedCheckupDate] = useState();
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [image, setImage] = useState('');
     const [isFileData, setFileData] = useState(null);
-    const [option, setOption] = useState(null);
-    const [optionGender, setOptionGender] = useState(null);
     const isFocused = useIsFocused()
     const [isAccessToken, setAccessToken] = useState('')
     const [isAnganwadiId, setAnganwadiId] = useState('')
     const [isSuccessMessage, setSuccessMessage] = useState('');
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const [isProfileImage, setProfileImage] = useState(null);
-
     var date = moment().format("YYYY-MM-DD HH:mm:ss.SSS")
-    // console.log(date);
 
     useEffect(() => {
         fetchDataAsync()
@@ -76,21 +51,20 @@ const DocterVisit = ({ navigation }) => {
             // Alert.alert("Unable to fetch mobile number, Login again");
             return;
         }
-        setLoading(false)
+
         const transformedUserData = JSON.parse(userData);
         const transformedAccessToken = JSON.parse(token);
-        // const transformedRefreshToken = JSON.parse(tokenRefresh);
-        // console.log('transformedAccessToken ListofWomens--->', transformedAccessToken.accessToken);
-        // console.log('transformedRefreshToken ListofWomens--->', transformedRefreshToken.refreshToken);
-        // console.log('transformedUserData ListofWomens--->', transformedUserData.anganwadiId);
         setAnganwadiId(transformedUserData.anganwadiId)
         const accessToken = "Bearer " + transformedAccessToken.accessToken
         setAccessToken(accessToken)
-        // // const refreshToken = "refreshToken= " + transformedRefreshToken.refreshToken
-        // setLoading(false)
-        // const responseWomenList = await womenListApi(accessToken)
-        // console.log('responseWomenList--->', responseWomenList.data);
-        // setWomenList(responseWomenList.data)
+        const responseDoctorList = await getDoctorListApi(accessToken)
+        setLoading(false)
+
+        const isDocterList = [...responseDoctorList.data];
+        const newArrayDocterName = isDocterList.map((item) => {
+            return { value: item.id, label: item.firstName + " " + item.lastName }
+        })
+        setDocterList(newArrayDocterName)
     };
 
     useEffect(() => {
@@ -121,116 +95,28 @@ const DocterVisit = ({ navigation }) => {
             setErrorMessage('Image is required');
             return;
         }
-
-        if (!isFirstName) {
+        if (!isValueDocterName) {
             handleErrorMsg()
-            setErrorMessage('Please entrer first name')
-            return
-        } else if (!validateLetters(isFirstName)) {
-            handleErrorMsg()
-            setErrorMessage('Special characters and numbers are not allowed')
-            return
-        } else if (isFirstName.length < 2) {
-            handleErrorMsg()
-            setErrorMessage('Name should greater than tow digit')
+            setErrorMessage('Please select docter')
             return
         }
-
-        if (!isMiddleName) {
+        if (!isDoctorCheckupNote) {
             handleErrorMsg()
-            setErrorMessage('Please entrer middle name')
-            return
-        } else if (!validateLetters(isMiddleName)) {
-            handleErrorMsg()
-            setErrorMessage('Special characters and numbers are not allowed')
-            return
-        } else if (isMiddleName.length < 2) {
-            handleErrorMsg()
-            setErrorMessage('Name should greater than tow digit')
+            setErrorMessage('Please enter medical checkup data')
             return
         }
-
-        if (!isLastdName) {
-            handleErrorMsg()
-            setErrorMessage('Please entrer last name')
-            return
-        } else if (!validateLetters(isLastdName)) {
-            handleErrorMsg()
-            setErrorMessage('Special characters and numbers are not allowed')
-            return
-        } else if (isLastdName.length < 2) {
-            handleErrorMsg()
-            setErrorMessage('Name should greater than tow digit')
-            return
-        }
-
-        if (selectedDate == null) {
-            handleErrorMsg()
-            setErrorMessage('Please select D.O.B')
-            return
-        }
-
-        if (!isHeight) {
-            handleErrorMsg()
-            setErrorMessage('Please enter height')
-            return
-        } else if (!validateNumbers(isHeight)) {
-            handleErrorMsg()
-            setErrorMessage('Special characters and text are not allowed')
-            return
-        }
-
-        if (!isWeight) {
-            handleErrorMsg()
-            setErrorMessage('Please enter weight')
-            return
-        } else if (!validateNumbers(isWeight)) {
-            handleErrorMsg()
-            setErrorMessage('Special characters and text are not allowed')
-            return
-        }
-
-        if (optionGender == null) {
-            handleErrorMsg()
-            setErrorMessage('Please select gender')
-            return
-        }
-
-        if (option == null) {
-            handleErrorMsg()
-            setErrorMessage('Please select specially abled')
-            return
-        }
-
-        if (!isCheckupNote) {
-            handleErrorMsg()
-            setErrorMessage('Please enter medical history')
-            return
-        }
-
-        if (!isPrescription) {
-            handleErrorMsg()
-            setErrorMessage('Please enter prescription')
-            return
-        }
-
-        const selectUserBirthDate = moment(selectedDate).format("YYYY-MM-DD HH:mm:ss.SSS");
 
         setLoading(true)
-        const responseRegistrationChild = await registrationChildApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData)
+        const responseAddDoctorvisit = await addDoctorvisit(isAccessToken, isAnganwadiId, isDoctorCheckupNote, date, image, isFileData, isValueDocterName)
         setLoading(false)
-        // console.log('responseRegistrationChild--->', responseRegistrationChild);
-        if (responseRegistrationChild.isError == false) {
+        console.log('responseRegistrationChild--->', responseAddDoctorvisit);
+        if (responseAddDoctorvisit.isError == false) {
             handleSuccessMsg()
-            setSuccessMessage(responseRegistrationChild.message);
-            setSelectedDate(responseRegistrationChild.data.dateOfBirth)
-            setFirstName(responseRegistrationChild.data.firstName)
-            setMiddleName(responseRegistrationChild.data.middleName)
-            setLastdName(responseRegistrationChild.data.lastName)
-            setProfileImage(responseRegistrationChild.data.profilePicture)
+            setSuccessMessage(responseAddDoctorvisit.message)
+            // setShouldNavigate(json.isError)
         } else {
-            handleErrorMsg();
-            setErrorMessage(responseRegistrationChild.data.message);
+            handleErrorMsg()
+            setErrorMessage(responseAddDoctorvisit.message)
         }
     }
 
@@ -268,128 +154,32 @@ const DocterVisit = ({ navigation }) => {
         ).start();
         setTimeout(() => {
             setSuccessMessage('');
-            setSelectedDate()
-            setFirstName('')
-            setMiddleName('')
-            setLastdName('')
-            setHeight('')
-            setWeight('')
-            setOption('')
-            setOptionGender('')
-            setSelectedCheckupDate()
-            setSelectedPregnancyDate()
-            setPregnancySymptoms('')
-            setCheckupNote('')
-            setPrescription('')
+            setDoctorCheckupNote('')
             setImage('')
+            setValueDocterName(null)
         }, 5000);
-    };
-
-    const showDatePicker = () => {
-        setUserBirth(true);
-    };
-
-    const hideDatePicker = () => {
-        setUserBirth(false);
-    };
-
-    const handleConfirm = (date) => {
-        setSelectedDate(date);
-        hideDatePicker();
-    };
-
-    const showDatePickerPregnancy = () => {
-        setWomanPregnancyDate(true);
-    };
-
-    const hideDatePickerPregnancy = () => {
-        setWomanPregnancyDate(false);
-    };
-
-    const handleConfirmPregnancy = (date) => {
-        setSelectedPregnancyDate(date);
-        hideDatePickerPregnancy();
-    };
-
-    const showDatePickerCheckup = () => {
-        setUserCheckupDate(true);
-    };
-
-    const hideDatePickerCheckupDate = () => {
-        setUserCheckupDate(false);
-    };
-
-    const handleConfirmCheckup = (date) => {
-        setSelectedCheckupDate(date);
-        hideDatePickerCheckupDate();
     };
 
     const BackIconSecton = ({ onPress, title }) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 960 ? 360 : 300 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 1280 ? 360 : 300 }}>
                 <TouchableOpacity
                     style={styles.backIcon}
                     onPress={onPress}
                     activeOpacity={0.98}
                 >
-                    <SvgXml xml={BackIcon} height={windowWidth >= 960 ? 25 : 20} width={windowWidth >= 960 ? 25 : 20} />
+                    <SvgXml xml={BackIcon} height={windowWidth >= 1280 ? 25 : 20} width={windowWidth >= 1280 ? 25 : 20} />
                 </TouchableOpacity>
-                <Text style={[styles.titleText, { fontSize: windowWidth >= 960 ? SIZES.xxl : SIZES.extraLarge }]}>{title}</Text>
+                <Text style={[styles.titleText, { fontSize: windowWidth >= 1280 ? SIZES.xl : SIZES.extraLarge }]}>{title}</Text>
             </View>
-        )
-    }
-
-    // const BellSection = ({ onPress }) => {
-    //     return (
-    //         <TouchableOpacity
-    //             style={styles.bellIcon}
-    //             onPress={onPress}
-    //         >
-    //             <SvgXml xml={BellIcon} height={25} width={25} />
-    //         </TouchableOpacity>
-    //     )
-    // }
-
-    // const RegistrationSection = ({ onPress }) => {
-    //     return (
-    //         <TouchableOpacity
-    //             style={styles.registrationBtn}
-    //             onPress={onPress}
-    //         >
-    //             <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black }}>New Registration</Text>
-    //             <SvgXml xml={AddIcon} height={20} width={20} />
-    //         </TouchableOpacity>
-    //     )
-    // }
-
-    // const StackSection = ({ onPress }) => {
-    //     return (
-    //         <TouchableOpacity
-    //             style={styles.backIcon}
-    //             onPress={onPress}
-    //         >
-    //             <SvgXml xml={ChildIcon} height={40} width={40} />
-    //         </TouchableOpacity>
-    //     )
-    // }
-
-    const StackSection = ({ onPress }) => {
-        return (
-            <TouchableOpacity
-                style={styles.backIcon}
-                onPress={onPress}
-                activeOpacity={0.98}
-            >
-                <SvgXml xml={WomenIcon} height={windowWidth >= 960 ? 40 : 30} width={windowWidth >= 960 ? 40 : 30} />
-            </TouchableOpacity>
         )
     }
 
     const captureImage = async (type) => {
         ImagePicker.openCamera({
             mediaType: type,
-            width: 250,
-            height: 350,
+            width: 350,
+            height: 250,
             cropping: true,
             quality: 0.5,
         }).then(image => {
@@ -434,42 +224,32 @@ const DocterVisit = ({ navigation }) => {
                 }}
             >
                 <View style={{
-                    width: windowWidth >= 960 ? 450 : 260,
-                    height: windowWidth >= 960 ? 250 : 160,
+                    width: windowWidth >= 1280 ? 350 : 210,
+                    height: windowWidth >= 1280 ? 250 : 160,
                     backgroundColor: '#efefef',
                     marginBottom: 10,
                     borderRadius: 5,
                     ...SHADOWS.light
                 }}>
                     {
-                        image && (<Image source={{ uri: image }} style={{ width: windowWidth >= 960 ? 450 : 260, height: windowWidth >= 960 ? 250 : 160, borderRadius: 5, }} />)
+                        image && (<Image source={{ uri: image }} style={{ width: windowWidth >= 1280 ? 350 : 210, height: windowWidth >= 1280 ? 250 : 160, borderRadius: 5, }} />)
                     }
                 </View>
 
                 <TouchableOpacity
                     style={[styles.forwardIcon, {
                         alignSelf: "center",
-                        width: windowWidth >= 960 ? 60 : 40,
-                        height: windowWidth >= 960 ? 60 : 40,
+                        width: windowWidth >= 1280 ? 60 : 40,
+                        height: windowWidth >= 1280 ? 60 : 40,
                     }]}
                     onPress={() => { captureImage('photo') }}
                     activeOpacity={0.98}
                 >
-                    <SvgXml xml={CameraIcon} height={windowWidth >= 960 ? 30 : 15} width={windowWidth >= 960 ? 30 : 15} />
+                    <SvgXml xml={CameraIcon} height={windowWidth >= 1280 ? 30 : 15} width={windowWidth >= 1280 ? 30 : 15} />
                 </TouchableOpacity>
             </View>
         )
     }
-
-    const speciallyAbledData = [
-        { id: true, value: 'Yes' },
-        { id: false, value: 'No' },
-    ];
-
-    const genderData = [
-        { id: 'M', value: 'Male' },
-        { id: 'F', value: 'Female' },
-    ];
 
     if (isLoading) {
         return (
@@ -497,40 +277,10 @@ const DocterVisit = ({ navigation }) => {
             )}
 
             {isSuccessMessage !== '' && (
-                <Animated.View style={[styles.snackbarRegistar, { opacity: fadeAnim }]}>
-                    <View style={{ width: 80, height: 90, borderRadius: 5, backgroundColor: COLORS.brand.primary, marginRight: 10 }}>
-                        <Image
-                            source={{ uri: image }}
-                            style={{ width: 80, height: 90, borderRadius: 5, }}
-                        />
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={{ marginRight: 20 }}>
-                                <Text style={styles.label}>Name:</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isFirstName} {isLastdName}</Text>
-
-                                <Text style={styles.label}>Husband name:</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isMiddleName} {isLastdName}</Text>
-                            </View>
-
-                            <View style={{ marginRight: 20 }}>
-                                <Text style={styles.label}>Height(CM):</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isHeight} Centimeter</Text>
-
-                                <Text style={styles.label}>Weight(Kg):</Text>
-                                <Text style={styles.snackbarTextRegistar}>{isWeight} Kilogram</Text>
-                            </View>
-
-                            <View >
-                                <Text style={styles.label}>D.O.B:</Text>
-                                <Text style={styles.snackbarTextRegistar}>{moment(selectedDate).format("DD-MM-YYYY")}</Text>
-
-                                <Text style={styles.label}></Text>
-                                <Text style={styles.snackbarTextRegistar}></Text>
-                            </View>
-                        </View>
-                    </View>
+                <Animated.View style={[styles.snackbar, {
+                    opacity: fadeAnim, backgroundColor: '#28a745'
+                }]}>
+                    <Text style={[styles.snackbarText, { color: '#FFFFFF' }]}>{isSuccessMessage}</Text>
                 </Animated.View>
             )}
 
@@ -541,189 +291,63 @@ const DocterVisit = ({ navigation }) => {
                 <View style={styles.headerBox}>
                     <BackIconSecton
                         onPress={() => navigation.goBack()}
-                        title='Registration'
+                        title='Doctor Visit'
                     />
-                    <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} />
+                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 1280 ? 132 : 120} height={windowWidth >= 1280 ? 73 : 63} /> */}
+                    <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                     <View style={styles.menuBox}>
                         {/* <StackSection
-                        onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
-                    /> */}
+                            onPress={() => navigation.navigate('KidNavigationsStack', { screen: 'KidScreen' })}
+                        />
                         <StackSection
                             onPress={() => navigation.navigate('WomenNavigationsStack', { screen: 'WomenScreen' })}
-                        />
+                        /> */}
                     </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', height: windowHeight - 120, width: windowWidth - 50, flex: 1, alignSelf: 'center' }}>
-                    {/* <View style={[styles.profilePicture, { marginTop: isKeyboardVisible === true ? 100 : 0 }]}>
+                    <View style={[styles.profilePicture, { marginTop: isKeyboardVisible === true ? 100 : 0 }]}>
                         <UploadImage />
-                    </View> */}
+                    </View>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         style={{
                             width: '100%',
-                            alignSelf: 'center',
                             flex: 1
                         }}
                     >
 
-                        <UploadImage />
-
-                        <InputBox
-                            label='First name'
-                            placeholder='Enter first name'
-                            value={isFirstName}
-                            setValue={setFirstName}
-                        // autoCapitalize='none'
-                        />
-
-                        <View style={{ marginTop: 10 }}>
-                            <InputBox
-                                label='Middle name'
-                                placeholder='Enter middle name'
-                                value={isMiddleName}
-                                setValue={setMiddleName}
-                            // autoCapitalize='none'
+                        <View style={{ marginTop: 0, paddingHorizontal: 5 }}>
+                            <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Select docter:</Text>
+                            <Dropdown
+                                style={[styles.dropdown]}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                data={isDocterList}
+                                search
+                                maxHeight={300}
+                                labelField="label"
+                                valueField="value"
+                                placeholder={!isFocus ? 'Select docter name' : '...'}
+                                searchPlaceholder="Search..."
+                                value={isDocterList}
+                                onFocus={() => setIsFocus(true)}
+                                onBlur={() => setIsFocus(false)}
+                                onChange={item => {
+                                    setValueDocterName(item.value);
+                                    setIsFocus(false);
+                                }}
                             />
-                        </View>
-
-                        <View style={{ marginTop: 10 }}>
-                            <InputBox
-                                label='Last name'
-                                placeholder='Enter last name'
-                                value={isLastdName}
-                                setValue={setLastdName}
-                            // autoCapitalize='none'
-                            />
-                        </View>
-
-                        <View style={{ marginTop: 10 }}>
-                            <View style={{ paddingHorizontal: 5 }}>
-
-                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Date of birth:</Text>
-                                <TouchableOpacity
-                                    style={{
-                                        width: '100%',
-                                        height: 50,
-                                        backgroundColor: '#FFFFFF',
-                                        borderRadius: 10,
-                                        paddingHorizontal: 20,
-                                        ...SHADOWS.light,
-                                        marginRight: 5,
-                                        justifyContent: 'center'
-                                    }}
-                                    onPress={showDatePicker}>
-                                    <Text
-                                        style={[styles.inputStyleLeft, { color: selectedDate ? '#000000' : '#727c95' }]} name="userbirth" value={userBirth}
-                                        placeholder="Date of Birth"
-                                        placeholderTextColor={selectedDate ? '#727c95' : "#000000"}
-                                        onChangeText={actualData => setUserBirth(actualData)}
-                                    >{`${selectedDate ? moment(selectedDate).format("DD-MM-YYYY") : "Date of Birth"}`}</Text>
-
-                                </TouchableOpacity>
-
-                                <DateTimePickerModal
-                                    isVisible={userBirth}
-                                    mode="date"
-                                    onConfirm={handleConfirm}
-                                    onCancel={hideDatePicker}
-                                />
-                            </View>
-                        </View>
-
-                        <View style={{ marginTop: 10 }}>
-                            <InputBox
-                                label='Height (CM)'
-                                placeholder='Enter height (CM)'
-                                value={isHeight}
-                                setValue={setHeight}
-                                // autoCapitalize='none'
-                                keyboardType='number-pad'
-                            />
-                        </View>
-
-                        <View style={{ marginTop: 10 }}>
-                            <InputBox
-                                label='Weight (KG)'
-                                placeholder='Enter weight (KG)'
-                                value={isWeight}
-                                setValue={setWeight}
-                                // autoCapitalize='none'
-                                keyboardType='number-pad'
-                            />
-                        </View>
-
-                        <View style={{ marginTop: 10 }}>
-                            <View style={{ paddingHorizontal: 5 }}>
-                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Gender:</Text>
-
-                                <View
-                                    style={{
-                                        width: '100%',
-                                        height: 50,
-                                        // backgroundColor: '#FFFFFF',
-                                        // borderRadius: 10,
-                                        // paddingHorizontal: 20,
-                                        // ...SHADOWS.light,
-                                        marginRight: 5,
-                                        // justifyContent: 'center'
-                                    }}
-                                >
-
-                                    <RadioButtonBoxValue
-                                        data={genderData}
-                                        onSelect={(value) => setOptionGender(value)}
-                                    />
-
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={{ marginTop: 10 }}>
-                            <View style={{ paddingHorizontal: 5 }}>
-                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Specially abled:</Text>
-
-                                <View
-                                    style={{
-                                        width: '100%',
-                                        height: 50,
-                                        // backgroundColor: '#FFFFFF',
-                                        // borderRadius: 10,
-                                        // paddingHorizontal: 20,
-                                        // ...SHADOWS.light,
-                                        marginRight: 5,
-                                        // justifyContent: 'center'
-                                    }}
-                                >
-
-                                    <RadioButtonBoxValue
-                                        data={speciallyAbledData}
-                                        onSelect={(value) => setOption(value)}
-                                    />
-
-                                </View>
-                            </View>
                         </View>
 
                         <View style={{ marginTop: 10 }}>
                             <InputTextAreaBox
                                 label='Checkup note'
-                                placeholder='Enter checkup not'
-                                value={isCheckupNote}
-                                setValue={setCheckupNote}
-                                // autoCapitalize='none'
-                                multiline={true}
-                                numberOfLines={5}
-                                placeholderTextColor='#727c95'
-                            />
-                        </View>
-
-                        <View style={{ marginTop: 10, }}>
-                            <InputTextAreaBox
-                                label='Prescription'
-                                placeholder='Enter prescription'
-                                value={isPrescription}
-                                setValue={setPrescription}
+                                placeholder='Enter checkup note'
+                                value={isDoctorCheckupNote}
+                                setValue={setDoctorCheckupNote}
                                 // autoCapitalize='none'
                                 multiline={true}
                                 numberOfLines={5}
@@ -763,14 +387,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: windowWidth - 50,
+        width: windowWidth - 30,
         alignSelf: 'center',
-        marginVertical: 10
+        // marginVertical: 10
     },
     backIcon: {
-        width: windowWidth >= 960 ? 50 : 40,
-        height: windowWidth >= 960 ? 50 : 40,
-        borderRadius: windowWidth >= 960 ? 50 / 2 : 40 / 2,
+        width: windowWidth >= 1280 ? 50 : 40,
+        height: windowWidth >= 1280 ? 50 : 40,
+        borderRadius: windowWidth >= 1280 ? 50 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -804,7 +428,7 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: windowWidth >= 960 ? 360 : 300,
+        width: windowWidth >= 1280 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end',
@@ -868,5 +492,32 @@ const styles = StyleSheet.create({
     },
     profilePicture: {
         marginRight: 30
-    }
+    },
+    dropdown: {
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        height: 50,
+        backgroundColor: '#FFFFFF',
+        ...SHADOWS.light,
+        marginBottom: 2,
+    },
+    placeholderStyle: {
+        fontFamily: FONT.MartelSansSemiBold,
+        fontSize: SIZES.medium,
+        color: '#727c95',
+    },
+    selectedTextStyle: {
+        fontFamily: FONT.MartelSansSemiBold,
+        fontSize: SIZES.medium,
+        color: "#000000",
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+        color: "#000000",
+    },
 })

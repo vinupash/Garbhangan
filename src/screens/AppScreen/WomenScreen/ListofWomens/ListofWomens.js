@@ -82,7 +82,7 @@ const ListofWomens = ({ navigation }) => {
         // const refreshToken = "refreshToken= " + transformedRefreshToken.refreshToken
         const responseWomenList = await womenListApi(accessToken, anganwadiId)
         setLoading(false)
-        // console.log('responseWomenList--->', responseWomenList);
+        console.log('responseWomenList--->', responseWomenList);
         if (responseWomenList.IsError == true) {
             handleErrorMsg()
             setErrorMessage(responseWomenList.Message);

@@ -151,7 +151,7 @@ const VideoScreen = ({ navigation, route }) => {
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                 >
-                                    <SvgXml xml={BackWhiteIcon} width={windowWidth >= 960 ? 40 : 20} height={windowWidth >= 960 ? 40 : 20} />
+                                    <SvgXml xml={BackWhiteIcon} width={windowWidth >= 1280 ? 40 : 20} height={windowWidth >= 1280 ? 40 : 20} />
                                 </TouchableOpacity>
 
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -159,12 +159,12 @@ const VideoScreen = ({ navigation, route }) => {
                                         onPress={handleMute}
                                         style={{ marginRight: 20 }}
                                     >
-                                        <SvgXml xml={!isMute ? UnmuteIcon : MuteIcon} width={windowWidth >= 960 ? 60 : 30} height={windowWidth >= 960 ? 60 : 30} />
+                                        <SvgXml xml={!isMute ? UnmuteIcon : MuteIcon} width={windowWidth >= 1280 ? 60 : 30} height={windowWidth >= 1280 ? 60 : 30} />
                                     </TouchableOpacity>
                                     {/* <TouchableOpacity
                                         onPress={handleFullscreen}
                                     >
-                                        <SvgXml xml={isVisible ? FullScreenOpenIcon : FullScreenCloseIcon} width={windowWidth >= 960 ? 50 : 20} height={windowWidth >= 960 ? 50 : 25} />
+                                        <SvgXml xml={isVisible ? FullScreenOpenIcon : FullScreenCloseIcon} width={windowWidth >= 1280 ? 50 : 20} height={windowWidth >= 1280 ? 50 : 25} />
                                     </TouchableOpacity> */}
                                 </View>
                             </View>

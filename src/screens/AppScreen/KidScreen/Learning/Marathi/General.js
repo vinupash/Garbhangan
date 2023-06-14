@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, ImageBackground, Image } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import LanguageTab from '../../../../../components/LanguageTab';
-import BackIcon from '../../../../../../assets/images/BackIcon';
-
-import RadioButtonBoxValue from '../../../../../components/RadioButtonBoxValue';
-import LogoIcon from '../../../../../../assets/images/LogoIcon';
-import VideoTab from '../../../../../components/VideoTab';
-import { COLORS, assets } from '../../../../../constants';
+import { COLORS, SHADOWS, assets, FONT, SIZES } from '../../../../../constants';
 import { BackIconSecton } from '../../../../../components/CustomButtons';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -15,7 +8,8 @@ import BoardEng from '../../../../../../assets/images/Board-Eng.png'
 import BoardHin from '../../../../../../assets/images/Board-Hin.png'
 import BoardMar from '../../../../../../assets/images/Board-Mar.png'
 import VideoOfflineOnline from '../../../../../components/VideoOfflineOnline';
-
+import AnimalsHome from '../../../../../../assets/images/videos/Marathi/General/Name-of-Body-Parts.jpg'
+import ColorsMarathi from '../../../../../../assets/images/videos/Marathi/General/What-If-I-Didnt-Have-Teeth.jpg'
 const General = ({ navigation }) => {
     const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
     const iamges = [BoardEng, BoardHin, BoardMar];
@@ -46,40 +40,55 @@ const General = ({ navigation }) => {
     const options = [
         {
             key: 1,
-            title: 'Most High Pay',
+            title: 'शरीराच्या अवयवांचे नाव',
+            poster: AnimalsHome,
+            video: 1
         },
         {
             key: 2,
-            title: 'Most Perfomance',
-        },
-        {
-            key: 3,
-            title: 'A - Z',
-        },
-        {
-            key: 4,
-            title: 'Z - A bc',
+            title: 'मला दात नसतील तर काय?',
+            poster: ColorsMarathi,
+            video: 2
         },
     ];
 
+    const OfflineVideoData = () => {
+        return options.map((OfflineVideoInfo, i) => {
+            return (
+                <View style={styles.boxContent} key={i}>
+                    <TouchableOpacity
+                        activeOpacity={0.98}
+                        style={styles.sectionBtn}
+                        onPress={() => navigation.navigate('MarathiLearningStack', {
+                            screen: 'VideoScreenMarathiGeneral',
+                            params: { video: OfflineVideoInfo.video },
+                        })}
+                    >
+                        <View style={[styles.loginBtnInner]}>
+                            <Image
+                                source={OfflineVideoInfo.poster}
+                                style={{
+                                    width: '100%',
+                                    height: 250,
+                                    borderRadius: 16,
+                                }}
+                            />
+                        </View>
+                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={[styles.btnText]}>{OfflineVideoInfo.title}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        })
+    }
 
     const OfflineVideo = () => {
         return (
             <>
-                <VideoTab
-                    data={options}
-                    onPress={() => navigation.navigate('VideoScreenKid',
-                        {
-                            videoDetails: {
-                                id: 'jane',
-                                firstName: 'Jane',
-                                lastName: 'Done',
-                                age: 25,
-                                options: options
-                            },
-                        }
-                    )}
-                />
+                <View style={styles.videoSection}>
+                    {OfflineVideoData()}
+                </View>
             </>
         )
     }
@@ -87,20 +96,7 @@ const General = ({ navigation }) => {
     const OnlineVideo = () => {
         return (
             <>
-                <VideoTab
-                    data={options}
-                    onPress={() => navigation.navigate('VideoScreenKid',
-                        {
-                            videoDetails: {
-                                id: 'jane',
-                                firstName: 'Jane',
-                                lastName: 'Done',
-                                age: 25,
-                                options: options
-                            },
-                        }
-                    )}
-                />
+                <Text>Online video</Text>
             </>
         )
     }
@@ -119,7 +115,7 @@ const General = ({ navigation }) => {
                     <View style={styles.headerBox}>
                         <BackIconSecton
                             onPress={() => navigation.goBack()}
-                            title='Alphabet'
+                            title='सामान्य विज्ञान'
                         />
                         <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                         <View style={styles.menuBox}>
@@ -158,12 +154,41 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: windowWidth - 30,
         alignSelf: 'center',
-        marginBottom: 10,
-        // height: 75,
+        marginBottom: 5,
     },
     menuBox: {
         width: 360,
         alignItems: 'flex-end',
     },
-
+    videoSection: {
+        flexDirection: 'row',
+        flexWrap: "wrap",
+        width: windowWidth - 50,
+        alignSelf: 'center'
+    },
+    boxContent: {
+        width: '33.33%',
+        padding: 8
+    },
+    loginBtnInner: {
+        width: '100%',
+        height: 250,
+        borderRadius: 16,
+        backgroundColor: COLORS.brand.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...SHADOWS.light
+    },
+    btnText: {
+        fontFamily: FONT.Charlatan,
+        fontSize: SIZES.medium,
+        color: COLORS.brand.black
+    },
+    sectionBtn: {
+        width: '100%',
+        height: 300,
+        borderRadius: 16,
+        backgroundColor: "#FFFFFF",
+        ...SHADOWS.light,
+    },
 })

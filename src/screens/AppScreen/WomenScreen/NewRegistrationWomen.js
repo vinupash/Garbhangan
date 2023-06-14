@@ -321,15 +321,15 @@ const NewRegistrationWomen = ({ navigation }) => {
 
     const BackIconSecton = ({ onPress, title }) => {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 960 ? 360 : 300 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth >= 1280 ? 360 : 300 }}>
                 <TouchableOpacity
                     style={styles.backIcon}
                     onPress={onPress}
                     activeOpacity={0.98}
                 >
-                    <SvgXml xml={BackIcon} height={windowWidth >= 960 ? 25 : 20} width={25} />
+                    <SvgXml xml={BackIcon} height={windowWidth >= 1280 ? 25 : 20} width={25} />
                 </TouchableOpacity>
-                <Text style={[styles.titleText, { fontSize: windowWidth >= 960 ? SIZES.xl : SIZES.extraLarge }]}>{title}</Text>
+                <Text style={[styles.titleText, { fontSize: windowWidth >= 1280 ? SIZES.xl : SIZES.extraLarge }]}>{title}</Text>
             </View>
         )
     }
@@ -410,28 +410,28 @@ const NewRegistrationWomen = ({ navigation }) => {
                 }}
             >
                 <View style={{
-                    width: windowWidth >= 960 ? 250 : 160,
-                    height: windowWidth >= 960 ? 350 : 210,
+                    width: windowWidth >= 1280 ? 250 : 160,
+                    height: windowWidth >= 1280 ? 350 : 210,
                     backgroundColor: '#efefef',
                     marginBottom: 10,
                     borderRadius: 5,
                     ...SHADOWS.light
                 }}>
                     {
-                        image && (<Image source={{ uri: image }} style={{ width: windowWidth >= 960 ? 250 : 160, height: windowWidth >= 960 ? 350 : 210, borderRadius: 5, }} />)
+                        image && (<Image source={{ uri: image }} style={{ width: windowWidth >= 1280 ? 250 : 160, height: windowWidth >= 1280 ? 350 : 210, borderRadius: 5, }} />)
                     }
                 </View>
 
                 <TouchableOpacity
                     style={[styles.forwardIcon, {
                         alignSelf: "center",
-                        width: windowWidth >= 960 ? 60 : 40,
-                        height: windowWidth >= 960 ? 60 : 40,
+                        width: windowWidth >= 1280 ? 60 : 40,
+                        height: windowWidth >= 1280 ? 60 : 40,
                     }]}
                     activeOpacity={0.98}
                     onPress={() => { captureImage('photo') }}
                 >
-                    <SvgXml xml={CameraIcon} height={windowWidth >= 960 ? 30 : 15} width={windowWidth >= 960 ? 30 : 15} />
+                    <SvgXml xml={CameraIcon} height={windowWidth >= 1280 ? 30 : 15} width={windowWidth >= 1280 ? 30 : 15} />
                 </TouchableOpacity>
             </View>
         )
@@ -514,7 +514,7 @@ const NewRegistrationWomen = ({ navigation }) => {
                         onPress={() => navigation.goBack()}
                         title='Registration'
                     />
-                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                    {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 1280 ? 132 : 120} height={windowWidth >= 1280 ? 73 : 63} /> */}
                     <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                     <View style={styles.menuBox}>
                         <StackSection
@@ -790,9 +790,9 @@ const styles = StyleSheet.create({
         // marginVertical: 10
     },
     backIcon: {
-        width: windowWidth >= 960 ? 50 : 40,
-        height: windowWidth >= 960 ? 50 : 40,
-        borderRadius: windowWidth >= 960 ? 50 / 2 : 40 / 2,
+        width: windowWidth >= 1280 ? 50 : 40,
+        height: windowWidth >= 1280 ? 50 : 40,
+        borderRadius: windowWidth >= 1280 ? 50 / 2 : 40 / 2,
         ...SHADOWS.light,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
@@ -826,7 +826,7 @@ const styles = StyleSheet.create({
         ...SHADOWS.light
     },
     menuBox: {
-        width: windowWidth >= 960 ? 360 : 300,
+        width: windowWidth >= 1280 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end',

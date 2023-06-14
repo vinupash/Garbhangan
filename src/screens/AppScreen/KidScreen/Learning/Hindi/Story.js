@@ -1,140 +1,6 @@
-// import React, { useState, useEffect } from 'react';
-// import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, ImageBackground } from 'react-native';
-// import { SvgXml } from 'react-native-svg';
-// import LanguageTab from '../../../../../components/LanguageTab';
-// import BackIcon from '../../../../../../assets/images/BackIcon';
-
-// import RadioButtonBoxValue from '../../../../../components/RadioButtonBoxValue';
-// import LogoIcon from '../../../../../../assets/images/LogoIcon';
-// import VideoTab from '../../../../../components/VideoTab';
-// import { COLORS, assets } from '../../../../../constants';
-// import { BackIconSecton } from '../../../../../components/CustomButtons';
-// const windowHeight = Dimensions.get('window').height;
-// const windowWidth = Dimensions.get('window').width;
-
-// const Story = ({ navigation }) => {
-//     const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
-//     const iamges = [LogoIcon, LogoIcon, LogoIcon];
-//     const [index, setIndex] = useState(0);
-//     const [indexImage, setIndexImage] = useState(0);
-
-//     useEffect(() => {
-//         const interval = setInterval(() => {
-//             setIndex((index + 1) % texts.length);
-//         }, 5000);
-
-//         return () => clearInterval(interval);
-//     }, [index]);
-
-//     useEffect(() => {
-//         const interval = setInterval(() => {
-//             setIndexImage((indexImage + 1) % iamges.length);
-//         }, 5000);
-
-//         return () => clearInterval(interval);
-//     }, [indexImage]);
-
-//     const options = [
-//         {
-//             key: 1,
-//             title: 'Most High Pay',
-//         },
-//         {
-//             key: 2,
-//             title: 'Most Perfomance',
-//         },
-//         {
-//             key: 3,
-//             title: 'A - Z',
-//         },
-//         {
-//             key: 4,
-//             title: 'Z - A bc',
-//         },
-//     ];
-
-//     return (
-//         <SafeAreaView style={styles.container}>
-//             <StatusBar
-//                 barStyle='light-content'
-//                 backgroundColor={COLORS.brand.primary}
-//             />
-//             <ImageBackground
-//                 source={assets.ParkElement}
-//                 style={{ width: windowWidth, height: '100%', resizeMode: 'cover', position: 'relative' }}
-//             >
-//                 <View style={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%', alignItems: 'center' }}>
-//                     <View style={styles.headerBox}>
-//                         <BackIconSecton
-//                             onPress={() => navigation.goBack()}
-//                             title='Story'
-//                         />
-//                         <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} />
-//                         <View style={styles.menuBox}>
-//                             <Text style={styles.titleText}></Text>
-//                         </View>
-//                     </View>
-//                     <ScrollView
-//                         showsVerticalScrollIndicator={false}
-//                         style={{ width: '100%', height: '100%' }}
-//                     >
-
-//                         <VideoTab
-//                             data={options}
-//                             onPress={() => navigation.navigate('VideoScreenKid',
-//                                 {
-//                                     videoDetails: {
-//                                         id: 'jane',
-//                                         firstName: 'Jane',
-//                                         lastName: 'Done',
-//                                         age: 25,
-//                                         options: options
-//                                     },
-//                                 }
-//                             )}
-//                         />
-
-//                     </ScrollView>
-//                 </View>
-//             </ImageBackground>
-//         </SafeAreaView>
-//     )
-// }
-
-// export default Story
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: COLORS.brand.background,
-//     },
-//     headerBox: {
-//         flexDirection: 'row',
-//         justifyContent: 'space-between',
-//         alignItems: 'center',
-//         width: windowWidth - 30,
-//         alignSelf: 'center',
-//         marginBottom: 10,
-//         // height: 75,
-//     },
-//     menuBox: {
-//         width: 360,
-//         alignItems: 'flex-end',
-//     },
-
-// })
-
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, ScrollView, ImageBackground, Image } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import LanguageTab from '../../../../../components/LanguageTab';
-import BackIcon from '../../../../../../assets/images/BackIcon';
-
-import RadioButtonBoxValue from '../../../../../components/RadioButtonBoxValue';
-import LogoIcon from '../../../../../../assets/images/LogoIcon';
-import VideoTab from '../../../../../components/VideoTab';
-import { COLORS, assets } from '../../../../../constants';
+import { COLORS, SHADOWS, assets, FONT, SIZES } from '../../../../../constants';
 import { BackIconSecton } from '../../../../../components/CustomButtons';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -142,6 +8,10 @@ import BoardEng from '../../../../../../assets/images/Board-Eng.png'
 import BoardHin from '../../../../../../assets/images/Board-Hin.png'
 import BoardMar from '../../../../../../assets/images/Board-Mar.png'
 import VideoOfflineOnline from '../../../../../components/VideoOfflineOnline';
+import Kachua from '../../../../../../assets/images/videos/Hindi/Story/Kachua.jpg'
+import SoneKaAnda from '../../../../../../assets/images/videos/Hindi/Story/Sone-Ka-Anda.jpg'
+import TheFrog from '../../../../../../assets/images/videos/Hindi/Story/The-frog.jpg'
+import TheSheep from '../../../../../../assets/images/videos/Hindi/Story/The-Sheep.jpg'
 
 const Story = ({ navigation }) => {
     const texts = ['Shikshan, Aaichya Savalitla...', 'शिक्षण, आईच्या सावलीतल...', 'सिख, मां की छाव में...'];
@@ -173,40 +43,67 @@ const Story = ({ navigation }) => {
     const options = [
         {
             key: 1,
-            title: 'Most High Pay',
+            title: 'कछुआ',
+            poster: Kachua,
+            video: 1
         },
         {
             key: 2,
-            title: 'Most Perfomance',
+            title: 'सोने का अंडा',
+            poster: SoneKaAnda,
+            video: 2
         },
         {
             key: 3,
-            title: 'A - Z',
+            title: 'मेढ़क',
+            poster: TheFrog,
+            video: 3
         },
         {
             key: 4,
-            title: 'Z - A bc',
+            title: 'भेड़',
+            poster: TheSheep,
+            video: 4
         },
     ];
 
+    const OfflineVideoData = () => {
+        return options.map((OfflineVideoInfo, i) => {
+            return (
+                <View style={styles.boxContent} key={i}>
+                    <TouchableOpacity
+                        activeOpacity={0.98}
+                        style={styles.sectionBtn}
+                        onPress={() => navigation.navigate('HindiLearningStack', {
+                            screen: 'VideoScreenHindiStory',
+                            params: { video: OfflineVideoInfo.video },
+                        })}
+                    >
+                        <View style={[styles.loginBtnInner]}>
+                            <Image
+                                source={OfflineVideoInfo.poster}
+                                style={{
+                                    width: '100%',
+                                    height: 250,
+                                    borderRadius: 16,
+                                }}
+                            />
+                        </View>
+                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={[styles.btnText]}>{OfflineVideoInfo.title}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        })
+    }
 
     const OfflineVideo = () => {
         return (
             <>
-                <VideoTab
-                    data={options}
-                    onPress={() => navigation.navigate('VideoScreenKid',
-                        {
-                            videoDetails: {
-                                id: 'jane',
-                                firstName: 'Jane',
-                                lastName: 'Done',
-                                age: 25,
-                                options: options
-                            },
-                        }
-                    )}
-                />
+                <View style={styles.videoSection}>
+                    {OfflineVideoData()}
+                </View>
             </>
         )
     }
@@ -214,20 +111,7 @@ const Story = ({ navigation }) => {
     const OnlineVideo = () => {
         return (
             <>
-                <VideoTab
-                    data={options}
-                    onPress={() => navigation.navigate('VideoScreenKid',
-                        {
-                            videoDetails: {
-                                id: 'jane',
-                                firstName: 'Jane',
-                                lastName: 'Done',
-                                age: 25,
-                                options: options
-                            },
-                        }
-                    )}
-                />
+                <Text>Online video</Text>
             </>
         )
     }
@@ -246,7 +130,7 @@ const Story = ({ navigation }) => {
                     <View style={styles.headerBox}>
                         <BackIconSecton
                             onPress={() => navigation.goBack()}
-                            title='Story'
+                            title='कहानी'
                         />
                         <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                         <View style={styles.menuBox}>
@@ -285,12 +169,41 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: windowWidth - 30,
         alignSelf: 'center',
-        marginBottom: 10,
-        // height: 75,
+        marginBottom: 5,
     },
     menuBox: {
         width: 360,
         alignItems: 'flex-end',
     },
-
+    videoSection: {
+        flexDirection: 'row',
+        flexWrap: "wrap",
+        width: windowWidth - 50,
+        alignSelf: 'center'
+    },
+    boxContent: {
+        width: '33.33%',
+        padding: 8
+    },
+    loginBtnInner: {
+        width: '100%',
+        height: 250,
+        borderRadius: 16,
+        backgroundColor: COLORS.brand.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...SHADOWS.light
+    },
+    btnText: {
+        fontFamily: FONT.Charlatan,
+        fontSize: SIZES.medium,
+        color: COLORS.brand.black
+    },
+    sectionBtn: {
+        width: '100%',
+        height: 300,
+        borderRadius: 16,
+        backgroundColor: "#FFFFFF",
+        ...SHADOWS.light,
+    },
 })

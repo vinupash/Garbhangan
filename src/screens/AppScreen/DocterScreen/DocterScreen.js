@@ -169,7 +169,7 @@ const DocterScreen = ({ navigation }) => {
                         <View style={styles.headerBox}>
                             <BackIconSecton
                                 onPress={() => navigation.goBack()}
-                                title={t("Docter")}
+                                title={t("Doctor")}
                             />
                             {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
                             <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
@@ -198,13 +198,13 @@ const DocterScreen = ({ navigation }) => {
                             <View style={{ width: windowWidth - 100, alignItems: 'center', marginTop: windowWidth >= 960 ? 30 : 10 }}>
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     <ScreenTab
-                                        title={t("Docter Visit")}
+                                        title={t("Doctor Visit")}
                                         onPress={() => navigation.navigate('DocterVisit')}
                                         source={assets.DocterImg}
                                     />
 
                                     <ScreenTab
-                                        title={t("List of Docter Visit")}
+                                        title={t("List of Doctor Visit")}
                                         onPress={() => navigation.navigate('ListofDocterVisit')}
                                         source={assets.DocterCheckup}
                                     />

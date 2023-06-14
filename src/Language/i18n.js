@@ -16,9 +16,9 @@ const resources = {
             "New Registration": "New Registration",
             "List of Kid's": "List of Kid's",
             "Kid's Education": "Kid's Education",
-            "List of Docter Visit": "List of Docter Visit",
-            "Docter": "Docter",
-            "Docter Visit": "Docter Visit",
+            "List of Doctor Visit": "List of Doctor Visit",
+            "Doctor": "Doctor",
+            "Doctor Visit": "Doctor Visit",
         }
     },
     hi: {
@@ -33,9 +33,9 @@ const resources = {
             "List of Kid's": "बच्चों की सूची",
             "Kid's Education": "बच्चे की शिक्षा",
             "Kid's": "बच्चे",
-            "List of Docter Visit": "डॉक्टर के दौरे की सूची",
-            "Docter Visit": "डॉक्टर का दौरा",
-            "Docter": "डॉक्टर",
+            "List of Doctor Visit": "डॉक्टर के दौरे की सूची",
+            "Doctor Visit": "डॉक्टर का दौरा",
+            "Doctor": "डॉक्टर",
         }
     },
     ma: {
@@ -49,9 +49,9 @@ const resources = {
             "New Registration": "नवीन नोंदणी",
             "List of Kid's": "मुलांची यादी",
             "Kid's Education": "लहान मुलांचे",
-            "List of Docter Visit": "डॉक्टरांच्या भेटीची यादी",
-            "Docter Visit": "डॉक्टरांची भेट",
-            "Docter": "डॉक्टर",
+            "List of Doctor Visit": "डॉक्टरांच्या भेटीची यादी",
+            "Doctor Visit": "डॉक्टरांची भेट",
+            "Doctor": "डॉक्टर",
         }
     }
 };

@@ -371,3 +371,49 @@ export const getContentApi = async (accessToken) => {
         console.error(error);
     }
 }
+
+export const addDoctorvisit = async (isAccessToken, isAnganwadiId, isDoctorCheckupNote, date, image, isFileData, isValueDocterName) => {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", isAccessToken);
+
+        var formdata = new FormData();
+        formdata.append("Image", isFileData, image);
+        formdata.append("DoctorId", isValueDocterName);
+        formdata.append("AnganwadiId", isAnganwadiId);
+        formdata.append("VisitingNotes", isDoctorCheckupNote);
+        formdata.append("DateOfVisit", date)
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+
+        const response = await fetch(BASE_URL + "api/doctorvisit/add", requestOptions);
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const doctorVisitsList = async (accessToken, anganwadiId) => {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", accessToken);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        const response = await fetch(BASE_URL + "api/anganwadi/doctorVisits/" + anganwadiId, requestOptions);
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error(error);
+    }
+}

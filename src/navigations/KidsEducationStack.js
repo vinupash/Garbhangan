@@ -25,6 +25,13 @@ import VideoScreenGeneral from '../screens/AppScreen/KidScreen/Learning/English/
 import VideoScreenAlphabet from '../screens/AppScreen/KidScreen/Learning/English/VideoScreenAlphabet';
 import VideoScreenMaths from '../screens/AppScreen/KidScreen/Learning/English/VideoScreenMaths';
 import VideoScreenMarathiRhyme from '../screens/AppScreen/KidScreen/Learning/Marathi/VideoScreenMarathiRhyme';
+import VideoScreenMarathiRhymeStory from '../screens/AppScreen/KidScreen/Learning/Marathi/VideoScreenMarathiRhymeStory';
+import VideoScreenMarathiMaths from '../screens/AppScreen/KidScreen/Learning/Marathi/VideoScreenMarathiMaths';
+import VideoScreenMarathiGeneral from '../screens/AppScreen/KidScreen/Learning/Marathi/VideoScreenMarathiGeneral';
+import VideoScreenHindiGeneral from '../screens/AppScreen/KidScreen/Learning/Hindi/VideoScreenHindiGeneral';
+import VideoScreenHindiMaths from '../screens/AppScreen/KidScreen/Learning/Hindi/VideoScreenHindiMaths';
+import VideoScreenHindiRhymes from '../screens/AppScreen/KidScreen/Learning/Hindi/VideoScreenHindiRhymes';
+import VideoScreenHindiStory from '../screens/AppScreen/KidScreen/Learning/Hindi/VideoScreenHindiStory';
 
 const Stack = createNativeStackNavigator();
 
@@ -157,6 +164,27 @@ const MarathiLearningStack = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="VideoScreenMarathiRhymeStory"
+        component={VideoScreenMarathiRhymeStory}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VideoScreenMarathiMaths"
+        component={VideoScreenMarathiMaths}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VideoScreenMarathiGeneral"
+        component={VideoScreenMarathiGeneral}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -202,6 +230,34 @@ const HindiLearningStack = () => {
       <Stack.Screen
         name="HindiGeneral"
         component={HindiGeneral}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VideoScreenHindiGeneral"
+        component={VideoScreenHindiGeneral}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VideoScreenHindiMaths"
+        component={VideoScreenHindiMaths}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VideoScreenHindiRhymes"
+        component={VideoScreenHindiRhymes}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="VideoScreenHindiStory"
+        component={VideoScreenHindiStory}
         options={{
           headerShown: false,
         }}

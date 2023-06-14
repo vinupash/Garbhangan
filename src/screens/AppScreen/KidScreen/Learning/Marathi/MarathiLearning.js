@@ -136,7 +136,7 @@ const MarathiLearning = ({ navigation }) => {
                             /> */}
 
                             <EducationTab
-                                title="गणित"
+                                title="गणित आणि विषय"
                                 onPress={() => navigation.navigate('MarathiLearningStack', { screen: 'MarathiMaths' })}
                             />
 

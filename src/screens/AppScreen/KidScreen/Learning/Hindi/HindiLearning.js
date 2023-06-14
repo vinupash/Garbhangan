@@ -142,7 +142,7 @@ const HindiLearning = ({ navigation }) => {
                             /> */}
 
                             <EducationTab
-                                title="गणित"
+                                title="गणित और विषय"
                                 onPress={() => navigation.navigate('HindiLearningStack', { screen: 'HindiMaths' })}
                             />
 

@@ -186,7 +186,7 @@ const DetailsViewKid = ({ navigation, route }) => {
                             onPress={() => navigation.goBack()}
                             title="Detail's"
                         />
-                        {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 960 ? 132 : 120} height={windowWidth >= 960 ? 73 : 63} /> */}
+                        {/* <SvgXml xml={iamges[indexImage]} width={windowWidth >= 1280 ? 132 : 120} height={windowWidth >= 1280 ? 73 : 63} /> */}
                         <Image source={iamges[indexImage]} style={{ width: windowWidth >= 1280 ? 350 : 174, alignSelf: 'center', height: windowWidth >= 1280 ? 170 : 80 }} />
                         <View style={styles.menuBox}>
                             {/* <Text style={styles.titleText}></Text> */}
@@ -223,8 +223,8 @@ const DetailsViewKid = ({ navigation, route }) => {
                                 <Image
                                     source={assets.child_img}
                                     style={{
-                                        width: windowWidth >= 960 ? 250 : 200,
-                                        height: windowWidth >= 960 ? 350 : 250,
+                                        width: windowWidth >= 1280 ? 250 : 200,
+                                        height: windowWidth >= 1280 ? 350 : 250,
                                         borderRadius: 10
                                     }}
                                 />
@@ -232,8 +232,8 @@ const DetailsViewKid = ({ navigation, route }) => {
                                 <Image
                                     source={{ uri: `data:image/png;base64,${isProfileImage}` }}
                                     style={{
-                                        width: windowWidth >= 960 ? 250 : 200,
-                                        height: windowWidth >= 960 ? 350 : 250,
+                                        width: windowWidth >= 1280 ? 250 : 200,
+                                        height: windowWidth >= 1280 ? 350 : 250,
                                         borderRadius: 10
                                     }}
                                 />
@@ -310,14 +310,14 @@ const styles = StyleSheet.create({
         // height: 75,
     },
     menuBox: {
-        width: windowWidth >= 960 ? 360 : 300,
+        width: windowWidth >= 1280 ? 360 : 300,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end'
     },
     profilePicture: {
-        width: windowWidth >= 960 ? 250 : 200,
-        height: windowWidth >= 960 ? 350 : 250,
+        width: windowWidth >= 1280 ? 250 : 200,
+        height: windowWidth >= 1280 ? 350 : 250,
         backgroundColor: COLORS.brand.primary,
         borderRadius: 10,
         ...SHADOWS.light,
