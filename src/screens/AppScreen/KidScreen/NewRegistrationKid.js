@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Dimensions, ScrollView, Animated, Image, ActivityIndicator, Keyboard, ImageBackground, Alert } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { COLORS, SHADOWS, SIZES, FONT, assets } from '../../../constants';
 import MenuComponents from '../../../components/MenuComponents';
@@ -25,6 +25,7 @@ import { validateLetters, validateNumbers } from '../../../constants/methods';
 import BoardEng from '../../../../assets/images/Board-Eng.png'
 import BoardHin from '../../../../assets/images/Board-Hin.png'
 import BoardMar from '../../../../assets/images/Board-Mar.png'
+import NetInfo from "@react-native-community/netinfo";
 
 const NewRegistrationKid = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false)
@@ -53,12 +54,14 @@ const NewRegistrationKid = ({ navigation }) => {
     const [isFileData, setFileData] = useState(null);
     const [option, setOption] = useState(null);
     const [optionGender, setOptionGender] = useState(null);
+    const [optionMalnourished, setOptionMalnourished] = useState(null);
     const isFocused = useIsFocused()
     const [isAccessToken, setAccessToken] = useState('')
     const [isAnganwadiId, setAnganwadiId] = useState('')
     const [isSuccessMessage, setSuccessMessage] = useState('');
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const [isProfileImage, setProfileImage] = useState(null);
+    const [isConnected, setIsConnected] = useState(true);
 
     var date = moment().format("YYYY-MM-DD HH:mm:ss.SSS")
     // console.log(date);
@@ -114,6 +117,29 @@ const NewRegistrationKid = ({ navigation }) => {
     }, []);
 
     // console.log('isKeyboardVisible', optionGender);
+
+    useEffect(() => {
+
+        const unsubscribe = NetInfo.addEventListener((state) => {
+            setIsConnected(state.isConnected);
+            console.log('Connection type:', state.type);
+            console.log('Is connected?', state.isConnected);
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isConnected) {
+            Alert.alert(
+                'No Internet',
+                'Please check your internet connection and try again.',
+                [{ text: 'OK', onPress: () => null }]
+            );
+        }
+    }, [isConnected]);
 
     const submitData = async () => {
         if (image === '') {
@@ -202,6 +228,12 @@ const NewRegistrationKid = ({ navigation }) => {
             return
         }
 
+        if (optionMalnourished == null) {
+            handleErrorMsg()
+            setErrorMessage('Please select malnourished option')
+            return
+        }
+
         if (!isCheckupNote) {
             handleErrorMsg()
             setErrorMessage('Please enter medical history')
@@ -217,7 +249,7 @@ const NewRegistrationKid = ({ navigation }) => {
         const selectUserBirthDate = moment(selectedDate).format("YYYY-MM-DD HH:mm:ss.SSS");
 
         setLoading(true)
-        const responseRegistrationChild = await registrationChildApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData)
+        const responseRegistrationChild = await registrationChildApi(isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData, optionMalnourished)
         setLoading(false)
         // console.log('responseRegistrationChild--->', responseRegistrationChild);
         if (responseRegistrationChild.isError == false) {
@@ -282,6 +314,7 @@ const NewRegistrationKid = ({ navigation }) => {
             setCheckupNote('')
             setPrescription('')
             setImage('')
+            setOptionMalnourished('')
         }, 5000);
     };
 
@@ -469,6 +502,11 @@ const NewRegistrationKid = ({ navigation }) => {
     const genderData = [
         { id: 'M', value: 'Male' },
         { id: 'F', value: 'Female' },
+    ];
+
+    const malnourishedData = [
+        { id: true, value: 'Yes' },
+        { id: false, value: 'No' },
     ];
 
     if (isLoading) {
@@ -680,6 +718,32 @@ const NewRegistrationKid = ({ navigation }) => {
 
                         <View style={{ marginTop: 10 }}>
                             <View style={{ paddingHorizontal: 5 }}>
+                                <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Malnourished:</Text>
+
+                                <View
+                                    style={{
+                                        width: '100%',
+                                        height: 50,
+                                        // backgroundColor: '#FFFFFF',
+                                        // borderRadius: 10,
+                                        // paddingHorizontal: 20,
+                                        // ...SHADOWS.light,
+                                        marginRight: 5,
+                                        // justifyContent: 'center'
+                                    }}
+                                >
+
+                                    <RadioButtonBoxValue
+                                        data={malnourishedData}
+                                        onSelect={(value) => setOptionMalnourished(value)}
+                                    />
+
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={{ marginTop: 10 }}>
+                            <View style={{ paddingHorizontal: 5 }}>
                                 <Text style={{ fontFamily: FONT.MartelSansSemiBold, fontSize: SIZES.large, color: COLORS.brand.black, textAlign: 'left' }}>Specially abled:</Text>
 
                                 <View
@@ -736,13 +800,24 @@ const NewRegistrationKid = ({ navigation }) => {
                             marginTop: 20,
                             marginRight: 5
                         }}>
-                            <TouchableOpacity
-                                style={styles.forwardIcon}
-                                onPress={submitData}
-                                activeOpacity={0.98}
-                            >
-                                {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
-                            </TouchableOpacity>
+                            {!isConnected ?
+                                <TouchableOpacity
+                                    style={styles.forwardIcon}
+                                    // onPress={submitData}
+                                    activeOpacity={0.98}
+                                >
+                                    {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity
+                                    style={styles.forwardIcon}
+                                    onPress={submitData}
+                                    activeOpacity={0.98}
+                                >
+                                    {isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <SvgXml xml={ForwardArrow} height={30} width={30} />}
+                                </TouchableOpacity>
+
+                            }
                         </View>
                     </ScrollView>
                 </View>

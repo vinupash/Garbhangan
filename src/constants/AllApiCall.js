@@ -190,7 +190,7 @@ export const addWomenCheckupApi = async (isAccessToken, isWomenId, isValueDocter
     }
 }
 
-export const registrationChildApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData) => {
+export const registrationChildApi = async (isAccessToken, isFirstName, isMiddleName, isLastdName, isWeight, isHeight, isAnganwadiId, option, isCheckupNote, isPrescription, date, optionGender, selectUserBirthDate, image, isFileData, optionMalnourished) => {
     try {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", isAccessToken);
@@ -213,6 +213,7 @@ export const registrationChildApi = async (isAccessToken, isFirstName, isMiddleN
         formdata.append("ChildCheckUpDetails.CheckUpDate", date);
         formdata.append("Gender", optionGender);
         formdata.append("ChildCheckUpDetails.Prescription", isPrescription);
+        formdata.append("IsMalnourished", optionMalnourished);
 
         var requestOptions = {
             method: 'POST',

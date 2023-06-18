@@ -6,13 +6,38 @@ import Navigations from './src/navigations/Navigations'
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from './src/constants';
+import NetInfo from "@react-native-community/netinfo";
 
 const App = () => {
   const [refreshToken, setRefreshToken] = useState(null);
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
   // const isFocused = useIsFocused()
   const BASE_URL = 'https://dev-api.garbhangan.in:5000/';
   // const BASE_URL = 'http://51.77.105.23:81/';
+
+  useEffect(() => {
+
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      Alert.alert(
+        'No Internet',
+        'Please check your internet connection and try again.',
+        [{ text: 'OK', onPress: () => null }]
+      );
+    } else {
+      checkTokenExpiration();
+    }
+  }, [isConnected]);
 
   const checkTokenExpiration = async () => {
     try {
@@ -52,9 +77,9 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    checkTokenExpiration();
-  }, [])
+  // useEffect(() => {
+  //   checkTokenExpiration();
+  // }, [])
 
   useEffect(() => {
     fetchDataAsync()
@@ -104,11 +129,11 @@ const App = () => {
     return
   }
 
-  if (isLoading) {
-    return (
-      <ActivityIndicator size="large" color={COLORS.brand.primary} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <ActivityIndicator size="large" color={COLORS.brand.primary} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+  //   )
+  // }
 
   return (
     <AuthProvider>
